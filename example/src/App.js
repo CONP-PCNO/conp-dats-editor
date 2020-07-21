@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { ExampleComponent } from 'dats-creator-gui'
+import { DatsCreatorGui } from 'dats-creator-gui'
 import 'dats-creator-gui/dist/index.css'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <DatsCreatorGui />
 }
 
 export default App
