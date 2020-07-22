@@ -108,7 +108,7 @@ export const DatsCreatorGui = () => {
               <Form>
                 <Typography variant="h6" gutterBottom>
                   General Information
-              </Typography>
+                </Typography>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Field
@@ -120,8 +120,8 @@ export const DatsCreatorGui = () => {
                     />
                   </Grid>
                   <Typography variant="h6" gutterBottom>
-                  Creators
-              </Typography>
+                    Creators
+                  </Typography>
                   <Grid item xs={12}>
                     <FieldArray name="creators">
                       {arrayHelpers => (
@@ -135,7 +135,7 @@ export const DatsCreatorGui = () => {
                               })
                             }
                           >
-                          Add a Creator
+                            Add a Creator
                         </Button>
                           {values.creators.map((creator, index) => {
                             return (
@@ -187,10 +187,10 @@ export const DatsCreatorGui = () => {
                       as={Checkbox}
                     />
                     <Field
-                    name="types"
-                    type="checkbox"
-                    value="type3"
-                    as={Checkbox} />
+                      name="types"
+                      type="checkbox"
+                      value="type3"
+                      as={Checkbox} />
                   </Grid>
                   <Grid item xs={12}>
                     <Field
@@ -210,19 +210,22 @@ export const DatsCreatorGui = () => {
                       as={TextField}
                     />
                   </Grid>
-    
+
                   <div>
                     <Button disabled={isSubmitting} type="submit">
                       submit
-              </Button>
+                    </Button>
                   </div>
-                  <pre>{JSON.stringify(values, null, 2)}</pre>
-                  <pre>{JSON.stringify(errors, null, 2)}</pre>
                 </Grid>
+                <Typography variant="h6" gutterBottom>
+                  Next section
+                </Typography>
               </Form>
             )}
           </Formik>
         </Paper>
+        <pre>{JSON.stringify(values, null, 2)}</pre>
+        <pre>{JSON.stringify(errors, null, 2)}</pre>
       </div>
     </React.Fragment>
   );
