@@ -12,6 +12,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import Chip from '@material-ui/core/Chip'
 
 import * as yup from 'yup'
 
@@ -82,7 +83,17 @@ export const DatsCreatorGui = () => {
               types: [],
               license: '',
               keywords: [],
-              creators: []
+              creator: {
+                type: 'contributor',
+                name: ''
+              },
+              creators: [
+                {
+                  type: 'contributor',
+                  name: '',
+                  id: '' + Math.random()
+                }
+              ]
             }}
             validationSchema={validationSchema}
             onSubmit={(data, { setSubmitting }) => {
@@ -92,13 +103,16 @@ export const DatsCreatorGui = () => {
               setSubmitting(false)
             }}
           >
-            {({ values, errors, isSubmitting }) => (
+            {({ values, errors, isSubmitting, setFieldValue }) => (
               <Form>
-                <Typography variant='h6' gutterBottom>
-                  General Information
-                </Typography>
                 <Grid container spacing={3}>
+                  <Typography variant='h5' gutterBottom>
+                    General Information
+                  </Typography>
                   <Grid item xs={12}>
+                    <Typography variant='h6' gutterBottom>
+                      Title
+                    </Typography>
                     <Field
                       fullWidth
                       placeholder='Title'
@@ -107,118 +121,135 @@ export const DatsCreatorGui = () => {
                       as={TextField}
                     />
                   </Grid>
-                  <Typography variant='h6' gutterBottom>
-                    Creators
-                  </Typography>
                   <Grid item xs={12}>
+                    <Typography variant='h6' gutterBottom>
+                      Creators
+                    </Typography>
                     <FieldArray name='creators'>
                       {(arrayHelpers) => (
-                        <div>
-                          <Button
-                            onClick={() =>
-                              arrayHelpers.push({
-                                type: 'frog',
-                                name: '',
-                                id: '' + Math.random()
-                              })
-                            }
-                          >
-                            Add a Creator
-                          </Button>
-                          {values.creators.map((creator, index) => {
-                            return (
-                              <div key={creator.id}>
-                                <Field
-                                  placeholder='Name'
-                                  name={`creators.${index}.name`}
-                                  type='select'
-                                  as={Select}
+                        <Grid container item spacing={3} xs={12}>
+                          <Grid item xs={6}>
+                            <Field
+                              fullWidth
+                              placeholder='Name'
+                              name='creator.name'
+                              type='input'
+                              as={TextField}
+                            />
+                          </Grid>
+                          <Grid item xs={3}>
+                            <Field
+                              name='creator.type'
+                              type='select'
+                              as={Select}
+                            >
+                              <MenuItem value='pi'>PI</MenuItem>
+                              <MenuItem value='contributor'>
+                                Contributor
+                              </MenuItem>
+                            </Field>
+                          </Grid>
+                          <Grid item xs={3}>
+                            <Button
+                              onClick={() => {
+                                arrayHelpers.push({
+                                  type: values.creator.type,
+                                  name: values.creator.name,
+                                  id: '' + Math.random()
+                                })
+                                setFieldValue({
+                                  creator: {
+                                    type: 'contributor',
+                                    name: ''
+                                  }
+                                })
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </Grid>
+                          <Grid item>
+                            {values.creators.map((creator, index) => {
+                              return (
+                                <Chip
+                                  key={creator.id}
+                                  label={creator.name}
+                                  onDelete={() => arrayHelpers.remove(index)}
+                                  color='primary'
                                 />
-                                <Field
-                                  name={`creators.${index}.type`}
-                                  type='select'
-                                  as={Select}
-                                >
-                                  <MenuItem value='cat'>cat</MenuItem>
-                                  <MenuItem value='dog'>dog</MenuItem>
-                                  <MenuItem value='frog'>frog</MenuItem>
-                                </Field>
-                                <Button
-                                  onClick={() => arrayHelpers.remove(index)}
-                                >
-                                  x
-                                </Button>
-                              </div>
-                            )
-                          })}
-                        </div>
+                              )
+                            })}
+                          </Grid>
+                        </Grid>
                       )}
                     </FieldArray>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      fullWidth
-                      placeholder='Description'
-                      name='description'
-                      type='input'
-                      as={TextField}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <div>Types:</div>
-                    <Field
-                      name='types'
-                      type='checkbox'
-                      value='type1'
-                      as={Checkbox}
-                    />
-                    <Field
-                      name='types'
-                      type='checkbox'
-                      value='type2'
-                      as={Checkbox}
-                    />
-                    <Field
-                      name='types'
-                      type='checkbox'
-                      value='type3'
-                      as={Checkbox}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      fullWidth
-                      placeholder='License'
-                      name='license'
-                      type='input'
-                      as={TextField}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      fullWidth
-                      placeholder='Keywords'
-                      name='keywords'
-                      type='input'
-                      as={TextField}
-                    />
-                  </Grid>
-
-                  <div>
-                    <Button disabled={isSubmitting} type='submit'>
-                      submit
-                    </Button>
-                  </div>
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h6' gutterBottom>
+                    Description
+                  </Typography>
+                  <Field
+                    fullWidth
+                    placeholder='Description'
+                    name='description'
+                    type='input'
+                    as={TextField}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <div>Types:</div>
+                  <Field
+                    name='types'
+                    type='checkbox'
+                    value='type1'
+                    as={Checkbox}
+                  />
+                  <Field
+                    name='types'
+                    type='checkbox'
+                    value='type2'
+                    as={Checkbox}
+                  />
+                  <Field
+                    name='types'
+                    type='checkbox'
+                    value='type3'
+                    as={Checkbox}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    fullWidth
+                    placeholder='License'
+                    name='license'
+                    type='input'
+                    as={TextField}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    fullWidth
+                    placeholder='Keywords'
+                    name='keywords'
+                    type='input'
+                    as={TextField}
+                  />
+                </Grid>
+
                 <Typography variant='h6' gutterBottom>
                   Next section
                 </Typography>
+
+                <div>
+                  <Button disabled={isSubmitting} type='submit'>
+                    submit
+                  </Button>
+                </div>
               </Form>
             )}
           </Formik>
         </Paper>
-        {/* <pre>{JSON.stringify(values, null, 2)}</pre>
-        <pre>{JSON.stringify(errors, null, 2)}</pre> */}
       </div>
     </React.Fragment>
   )
