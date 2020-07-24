@@ -108,15 +108,22 @@ export const DatsCreatorGui = () => {
             validateOnChange
             initialValues={{
               title: '',
-              description: '',
-              types: [],
-              license: '',
-              keywords: [],
               creator: {
                 type: 'contributor',
                 name: ''
               },
-              creators: []
+              creators: [],
+              description: '',
+              types: [],
+              version: '',
+              license: '',
+              keywords: [],
+              formats: [],
+              size: {
+                value: '',
+                units: 'mb'
+              },
+              authorizations: 'public'
             }}
             validationSchema={validationSchema}
             onSubmit={(data, { setSubmitting }) => {
@@ -211,24 +218,55 @@ export const DatsCreatorGui = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <div>Types:</div>
-                  <Field
-                    name='types'
-                    type='checkbox'
-                    value='type1'
-                    as={Checkbox}
-                  />
-                  <Field
-                    name='types'
-                    type='checkbox'
-                    value='type2'
-                    as={Checkbox}
-                  />
-                  <Field
-                    name='types'
-                    type='checkbox'
-                    value='type3'
-                    as={Checkbox}
+                  <Typography variant='h6' gutterBottom>
+                    Types
+                  </Typography>
+                  <FieldArray name='types'>
+                    {(arrayHelpers) => (
+                      <Grid container item spacing={3} xs={12}>
+                        <Grid item xs={9}>
+                          <CustomTextField
+                            fullWidth
+                            placeholder='Type'
+                            name='type'
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button
+                            onClick={() => {
+                              arrayHelpers.push(values.type)
+                              setFieldValue({
+                                type: ''
+                              })
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          {values.types.map((type, index) => {
+                            return (
+                              <Chip
+                                key={'' + Math.random()}
+                                label={type}
+                                onDelete={() => arrayHelpers.remove(index)}
+                                color='primary'
+                              />
+                            )
+                          })}
+                        </Grid>
+                      </Grid>
+                    )}
+                  </FieldArray>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h6' gutterBottom>
+                    Version
+                  </Typography>
+                  <CustomTextField
+                    fullWidth
+                    placeholder='Version'
+                    name='version'
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -245,17 +283,128 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Keywords
                   </Typography>
+                  <FieldArray name='keywords'>
+                    {(arrayHelpers) => (
+                      <Grid container item spacing={3} xs={12}>
+                        <Grid item xs={9}>
+                          <CustomTextField
+                            fullWidth
+                            placeholder='Keyword'
+                            name='keyword'
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button
+                            onClick={() => {
+                              arrayHelpers.push(values.keyword)
+                              setFieldValue({
+                                type: ''
+                              })
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          {values.keywords.map((keyword, index) => {
+                            return (
+                              <Chip
+                                key={'' + Math.random()}
+                                label={keyword}
+                                onDelete={() => arrayHelpers.remove(index)}
+                                color='primary'
+                              />
+                            )
+                          })}
+                        </Grid>
+                      </Grid>
+                    )}
+                  </FieldArray>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h6' gutterBottom>
+                    Formats
+                  </Typography>
+                  <FieldArray name='formats'>
+                    {(arrayHelpers) => (
+                      <Grid container item spacing={3} xs={12}>
+                        <Grid item xs={9}>
+                          <CustomTextField
+                            fullWidth
+                            placeholder='Format'
+                            name='format'
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button
+                            onClick={() => {
+                              arrayHelpers.push(values.format)
+                              setFieldValue({
+                                type: ''
+                              })
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          {values.formats.map((format, index) => {
+                            return (
+                              <Chip
+                                key={'' + Math.random()}
+                                label={format}
+                                onDelete={() => arrayHelpers.remove(index)}
+                                color='primary'
+                              />
+                            )
+                          })}
+                        </Grid>
+                      </Grid>
+                    )}
+                  </FieldArray>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h6' gutterBottom>
+                    Size
+                  </Typography>
+                  <Grid container item spacing={3} xs={12}>
+                    <Grid item xs={9}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Size'
+                        name='size.value'
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <CustomSelectField name='size.units' label='Units'>
+                        <MenuItem value='mb'>MB</MenuItem>
+                        <MenuItem value='gb'>GB</MenuItem>
+                        <MenuItem value='tb'>TB</MenuItem>
+                        <MenuItem value='pb'>PB</MenuItem>
+                      </CustomSelectField>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant='h6' gutterBottom>
+                    Landing Page
+                  </Typography>
                   <CustomTextField
                     fullWidth
-                    placeholder='Keywords'
-                    name='keywords'
+                    placeholder='Landing Page'
+                    name='landingPage'
                   />
                 </Grid>
-
-                <Typography variant='h6' gutterBottom>
-                  Next section
-                </Typography>
-
+                <Grid item xs={12}>
+                  <Typography variant='h6' gutterBottom>
+                    Access
+                  </Typography>
+                  <CustomSelectField name='authorizations' label='Access'>
+                    <MenuItem value='public'>Public</MenuItem>
+                    <MenuItem value='registered'>Registered</MenuItem>
+                    <MenuItem value='private'>Private</MenuItem>
+                  </CustomSelectField>
+                </Grid>
                 <div>
                   <Button disabled={isSubmitting} type='submit'>
                     submit
