@@ -1,10 +1,12 @@
 import React from 'react'
-import { Formik, Field, Form, FieldArray } from 'formik'
+import { Formik, Field, Form, FieldArray, useField } from 'formik'
 import {
   TextField,
   Button,
   Checkbox,
   Select,
+  FormControl,
+  InputLabel,
   MenuItem
 } from '@material-ui/core'
 
@@ -26,6 +28,33 @@ const validationSchema = yup.object({
     })
   )
 })
+
+const CustomTextField = ({ ...props }) => {
+  const [field, meta] = useField(props)
+  const errorText = meta.error && meta.touched ? meta.error : ''
+  return (
+    <TextField
+      {...props}
+      {...field}
+      helperText={errorText}
+      error={!!errorText}
+      variant='outlined'
+    />
+  )
+}
+
+const CustomSelectField = ({ ...props }) => {
+  const [field, meta] = useField(props)
+  const errorText = meta.error && meta.touched ? meta.error : ''
+  return (
+    <FormControl variant='outlined'>
+      <InputLabel>{props.label}</InputLabel>
+      <Select {...props} {...field} helperText={errorText} error={!!errorText}>
+        {props.children}
+      </Select>
+    </FormControl>
+  )
+}
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -87,13 +116,7 @@ export const DatsCreatorGui = () => {
                 type: 'contributor',
                 name: ''
               },
-              creators: [
-                {
-                  type: 'contributor',
-                  name: '',
-                  id: '' + Math.random()
-                }
-              ]
+              creators: []
             }}
             validationSchema={validationSchema}
             onSubmit={(data, { setSubmitting }) => {
@@ -113,12 +136,10 @@ export const DatsCreatorGui = () => {
                     <Typography variant='h6' gutterBottom>
                       Title
                     </Typography>
-                    <Field
+                    <CustomTextField
                       fullWidth
                       placeholder='Title'
                       name='title'
-                      type='input'
-                      as={TextField}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -129,25 +150,19 @@ export const DatsCreatorGui = () => {
                       {(arrayHelpers) => (
                         <Grid container item spacing={3} xs={12}>
                           <Grid item xs={6}>
-                            <Field
+                            <CustomTextField
                               fullWidth
                               placeholder='Name'
                               name='creator.name'
-                              type='input'
-                              as={TextField}
                             />
                           </Grid>
                           <Grid item xs={3}>
-                            <Field
-                              name='creator.type'
-                              type='select'
-                              as={Select}
-                            >
+                            <CustomSelectField name='creator.type' label='Role'>
                               <MenuItem value='pi'>PI</MenuItem>
                               <MenuItem value='contributor'>
                                 Contributor
                               </MenuItem>
-                            </Field>
+                            </CustomSelectField>
                           </Grid>
                           <Grid item xs={3}>
                             <Button
@@ -189,12 +204,10 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Description
                   </Typography>
-                  <Field
+                  <CustomTextField
                     fullWidth
                     placeholder='Description'
                     name='description'
-                    type='input'
-                    as={TextField}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -219,21 +232,23 @@ export const DatsCreatorGui = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Field
+                  <Typography variant='h6' gutterBottom>
+                    License
+                  </Typography>
+                  <CustomTextField
                     fullWidth
                     placeholder='License'
                     name='license'
-                    type='input'
-                    as={TextField}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Field
+                  <Typography variant='h6' gutterBottom>
+                    Keywords
+                  </Typography>
+                  <CustomTextField
                     fullWidth
                     placeholder='Keywords'
                     name='keywords'
-                    type='input'
-                    as={TextField}
                   />
                 </Grid>
 
