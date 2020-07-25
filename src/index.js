@@ -454,19 +454,21 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Derived From
                   </Typography>
-                  <Grid item xs={6}>
-                    <CustomTextField
-                      fullWidth
-                      placeholder='Derived From'
-                      name='derivedFrom'
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CustomTextField
-                      fullWidth
-                      placeholder='Parent dataset id'
-                      name='parentDatasetId'
-                    />
+                  <Grid container item spacing={3} xs={12}>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Derived From'
+                        name='derivedFrom'
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Parent dataset id'
+                        name='parentDatasetId'
+                      />
+                    </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -519,19 +521,23 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Dates
                   </Typography>
-                  <Grid item xs={6}>
-                    <CustomTextField
-                      fullWidth
-                      placeholder='Date'
-                      name='date.date'
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <CustomTextField
-                      fullWidth
-                      placeholder='Description'
-                      name='date.description'
-                    />
+                  <Grid item xs={12}>
+                    <Grid container item spacing={3} xs={12}>
+                      <Grid item xs={6}>
+                        <CustomTextField
+                          fullWidth
+                          placeholder='Date'
+                          name='date.date'
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <CustomTextField
+                          fullWidth
+                          placeholder='Description'
+                          name='date.description'
+                        />
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
