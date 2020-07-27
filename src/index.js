@@ -15,14 +15,15 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
+import { makeStyles } from '@material-ui/core/styles'
 
 import * as yup from 'yup'
 
-import { makeStyles } from '@material-ui/core/styles'
+import DATS from './model/dats'
 
 const validationSchema = yup.object({
-  firstName: yup.string().required().max(10),
-  pets: yup.array().of(
+  title: yup.string().required().max(10),
+  creators: yup.array().of(
     yup.object({
       name: yup.string().required()
     })
@@ -113,17 +114,21 @@ export const DatsCreatorGui = () => {
                 name: ''
               },
               creators: [],
+              contact: {
+                name: '',
+                email: ''
+              },
               description: '',
               types: [],
               version: '',
-              license: '',
+              licenses: [],
               keywords: [],
               formats: [],
               size: {
                 value: '',
                 units: 'mb'
               },
-              authorizations: 'public',
+              privacy: 'public',
               files: '',
               subjects: '',
               conpStatus: '',
@@ -131,24 +136,27 @@ export const DatsCreatorGui = () => {
               parentDatasetId: '',
               primaryPublications: [],
               dimensions: [],
-              identifier: '',
-              contact: '',
+              identifier: {
+                name: '',
+                source: ''
+              },
               logo: '',
               dates: [],
               citations: [],
               producedBy: '',
-              isAbout: '',
+              isAbout: [],
               hasPart: '',
               acknowledges: '',
               refinement: '',
               aggregation: '',
-              spacialCoverage: ''
+              spatialCoverage: []
             }}
             validationSchema={validationSchema}
             onSubmit={(data, { setSubmitting }) => {
               setSubmitting(true)
               // make async call
-              console.log('submit: ', data)
+              const dats = new DATS(data)
+              console.log('submit: ', dats.getJson())
               setSubmitting(false)
             }}
           >
@@ -290,12 +298,12 @@ export const DatsCreatorGui = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='h6' gutterBottom>
-                    License
+                    Licenses
                   </Typography>
                   <CustomTextField
                     fullWidth
-                    placeholder='License'
-                    name='license'
+                    placeholder='Licenses'
+                    name='licenses'
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -416,9 +424,9 @@ export const DatsCreatorGui = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='h6' gutterBottom>
-                    Access
+                    Privacy
                   </Typography>
-                  <CustomSelectField name='authorizations' label='Access'>
+                  <CustomSelectField name='privacy' label='Privacy'>
                     <MenuItem value='public'>Public</MenuItem>
                     <MenuItem value='registered'>Registered</MenuItem>
                     <MenuItem value='private'>Private</MenuItem>
@@ -495,21 +503,43 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Identifier
                   </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Identifier'
-                    name='identifier'
-                  />
+                  <Grid container item spacing={3} xs={12}>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Identifier'
+                        name='identifier.name'
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Source'
+                        name='identifier.source'
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='h6' gutterBottom>
                     Contact
                   </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Contact'
-                    name='contact'
-                  />
+                  <Grid container item spacing={3} xs={12}>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Name'
+                        name='contact.name'
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Email'
+                        name='contact.email'
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='h6' gutterBottom>
@@ -521,22 +551,20 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Dates
                   </Typography>
-                  <Grid item xs={12}>
-                    <Grid container item spacing={3} xs={12}>
-                      <Grid item xs={6}>
-                        <CustomTextField
-                          fullWidth
-                          placeholder='Date'
-                          name='date.date'
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <CustomTextField
-                          fullWidth
-                          placeholder='Description'
-                          name='date.description'
-                        />
-                      </Grid>
+                  <Grid container item spacing={3} xs={12}>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Date'
+                        name='date.date'
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomTextField
+                        fullWidth
+                        placeholder='Description'
+                        name='date.description'
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -612,12 +640,12 @@ export const DatsCreatorGui = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='h6' gutterBottom>
-                    Spacial Coverage
+                    Spatial Coverage
                   </Typography>
                   <CustomTextField
                     fullWidth
-                    placeholder='Spacial Coverage'
-                    name='spacialCoverage'
+                    placeholder='Spatial Coverage'
+                    name='spatialCoverage'
                   />
                 </Grid>
                 <div>
@@ -625,6 +653,8 @@ export const DatsCreatorGui = () => {
                     submit
                   </Button>
                 </div>
+                <pre>{JSON.stringify(values, null, 2)}</pre>
+                <pre>{JSON.stringify(errors, null, 2)}</pre>
               </Form>
             )}
           </Formik>
