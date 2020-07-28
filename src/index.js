@@ -21,13 +21,59 @@ import * as yup from 'yup'
 
 import DATS from './model/dats'
 
-const validationSchema = yup.object({
-  title: yup.string().required().max(10),
+const defaultValidationSchema = yup.object({
+  title: yup.string().required(),
+  creator: yup.object({
+    name: yup.string().required(),
+    email: yup.string().email().required()
+  }),
   creators: yup.array().of(
     yup.object({
-      name: yup.string().required()
+      name: yup.string().required(),
+      email: yup.string().email().required()
     })
-  )
+  ),
+  contact: yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().email().required()
+  }),
+  description: yup.string().required(),
+  types: yup.array().of(yup.string()).min(1).required(),
+  version: yup.number().positive(),
+  licenses: yup.array().of(yup.string()).min(1),
+  keywords: yup.array().of(yup.string()).min(1),
+  formats: yup.array().of(yup.string()).min(1),
+  size: yup
+    .object({
+      value: yup.number().positive().required(),
+      units: yup.string().required()
+    })
+    .required(),
+  privacy: yup.string().required(),
+  files: yup.number().integer().positive().required(),
+  subjects: yup.number().integer().positive().required(),
+  conpStatus: yup.string().required(),
+  derivedFrom: yup.string(),
+  parentDatasetId: yup.string(),
+  primaryPublications: yup.array().of(yup.string()),
+  dimensions: yup.array().of(yup.string()),
+  identifier: yup.object({
+    name: yup.string().required(),
+    source: yup.string().url().required()
+  }),
+  logo: yup.string(),
+  dates: yup.object({
+    date: yup.date().required(),
+    description: yup.string()
+  }),
+  citations: yup.array().of(yup.string()),
+  producedBy: yup.string(),
+  isAbout: yup.array().of(yup.string()),
+  hasPart: yup.string(),
+  acknowledges: yup.string(),
+  refinement: yup.string(),
+  aggregation: yup.string(),
+  spatialCoverage: yup.array().of(yup.string())
 })
 
 const CustomTextField = ({ ...props }) => {
@@ -94,7 +140,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export const DatsCreatorGui = () => {
+export const DatsCreatorGui = (props) => {
+  const validationSchema = props.validationSchema || defaultValidationSchema
   const classes = useStyles()
 
   return (
@@ -300,11 +347,43 @@ export const DatsCreatorGui = () => {
                   <Typography variant='h6' gutterBottom>
                     Licenses
                   </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Licenses'
-                    name='licenses'
-                  />
+                  <FieldArray name='licenses'>
+                    {(arrayHelpers) => (
+                      <Grid container item spacing={3} xs={12}>
+                        <Grid item xs={9}>
+                          <CustomTextField
+                            fullWidth
+                            placeholder='License'
+                            name='license'
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button
+                            onClick={() => {
+                              arrayHelpers.push(values.license)
+                              setFieldValue({
+                                type: ''
+                              })
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          {values.licenses.map((license, index) => {
+                            return (
+                              <Chip
+                                key={'' + Math.random()}
+                                label={license}
+                                onDelete={() => arrayHelpers.remove(index)}
+                                color='primary'
+                              />
+                            )
+                          })}
+                        </Grid>
+                      </Grid>
+                    )}
+                  </FieldArray>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant='h6' gutterBottom>
