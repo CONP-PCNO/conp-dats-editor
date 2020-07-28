@@ -1,13 +1,17 @@
 import React from 'react'
 import { Formik, Field, Form, FieldArray, useField } from 'formik'
 import {
+  Stepper,
+  Step,
+  StepLabel,
   TextField,
   Button,
   Checkbox,
   Select,
   FormControl,
   InputLabel,
-  MenuItem
+  MenuItem,
+  CircularProgress
 } from '@material-ui/core'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -19,18 +23,22 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import * as yup from 'yup'
 
+import GeneralForm from './components/forms/GeneralForm/GeneralForm'
+import DistributionForm from './components/forms/DistributionForm/DistributionForm'
+import Review from './components/forms/Review/Review'
+import CreateDatsSuccess from './components/CreateDatsSuccess/CreateDatsSuccess'
 import DATS from './model/dats'
 
 const defaultValidationSchema = yup.object({
   title: yup.string().required(),
   creator: yup.object({
     name: yup.string().required(),
-    email: yup.string().email().required()
+    email: yup.string().email()
   }),
   creators: yup.array().of(
     yup.object({
       name: yup.string().required(),
-      email: yup.string().email().required()
+      email: yup.string().email()
     })
   ),
   contact: yup.object().shape({
@@ -62,10 +70,16 @@ const defaultValidationSchema = yup.object({
     source: yup.string().url().required()
   }),
   logo: yup.string(),
-  dates: yup.object({
+  date: yup.object({
     date: yup.date().required(),
     description: yup.string()
   }),
+  dates: yup.array().of(
+    yup.object({
+      date: yup.date().required(),
+      description: yup.string()
+    })
+  ),
   citations: yup.array().of(yup.string()),
   producedBy: yup.string(),
   isAbout: yup.array().of(yup.string()),
@@ -75,33 +89,6 @@ const defaultValidationSchema = yup.object({
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string())
 })
-
-const CustomTextField = ({ ...props }) => {
-  const [field, meta] = useField(props)
-  const errorText = meta.error && meta.touched ? meta.error : ''
-  return (
-    <TextField
-      {...props}
-      {...field}
-      helperText={errorText}
-      error={!!errorText}
-      variant='outlined'
-    />
-  )
-}
-
-const CustomSelectField = ({ ...props }) => {
-  const [field, meta] = useField(props)
-  const errorText = meta.error && meta.touched ? meta.error : ''
-  return (
-    <FormControl variant='outlined'>
-      <InputLabel>{props.label}</InputLabel>
-      <Select {...props} {...field} helperText={errorText} error={!!errorText}>
-        {props.children}
-      </Select>
-    </FormControl>
-  )
-}
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -140,9 +127,35 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const steps = ['General', 'Distribution', 'Review']
+
+function renderStep(step, values, setFieldValue) {
+  switch (step) {
+    case 0:
+      return <GeneralForm values={values} setFieldValue={setFieldValue} />
+    case 1:
+      return <DistributionForm values={values} setFieldValue={setFieldValue} />
+    case 2:
+      return <Review values={values} setFieldValue={setFieldValue} />
+    default:
+      throw new Error('Unknown step')
+  }
+}
+
 export const DatsCreatorGui = (props) => {
   const validationSchema = props.validationSchema || defaultValidationSchema
   const classes = useStyles()
+
+  const [activeStep, setActiveStep] = React.useState(0)
+  const isLastStep = activeStep === steps.length - 1
+
+  const handleNext = () => {
+    setActiveStep(activeStep + 1)
+  }
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1)
+  }
 
   return (
     <React.Fragment>
@@ -152,591 +165,119 @@ export const DatsCreatorGui = (props) => {
           <Typography component='h1' variant='h4' align='center'>
             Create DATS.json
           </Typography>
-          <Formik
-            validateOnChange
-            initialValues={{
-              title: '',
-              creator: {
-                type: 'contributor',
-                name: ''
-              },
-              creators: [],
-              contact: {
-                name: '',
-                email: ''
-              },
-              description: '',
-              types: [],
-              version: '',
-              licenses: [],
-              keywords: [],
-              formats: [],
-              size: {
-                value: '',
-                units: 'mb'
-              },
-              privacy: 'public',
-              files: '',
-              subjects: '',
-              conpStatus: '',
-              derivedFrom: '',
-              parentDatasetId: '',
-              primaryPublications: [],
-              dimensions: [],
-              identifier: {
-                name: '',
-                source: ''
-              },
-              logo: '',
-              dates: [],
-              citations: [],
-              producedBy: '',
-              isAbout: [],
-              hasPart: '',
-              acknowledges: '',
-              refinement: '',
-              aggregation: '',
-              spatialCoverage: []
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(data, { setSubmitting }) => {
-              setSubmitting(true)
-              // make async call
-              const dats = new DATS(data)
-              console.log('submit: ', dats.getJson())
-              setSubmitting(false)
-            }}
-          >
-            {({ values, errors, isSubmitting, setFieldValue }) => (
-              <Form>
-                <Grid container spacing={3}>
-                  <Typography variant='h5' gutterBottom>
-                    General Information
-                  </Typography>
-                  <Grid item xs={12}>
-                    <Typography variant='h6' gutterBottom>
-                      Title
-                    </Typography>
-                    <CustomTextField
-                      fullWidth
-                      placeholder='Title'
-                      name='title'
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant='h6' gutterBottom>
-                      Creators
-                    </Typography>
-                    <FieldArray name='creators'>
-                      {(arrayHelpers) => (
-                        <Grid container item spacing={3} xs={12}>
-                          <Grid item xs={6}>
-                            <CustomTextField
-                              fullWidth
-                              placeholder='Name'
-                              name='creator.name'
-                            />
-                          </Grid>
-                          <Grid item xs={3}>
-                            <CustomSelectField name='creator.type' label='Role'>
-                              <MenuItem value='pi'>PI</MenuItem>
-                              <MenuItem value='contributor'>
-                                Contributor
-                              </MenuItem>
-                            </CustomSelectField>
-                          </Grid>
-                          <Grid item xs={3}>
-                            <Button
-                              onClick={() => {
-                                arrayHelpers.push({
-                                  type: values.creator.type,
-                                  name: values.creator.name,
-                                  id: '' + Math.random()
-                                })
-                                setFieldValue({
-                                  creator: {
-                                    type: 'contributor',
-                                    name: ''
-                                  }
-                                })
-                              }}
-                            >
-                              Add
-                            </Button>
-                          </Grid>
-                          <Grid item>
-                            {values.creators.map((creator, index) => {
-                              return (
-                                <Chip
-                                  key={creator.id}
-                                  label={creator.name}
-                                  onDelete={() => arrayHelpers.remove(index)}
-                                  color='primary'
-                                />
-                              )
-                            })}
-                          </Grid>
-                        </Grid>
+          <Stepper activeStep={activeStep} className={classes.stepper}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <React.Fragment>
+            {activeStep === steps.length ? (
+              <CreateDatsSuccess />
+            ) : (
+              <Formik
+                validateOnChange
+                initialValues={{
+                  title: '',
+                  creator: {
+                    type: 'contributor',
+                    name: ''
+                  },
+                  creators: [],
+                  contact: {
+                    name: '',
+                    email: ''
+                  },
+                  description: '',
+                  types: [],
+                  version: '',
+                  licenses: [],
+                  keywords: [],
+                  formats: [],
+                  size: {
+                    value: '',
+                    units: 'mb'
+                  },
+                  privacy: 'public',
+                  files: '',
+                  subjects: '',
+                  conpStatus: '',
+                  derivedFrom: '',
+                  parentDatasetId: '',
+                  primaryPublications: [],
+                  dimensions: [],
+                  identifier: {
+                    name: '',
+                    source: ''
+                  },
+                  logo: '',
+                  date: {
+                    date: '',
+                    description: ''
+                  },
+                  dates: [],
+                  citations: [],
+                  producedBy: '',
+                  isAbout: [],
+                  hasPart: '',
+                  acknowledges: '',
+                  refinement: '',
+                  aggregation: '',
+                  spatialCoverage: []
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(data, { setSubmitting }) => {
+                  setSubmitting(true)
+                  // make async call
+                  const dats = new DATS(data)
+                  console.log('submit: ', dats.getJson())
+                  setSubmitting(false)
+                }}
+              >
+                {({ values, errors, isSubmitting, setFieldValue }) => (
+                  <Form>
+                    {renderStep(activeStep, values, setFieldValue)}
+                    <div className={classes.buttons}>
+                      {activeStep !== 0 && (
+                        <Button onClick={handleBack} className={classes.button}>
+                          Back
+                        </Button>
                       )}
-                    </FieldArray>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Description
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Description'
-                    name='description'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Types
-                  </Typography>
-                  <FieldArray name='types'>
-                    {(arrayHelpers) => (
-                      <Grid container item spacing={3} xs={12}>
-                        <Grid item xs={9}>
-                          <CustomTextField
-                            fullWidth
-                            placeholder='Type'
-                            name='type'
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
+                      <div className={classes.wrapper}>
+                        {isLastStep ? (
                           <Button
-                            onClick={() => {
-                              arrayHelpers.push(values.type)
-                              setFieldValue({
-                                type: ''
-                              })
-                            }}
+                            disabled={isSubmitting}
+                            type='submit'
+                            variant='contained'
+                            color='primary'
+                            className={classes.button}
                           >
-                            Add
+                            Confirm
                           </Button>
-                        </Grid>
-                        <Grid item>
-                          {values.types.map((type, index) => {
-                            return (
-                              <Chip
-                                key={'' + Math.random()}
-                                label={type}
-                                onDelete={() => arrayHelpers.remove(index)}
-                                color='primary'
-                              />
-                            )
-                          })}
-                        </Grid>
-                      </Grid>
-                    )}
-                  </FieldArray>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Version
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Version'
-                    name='version'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Licenses
-                  </Typography>
-                  <FieldArray name='licenses'>
-                    {(arrayHelpers) => (
-                      <Grid container item spacing={3} xs={12}>
-                        <Grid item xs={9}>
-                          <CustomTextField
-                            fullWidth
-                            placeholder='License'
-                            name='license'
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
+                        ) : (
                           <Button
-                            onClick={() => {
-                              arrayHelpers.push(values.license)
-                              setFieldValue({
-                                type: ''
-                              })
-                            }}
+                            onClick={handleNext}
+                            className={classes.button}
                           >
-                            Add
+                            Next
                           </Button>
-                        </Grid>
-                        <Grid item>
-                          {values.licenses.map((license, index) => {
-                            return (
-                              <Chip
-                                key={'' + Math.random()}
-                                label={license}
-                                onDelete={() => arrayHelpers.remove(index)}
-                                color='primary'
-                              />
-                            )
-                          })}
-                        </Grid>
-                      </Grid>
-                    )}
-                  </FieldArray>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Keywords
-                  </Typography>
-                  <FieldArray name='keywords'>
-                    {(arrayHelpers) => (
-                      <Grid container item spacing={3} xs={12}>
-                        <Grid item xs={9}>
-                          <CustomTextField
-                            fullWidth
-                            placeholder='Keyword'
-                            name='keyword'
+                        )}
+                        {isSubmitting && (
+                          <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
                           />
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Button
-                            onClick={() => {
-                              arrayHelpers.push(values.keyword)
-                              setFieldValue({
-                                type: ''
-                              })
-                            }}
-                          >
-                            Add
-                          </Button>
-                        </Grid>
-                        <Grid item>
-                          {values.keywords.map((keyword, index) => {
-                            return (
-                              <Chip
-                                key={'' + Math.random()}
-                                label={keyword}
-                                onDelete={() => arrayHelpers.remove(index)}
-                                color='primary'
-                              />
-                            )
-                          })}
-                        </Grid>
-                      </Grid>
-                    )}
-                  </FieldArray>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Formats
-                  </Typography>
-                  <FieldArray name='formats'>
-                    {(arrayHelpers) => (
-                      <Grid container item spacing={3} xs={12}>
-                        <Grid item xs={9}>
-                          <CustomTextField
-                            fullWidth
-                            placeholder='Format'
-                            name='format'
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Button
-                            onClick={() => {
-                              arrayHelpers.push(values.format)
-                              setFieldValue({
-                                type: ''
-                              })
-                            }}
-                          >
-                            Add
-                          </Button>
-                        </Grid>
-                        <Grid item>
-                          {values.formats.map((format, index) => {
-                            return (
-                              <Chip
-                                key={'' + Math.random()}
-                                label={format}
-                                onDelete={() => arrayHelpers.remove(index)}
-                                color='primary'
-                              />
-                            )
-                          })}
-                        </Grid>
-                      </Grid>
-                    )}
-                  </FieldArray>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Size
-                  </Typography>
-                  <Grid container item spacing={3} xs={12}>
-                    <Grid item xs={9}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Size'
-                        name='size.value'
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <CustomSelectField name='size.units' label='Units'>
-                        <MenuItem value='mb'>MB</MenuItem>
-                        <MenuItem value='gb'>GB</MenuItem>
-                        <MenuItem value='tb'>TB</MenuItem>
-                        <MenuItem value='pb'>PB</MenuItem>
-                      </CustomSelectField>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Landing Page
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Landing Page'
-                    name='landingPage'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Privacy
-                  </Typography>
-                  <CustomSelectField name='privacy' label='Privacy'>
-                    <MenuItem value='public'>Public</MenuItem>
-                    <MenuItem value='registered'>Registered</MenuItem>
-                    <MenuItem value='private'>Private</MenuItem>
-                  </CustomSelectField>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Files
-                  </Typography>
-                  <CustomTextField fullWidth placeholder='Files' name='files' />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Subjects
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Subjects'
-                    name='subjects'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    CONP status
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='CONP status'
-                    name='conpStatus'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Derived From
-                  </Typography>
-                  <Grid container item spacing={3} xs={12}>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Derived From'
-                        name='derivedFrom'
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Parent dataset id'
-                        name='parentDatasetId'
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Primary Publications
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Primary Publications'
-                    name='primaryPublications'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Dimensions
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Dimensions'
-                    name='dimensions'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Identifier
-                  </Typography>
-                  <Grid container item spacing={3} xs={12}>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Identifier'
-                        name='identifier.name'
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Source'
-                        name='identifier.source'
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Contact
-                  </Typography>
-                  <Grid container item spacing={3} xs={12}>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Name'
-                        name='contact.name'
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Email'
-                        name='contact.email'
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Logo
-                  </Typography>
-                  <CustomTextField fullWidth placeholder='Logo' name='logo' />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Dates
-                  </Typography>
-                  <Grid container item spacing={3} xs={12}>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Date'
-                        name='date.date'
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomTextField
-                        fullWidth
-                        placeholder='Description'
-                        name='date.description'
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Citations
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Citations'
-                    name='citations'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Produced by
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Produced By'
-                    name='producedBy'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Is About
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Is About'
-                    name='isAbout'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Has Part
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Has Part'
-                    name='hasPart'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Acknowledges
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Acknowledges'
-                    name='acknowledges'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Refinement
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Refinement'
-                    name='refinement'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Aggregation
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Aggregation'
-                    name='aggregation'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant='h6' gutterBottom>
-                    Spatial Coverage
-                  </Typography>
-                  <CustomTextField
-                    fullWidth
-                    placeholder='Spatial Coverage'
-                    name='spatialCoverage'
-                  />
-                </Grid>
-                <div>
-                  <Button disabled={isSubmitting} type='submit'>
-                    submit
-                  </Button>
-                </div>
-                <pre>{JSON.stringify(values, null, 2)}</pre>
-                <pre>{JSON.stringify(errors, null, 2)}</pre>
-              </Form>
+                        )}
+                      </div>
+                    </div>
+                    <pre>{JSON.stringify(values, null, 2)}</pre>
+                    <pre>{JSON.stringify(errors, null, 2)}</pre>
+                  </Form>
+                )}
+              </Formik>
             )}
-          </Formik>
+          </React.Fragment>
         </Paper>
       </div>
     </React.Fragment>
