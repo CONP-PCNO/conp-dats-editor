@@ -14,16 +14,6 @@ export default function Review(props) {
     <React.Fragment>
       <Grid item xs={12}>
         <Typography variant='h6' gutterBottom>
-          CONP status
-        </Typography>
-        <CustomTextField
-          fullWidth
-          placeholder='CONP status'
-          name='conpStatus'
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant='h6' gutterBottom>
           Derived From
         </Typography>
         <Grid container item spacing={3} xs={12}>

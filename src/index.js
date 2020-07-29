@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const steps = ['General', 'Distribution', 'Review']
+const steps = ['General Info', 'Distribution', 'Extra Properties']
 
 function renderStep(step, values, setFieldValue) {
   switch (step) {
@@ -147,6 +147,7 @@ export const DatsCreatorGui = (props) => {
   const classes = useStyles()
 
   const [activeStep, setActiveStep] = React.useState(0)
+  const [dats, setDats] = React.useState()
   const isLastStep = activeStep === steps.length - 1
 
   const handleNext = () => {
@@ -174,7 +175,7 @@ export const DatsCreatorGui = (props) => {
           </Stepper>
           <React.Fragment>
             {activeStep === steps.length ? (
-              <CreateDatsSuccess />
+              <CreateDatsSuccess dats={dats} classes={classes} />
             ) : (
               <Formik
                 validateOnChange
@@ -232,6 +233,8 @@ export const DatsCreatorGui = (props) => {
                   // make async call
                   const dats = new DATS(data)
                   console.log('submit: ', dats.getJson())
+                  setDats(dats.getJson())
+                  setActiveStep(activeStep + 1)
                   setSubmitting(false)
                 }}
               >

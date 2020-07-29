@@ -1,16 +1,42 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 
-function CreateDatsSuccess() {
+const downloadDats = (dats) => {
+  var element = document.createElement('a')
+  element.setAttribute(
+    'href',
+    'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dats))
+  )
+  element.setAttribute('download', 'dats.json')
+
+  element.style.display = 'none'
+  document.body.appendChild(element)
+
+  element.click()
+
+  document.body.removeChild(element)
+}
+
+function CreateDatsSuccess(props) {
+  const { dats, classes } = props
   return (
     <React.Fragment>
       <Typography variant='h5' gutterBottom>
-        Thank you for your order.
+        DATS.json created successfully
       </Typography>
       <Typography variant='subtitle1'>
-        Your order number is #2001539. We have emailed your order confirmation,
-        and will send you an update when your order has shipped.
+        Your DATS.json file has been created an is accessible below
       </Typography>
+      <div className={classes.wrapper}>
+        <Button
+          onClick={downloadDats(dats)}
+          variant='contained'
+          color='primary'
+          className={classes.button}
+        >
+          Download
+        </Button>
+      </div>
     </React.Fragment>
   )
 }
