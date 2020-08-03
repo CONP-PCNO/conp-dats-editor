@@ -29,16 +29,15 @@ export default function GeneralForm(props) {
             </Grid>
             <Grid item>
               <Tooltip title='Title of the Dataset' placement='right'>
-                <InfoIcon fontSize='small' color='secondary' />
+                <InfoIcon fontSize='small' color='action' />
               </Tooltip>
             </Grid>
           </Grid>
           <CustomTextField
             fullWidth
             name='title'
-            required
-            label='Required'
-            defaultValue=''
+            label='Title of the Dataset'
+            helperText='* Required'
           />
         </Grid>
         <Grid item xs={12}>
@@ -50,7 +49,7 @@ export default function GeneralForm(props) {
             </Grid>
             <Grid item>
               <Tooltip title='Dataset Contributors' placement='right'>
-                <InfoIcon fontSize='small' color='secondary' />
+                <InfoIcon fontSize='small' color='action' />
               </Tooltip>
             </Grid>
           </Grid>
@@ -60,8 +59,9 @@ export default function GeneralForm(props) {
                 <Grid item xs={6}>
                   <CustomTextField
                     fullWidth
-                    placeholder='Name'
+                    label='Contributor Name'
                     name='creator.name'
+                    helperText='* Required'
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -70,8 +70,9 @@ export default function GeneralForm(props) {
                     <MenuItem value='contributor'>Contributor</MenuItem>
                   </CustomSelectField>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid container item xs={3} justify='center'>
                   <Button
+                    variant='contained'
                     onClick={() => {
                       arrayHelpers.push({
                         type: values.creator.type,
@@ -106,27 +107,47 @@ export default function GeneralForm(props) {
           </FieldArray>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h6' gutterBottom>
-            Description
-          </Typography>
+          <Grid container direction='row' spacing={1}>
+            <Grid item>
+              <Typography variant='h6' gutterBottom>
+                Description
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Tooltip title='Description of the Dataset' placement='right'>
+                <InfoIcon fontSize='small' color='action' />
+              </Tooltip>
+            </Grid>
+          </Grid>
           <CustomTextField
             fullWidth
-            placeholder='Description'
+            label='Description'
             name='description'
+            helperText='* Required'
           />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h6' gutterBottom>
-            Types
-          </Typography>
+          <Grid container direction='row' spacing={1}>
+            <Grid item>
+              <Typography variant='h6' gutterBottom>
+                Types
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Tooltip title='Types' placement='right'>
+                <InfoIcon fontSize='small' color='action' />
+              </Tooltip>
+            </Grid>
+          </Grid>
           <FieldArray name='types'>
             {(arrayHelpers) => (
               <Grid container item spacing={3} xs={12}>
                 <Grid item xs={9}>
                   <CustomTextField fullWidth placeholder='Type' name='type' />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid container item xs={3} justify='center'>
                   <Button
+                    variant='contained'
                     onClick={() => {
                       arrayHelpers.push(values.type)
                       setFieldValue({
@@ -154,15 +175,33 @@ export default function GeneralForm(props) {
           </FieldArray>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h6' gutterBottom>
-            Version
-          </Typography>
+          <Grid container direction='row' spacing={1}>
+            <Grid item>
+              <Typography variant='h6' gutterBottom>
+                Version
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Tooltip title='Version number of the dataset' placement='right'>
+                <InfoIcon fontSize='small' color='action' />
+              </Tooltip>
+            </Grid>
+          </Grid>
           <CustomTextField fullWidth placeholder='Version' name='version' />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h6' gutterBottom>
-            Licenses
-          </Typography>
+          <Grid container direction='row' spacing={1}>
+            <Grid item>
+              <Typography variant='h6' gutterBottom>
+                Licenses
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Tooltip title='Dataset Licenses' placement='right'>
+                <InfoIcon fontSize='small' color='action' />
+              </Tooltip>
+            </Grid>
+          </Grid>
           <FieldArray name='licenses'>
             {(arrayHelpers) => (
               <Grid container item spacing={3} xs={12}>
@@ -173,8 +212,9 @@ export default function GeneralForm(props) {
                     name='license'
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid container item xs={3} justify='center'>
                   <Button
+                    variant='contained'
                     onClick={() => {
                       arrayHelpers.push(values.license)
                       setFieldValue({
@@ -202,9 +242,18 @@ export default function GeneralForm(props) {
           </FieldArray>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h6' gutterBottom>
-            Keywords
-          </Typography>
+          <Grid container direction='row' spacing={1}>
+            <Grid item>
+              <Typography variant='h6' gutterBottom>
+                Keywords
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Tooltip title='Dataset Keywords' placement='right'>
+                <InfoIcon fontSize='small' color='action' />
+              </Tooltip>
+            </Grid>
+          </Grid>
           <FieldArray name='keywords'>
             {(arrayHelpers) => (
               <Grid container item spacing={3} xs={12}>
@@ -215,8 +264,9 @@ export default function GeneralForm(props) {
                     name='keyword'
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid container item xs={3} justify='center'>
                   <Button
+                    variant='contained'
                     onClick={() => {
                       arrayHelpers.push(values.keyword)
                       setFieldValue({

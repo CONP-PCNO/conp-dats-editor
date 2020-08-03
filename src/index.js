@@ -235,7 +235,11 @@ export const DatsCreatorGui = (props) => {
                     {renderStep(activeStep, values, setFieldValue)}
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
-                        <Button onClick={handleBack} className={classes.button}>
+                        <Button
+                          variant='contained'
+                          onClick={handleBack}
+                          className={classes.button}
+                        >
                           Back
                         </Button>
                       )}
@@ -252,6 +256,8 @@ export const DatsCreatorGui = (props) => {
                           </Button>
                         ) : (
                           <Button
+                            variant='contained'
+                            color='primary'
                             onClick={handleNext}
                             className={classes.button}
                           >
