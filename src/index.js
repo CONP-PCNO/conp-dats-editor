@@ -1,24 +1,16 @@
 import React from 'react'
-import { Formik, Field, Form, FieldArray, useField } from 'formik'
+import { Formik, Form } from 'formik'
 import {
   Stepper,
   Step,
   StepLabel,
-  TextField,
   Button,
-  Checkbox,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
   CircularProgress
 } from '@material-ui/core'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import Chip from '@material-ui/core/Chip'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as yup from 'yup'
@@ -274,7 +266,7 @@ export const DatsCreatorGui = (props) => {
                         )}
                       </div>
                     </div>
-                    <pre>{JSON.stringify(values, null, 2)}</pre>
+                    {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
                     <pre>{JSON.stringify(errors, null, 2)}</pre>
                   </Form>
                 )}
