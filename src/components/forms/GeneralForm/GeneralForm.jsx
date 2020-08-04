@@ -13,7 +13,7 @@ import CustomSelectField from '../../fields/CustomSelectField'
 import InfoIcon from '@material-ui/icons/Info'
 
 export default function GeneralForm(props) {
-  const { values, setFieldValue } = props
+  const { values, setFieldValue, setTouched } = props
   return (
     <React.Fragment>
       <Grid container spacing={3}>
@@ -34,10 +34,10 @@ export default function GeneralForm(props) {
             </Grid>
           </Grid>
           <CustomTextField
+            required
             fullWidth
             name='title'
-            label='Title of the Dataset'
-            helperText='* Required'
+            label='Dataset Title'
           />
         </Grid>
         <Grid item xs={12}>
@@ -58,14 +58,21 @@ export default function GeneralForm(props) {
               <Grid container item spacing={3} xs={12}>
                 <Grid item xs={6}>
                   <CustomTextField
+                    required
                     fullWidth
-                    label='Contributor Name'
+                    label='Name/Institution'
                     name='creator.name'
-                    helperText='* Required'
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <CustomTextField
+                    fullWidth
+                    label='Email'
+                    name='creator.email'
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <CustomSelectField name='creator.type' label='Role'>
+                  <CustomSelectField name='creator.type' label='Role' required>
                     <MenuItem value='pi'>PI</MenuItem>
                     <MenuItem value='contributor'>Contributor</MenuItem>
                   </CustomSelectField>
@@ -79,12 +86,12 @@ export default function GeneralForm(props) {
                         name: values.creator.name,
                         id: '' + Math.random()
                       })
-                      setFieldValue({
-                        creator: {
-                          type: 'contributor',
-                          name: ''
-                        }
+                      setFieldValue('creator', {
+                        type: 'contributor',
+                        name: '',
+                        email: ''
                       })
+                      setTouched({ creator: false })
                     }}
                   >
                     Add
@@ -120,10 +127,10 @@ export default function GeneralForm(props) {
             </Grid>
           </Grid>
           <CustomTextField
+            required
             fullWidth
             label='Description'
             name='description'
-            helperText='* Required'
           />
         </Grid>
         <Grid item xs={12}>
@@ -143,16 +150,20 @@ export default function GeneralForm(props) {
             {(arrayHelpers) => (
               <Grid container item spacing={3} xs={12}>
                 <Grid item xs={9}>
-                  <CustomTextField fullWidth placeholder='Type' name='type' />
+                  <CustomTextField
+                    required
+                    fullWidth
+                    label='Type'
+                    name='type'
+                  />
                 </Grid>
                 <Grid container item xs={3} justify='center'>
                   <Button
                     variant='contained'
                     onClick={() => {
                       arrayHelpers.push(values.type)
-                      setFieldValue({
-                        type: ''
-                      })
+                      setFieldValue('type', '')
+                      setTouched({ type: false })
                     }}
                   >
                     Add
@@ -187,7 +198,7 @@ export default function GeneralForm(props) {
               </Tooltip>
             </Grid>
           </Grid>
-          <CustomTextField fullWidth placeholder='Version' name='version' />
+          <CustomTextField fullWidth label='Version' name='version' />
         </Grid>
         <Grid item xs={12}>
           <Grid container direction='row' spacing={1}>
@@ -207,8 +218,9 @@ export default function GeneralForm(props) {
               <Grid container item spacing={3} xs={12}>
                 <Grid item xs={9}>
                   <CustomTextField
+                    required
                     fullWidth
-                    placeholder='License'
+                    label='License'
                     name='license'
                   />
                 </Grid>
@@ -217,9 +229,8 @@ export default function GeneralForm(props) {
                     variant='contained'
                     onClick={() => {
                       arrayHelpers.push(values.license)
-                      setFieldValue({
-                        type: ''
-                      })
+                      setFieldValue('license', false)
+                      setTouched({ license: false })
                     }}
                   >
                     Add
@@ -259,8 +270,9 @@ export default function GeneralForm(props) {
               <Grid container item spacing={3} xs={12}>
                 <Grid item xs={9}>
                   <CustomTextField
+                    required
                     fullWidth
-                    placeholder='Keyword'
+                    label='Keyword'
                     name='keyword'
                   />
                 </Grid>
@@ -269,9 +281,8 @@ export default function GeneralForm(props) {
                     variant='contained'
                     onClick={() => {
                       arrayHelpers.push(values.keyword)
-                      setFieldValue({
-                        type: ''
-                      })
+                      setFieldValue('keyword', '')
+                      setTouched({ keyword: false })
                     }}
                   >
                     Add

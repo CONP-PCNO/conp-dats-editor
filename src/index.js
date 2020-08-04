@@ -121,14 +121,32 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
-function renderStep(step, values, setFieldValue) {
+function renderStep(step, values, setFieldValue, setTouched) {
   switch (step) {
     case 0:
-      return <GeneralForm values={values} setFieldValue={setFieldValue} />
+      return (
+        <GeneralForm
+          values={values}
+          setFieldValue={setFieldValue}
+          setTouched={setTouched}
+        />
+      )
     case 1:
-      return <DistributionForm values={values} setFieldValue={setFieldValue} />
+      return (
+        <DistributionForm
+          values={values}
+          setFieldValue={setFieldValue}
+          setTouched={setTouched}
+        />
+      )
     case 2:
-      return <Review values={values} setFieldValue={setFieldValue} />
+      return (
+        <Review
+          values={values}
+          setFieldValue={setFieldValue}
+          setTouched={setTouched}
+        />
+      )
     default:
       throw new Error('Unknown step')
   }
@@ -175,7 +193,8 @@ export const DatsCreatorGui = (props) => {
                   title: '',
                   creator: {
                     type: 'contributor',
-                    name: ''
+                    name: '',
+                    email: ''
                   },
                   creators: [],
                   contact: {
@@ -230,9 +249,15 @@ export const DatsCreatorGui = (props) => {
                   setSubmitting(false)
                 }}
               >
-                {({ values, errors, isSubmitting, setFieldValue }) => (
+                {({
+                  values,
+                  errors,
+                  isSubmitting,
+                  setFieldValue,
+                  setTouched
+                }) => (
                   <Form>
-                    {renderStep(activeStep, values, setFieldValue)}
+                    {renderStep(activeStep, values, setFieldValue, setTouched)}
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
                         <Button
@@ -272,7 +297,7 @@ export const DatsCreatorGui = (props) => {
                         )}
                       </div>
                     </div>
-                    {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                    <pre>{JSON.stringify(values, null, 2)}</pre>
                     <pre>{JSON.stringify(errors, null, 2)}</pre>
                   </Form>
                 )}
