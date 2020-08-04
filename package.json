@@ -58,6 +58,7 @@
     "date-fns": "^2.15.0",
     "formik": "^2.1.5",
     "formik-material-ui": "^3.0.0-alpha.0",
+    "react-dropzone": "^11.0.2",
     "yup": "^0.29.1"
   }
 }

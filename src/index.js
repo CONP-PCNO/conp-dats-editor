@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import { Formik, Form } from 'formik'
 import {
   Stepper,
@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import * as yup from 'yup'
 
+import DatsUploader from './components/DatsUploader/DatsUploader'
 import GeneralForm from './components/forms/GeneralForm/GeneralForm'
 import DistributionForm from './components/forms/DistributionForm/DistributionForm'
 import Review from './components/forms/Review/Review'
@@ -119,6 +120,15 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1)
   }
 }))
+
+const dropzoneRef = createRef()
+const openDialog = () => {
+  // Note that the ref is set async,
+  // so it might be null at some point
+  if (dropzoneRef.current) {
+    dropzoneRef.current.open()
+  }
+}
 
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
@@ -239,7 +249,8 @@ export const DatsCreatorGui = (props) => {
                   acknowledges: '',
                   refinement: '',
                   aggregation: '',
-                  spatialCoverage: []
+                  spatialCoverage: [],
+                  attachments: []
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(data, { setSubmitting }) => {
@@ -260,7 +271,16 @@ export const DatsCreatorGui = (props) => {
                   setTouched
                 }) => (
                   <Form>
-                    {renderStep(activeStep, classes, values, setFieldValue, setTouched)}
+                    <div className={classes.section}>
+                      <DatsUploader />
+                    </div>
+                    {renderStep(
+                      activeStep,
+                      classes,
+                      values,
+                      setFieldValue,
+                      setTouched
+                    )}
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
                         <Button
