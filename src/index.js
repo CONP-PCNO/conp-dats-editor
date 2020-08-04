@@ -23,10 +23,6 @@ import DATS from './model/dats'
 
 const defaultValidationSchema = yup.object({
   title: yup.string().required(),
-  creator: yup.object({
-    name: yup.string().required(),
-    email: yup.string().email()
-  }),
   creators: yup.array().of(
     yup.object({
       name: yup.string().required(),
@@ -106,6 +102,11 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3)
     }
   },
+  section: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2)
+  },
   stepper: {
     padding: theme.spacing(3, 0, 5)
   },
@@ -121,11 +122,12 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
-function renderStep(step, values, setFieldValue, setTouched) {
+function renderStep(step, classes, values, setFieldValue, setTouched) {
   switch (step) {
     case 0:
       return (
         <GeneralForm
+          classes={classes}
           values={values}
           setFieldValue={setFieldValue}
           setTouched={setTouched}
@@ -191,22 +193,23 @@ export const DatsCreatorGui = (props) => {
                 validateOnChange
                 initialValues={{
                   title: '',
-                  creator: {
-                    type: 'contributor',
-                    name: '',
-                    email: ''
-                  },
-                  creators: [],
+                  creators: [
+                    {
+                      type: 'pi',
+                      name: '',
+                      email: ''
+                    }
+                  ],
                   contact: {
                     name: '',
                     email: ''
                   },
                   description: '',
-                  types: [],
+                  types: [''],
                   version: '',
-                  licenses: [],
-                  keywords: [],
-                  formats: [],
+                  licenses: [''],
+                  keywords: [''],
+                  formats: [''],
                   size: {
                     value: '',
                     units: 'mb'
@@ -257,7 +260,7 @@ export const DatsCreatorGui = (props) => {
                   setTouched
                 }) => (
                   <Form>
-                    {renderStep(activeStep, values, setFieldValue, setTouched)}
+                    {renderStep(activeStep, classes, values, setFieldValue, setTouched)}
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
                         <Button

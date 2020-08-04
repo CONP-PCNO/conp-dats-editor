@@ -4,307 +4,382 @@ import {
   Typography,
   Button,
   MenuItem,
-  Chip,
-  Tooltip
+  Tooltip,
+  IconButton,
+  Divider
 } from '@material-ui/core'
 import { FieldArray } from 'formik'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 import InfoIcon from '@material-ui/icons/Info'
+import CancelIcon from '@material-ui/icons/Cancel'
 
 export default function GeneralForm(props) {
-  const { values, setFieldValue, setTouched } = props
+  const { classes, values } = props
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
-        <Typography variant='h5' gutterBottom>
-          General Information
-        </Typography>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Title
-              </Typography>
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Typography variant='h5' gutterBottom>
+            General Information
+          </Typography>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Title
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Tooltip title='Title of the Dataset' placement='right'>
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Tooltip title='Title of the Dataset' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
+            <CustomTextField
+              required
+              fullWidth
+              name='title'
+              label='Dataset Title'
+            />
           </Grid>
-          <CustomTextField
-            required
-            fullWidth
-            name='title'
-            label='Dataset Title'
-          />
         </Grid>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Creators
-              </Typography>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Creators
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Tooltip title='Dataset Contributors' placement='right'>
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Tooltip title='Dataset Contributors' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
-          </Grid>
-          <FieldArray name='creators'>
-            {(arrayHelpers) => (
-              <Grid container item spacing={3} xs={12}>
-                <Grid item xs={6}>
-                  <CustomTextField
-                    required
-                    fullWidth
-                    label='Name/Institution'
-                    name='creator.name'
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <CustomTextField
-                    fullWidth
-                    label='Email'
-                    name='creator.email'
-                  />
-                </Grid>
-                <Grid item xs={3}>
-                  <CustomSelectField name='creator.type' label='Role' required>
-                    <MenuItem value='pi'>PI</MenuItem>
-                    <MenuItem value='contributor'>Contributor</MenuItem>
-                  </CustomSelectField>
-                </Grid>
-                <Grid container item xs={3} justify='center'>
-                  <Button
-                    variant='contained'
-                    onClick={() => {
-                      arrayHelpers.push({
-                        type: values.creator.type,
-                        name: values.creator.name,
-                        id: '' + Math.random()
-                      })
-                      setFieldValue('creator', {
-                        type: 'contributor',
-                        name: '',
-                        email: ''
-                      })
-                      setTouched({ creator: false })
-                    }}
-                  >
-                    Add
-                  </Button>
-                </Grid>
-                <Grid item>
+            <FieldArray name='creators'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
                   {values.creators.map((creator, index) => {
                     return (
-                      <Chip
-                        key={creator.id}
-                        label={creator.name}
-                        onDelete={() => arrayHelpers.remove(index)}
-                        color='primary'
-                      />
+                      <Grid key={creator.id} container item spacing={3} xs={12}>
+                        <Grid item xs={6}>
+                          <CustomTextField
+                            required
+                            fullWidth
+                            label='Name/Institution'
+                            name={`creators.${index}.name`}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <CustomTextField
+                            fullWidth
+                            label='Email'
+                            name={`creators.${index}.email`}
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <CustomSelectField
+                            name={`creators.${index}.type`}
+                            label='Role'
+                            required
+                          >
+                            <MenuItem value='pi'>
+                              Principal Investigator
+                            </MenuItem>
+                            <MenuItem value='contributor'>Contributor</MenuItem>
+                          </CustomSelectField>
+                        </Grid>
+                        <Grid container item xs={3} justify='center'>
+                          {index !== 0 && (
+                            <IconButton
+                              color='action'
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
                     )
                   })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push({
+                          type: 'contributor',
+                          name: '',
+                          email: '',
+                          id: '' + Math.random()
+                        })
+                      }}
+                    >
+                      Add another Creator
+                    </Button>
+                  </Grid>
                 </Grid>
+              )}
+            </FieldArray>
+          </Grid>
+        </Grid>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Description
+                </Typography>
               </Grid>
-            )}
-          </FieldArray>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Description
-              </Typography>
+              <Grid item>
+                <Tooltip title='Description of the Dataset' placement='right'>
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Tooltip title='Description of the Dataset' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
+            <CustomTextField
+              required
+              fullWidth
+              label='Description'
+              name='description'
+              multiline
+              rows={4}
+            />
           </Grid>
-          <CustomTextField
-            required
-            fullWidth
-            label='Description'
-            name='description'
-          />
         </Grid>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Types
-              </Typography>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Data Types
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Tooltip
+                  title='The date types included in the dataset'
+                  placement='right'
+                >
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Tooltip title='Types' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
-          </Grid>
-          <FieldArray name='types'>
-            {(arrayHelpers) => (
-              <Grid container item spacing={3} xs={12}>
-                <Grid item xs={9}>
-                  <CustomTextField
-                    required
-                    fullWidth
-                    label='Type'
-                    name='type'
-                  />
-                </Grid>
-                <Grid container item xs={3} justify='center'>
-                  <Button
-                    variant='contained'
-                    onClick={() => {
-                      arrayHelpers.push(values.type)
-                      setFieldValue('type', '')
-                      setTouched({ type: false })
-                    }}
-                  >
-                    Add
-                  </Button>
-                </Grid>
-                <Grid item>
+            <FieldArray name='types'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
                   {values.types.map((type, index) => {
                     return (
-                      <Chip
+                      <Grid
                         key={'' + Math.random()}
-                        label={type}
-                        onDelete={() => arrayHelpers.remove(index)}
-                        color='primary'
-                      />
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={6}>
+                          <CustomTextField
+                            required
+                            fullWidth
+                            label='Type'
+                            name={`type.${index}`}
+                          />
+                        </Grid>
+                        <Grid container item xs={3} justify='center'>
+                          {index !== 0 && (
+                            <IconButton
+                              color='action'
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
                     )
                   })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push('')
+                      }}
+                    >
+                      Add another Type
+                    </Button>
+                  </Grid>
                 </Grid>
+              )}
+            </FieldArray>
+          </Grid>
+        </Grid>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Version
+                </Typography>
               </Grid>
-            )}
-          </FieldArray>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Version
-              </Typography>
+              <Grid item>
+                <Tooltip
+                  title='Version number of the dataset'
+                  placement='right'
+                >
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Tooltip title='Version number of the dataset' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
+            <CustomTextField fullWidth label='Version' name='version' />
           </Grid>
-          <CustomTextField fullWidth label='Version' name='version' />
         </Grid>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Licenses
-              </Typography>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Licenses
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Tooltip title='Dataset Licenses' placement='right'>
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Tooltip title='Dataset Licenses' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
-          </Grid>
-          <FieldArray name='licenses'>
-            {(arrayHelpers) => (
-              <Grid container item spacing={3} xs={12}>
-                <Grid item xs={9}>
-                  <CustomTextField
-                    required
-                    fullWidth
-                    label='License'
-                    name='license'
-                  />
-                </Grid>
-                <Grid container item xs={3} justify='center'>
-                  <Button
-                    variant='contained'
-                    onClick={() => {
-                      arrayHelpers.push(values.license)
-                      setFieldValue('license', false)
-                      setTouched({ license: false })
-                    }}
-                  >
-                    Add
-                  </Button>
-                </Grid>
-                <Grid item>
-                  {values.licenses.map((license, index) => {
+            <FieldArray name='licenses'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
+                  {values.types.map((license, index) => {
                     return (
-                      <Chip
+                      <Grid
                         key={'' + Math.random()}
-                        label={license}
-                        onDelete={() => arrayHelpers.remove(index)}
-                        color='primary'
-                      />
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={6}>
+                          <CustomTextField
+                            required
+                            fullWidth
+                            label='License'
+                            name={`license.${index}`}
+                          />
+                        </Grid>
+                        <Grid container item xs={3} justify='center'>
+                          {index !== 0 && (
+                            <IconButton
+                              color='action'
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
                     )
                   })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push('')
+                      }}
+                    >
+                      Add another License
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            )}
-          </FieldArray>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container direction='row' spacing={1}>
-            <Grid item>
-              <Typography variant='h6' gutterBottom>
-                Keywords
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Tooltip title='Dataset Keywords' placement='right'>
-                <InfoIcon fontSize='small' color='action' />
-              </Tooltip>
-            </Grid>
+              )}
+            </FieldArray>
           </Grid>
-          <FieldArray name='keywords'>
-            {(arrayHelpers) => (
-              <Grid container item spacing={3} xs={12}>
-                <Grid item xs={9}>
-                  <CustomTextField
-                    required
-                    fullWidth
-                    label='Keyword'
-                    name='keyword'
-                  />
-                </Grid>
-                <Grid container item xs={3} justify='center'>
-                  <Button
-                    variant='contained'
-                    onClick={() => {
-                      arrayHelpers.push(values.keyword)
-                      setFieldValue('keyword', '')
-                      setTouched({ keyword: false })
-                    }}
-                  >
-                    Add
-                  </Button>
-                </Grid>
-                <Grid item>
-                  {values.keywords.map((keyword, index) => {
+        </Grid>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
+                  Keywords
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Tooltip title='Dataset Keywords' placement='right'>
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
+            </Grid>
+            <FieldArray name='keywords'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
+                  {values.types.map((keyword, index) => {
                     return (
-                      <Chip
+                      <Grid
                         key={'' + Math.random()}
-                        label={keyword}
-                        onDelete={() => arrayHelpers.remove(index)}
-                        color='primary'
-                      />
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={6}>
+                          <CustomTextField
+                            required
+                            fullWidth
+                            label='Keyword'
+                            name={`keywords.${index}`}
+                          />
+                        </Grid>
+                        <Grid container item xs={3} justify='center'>
+                          {index !== 0 && (
+                            <IconButton
+                              color='action'
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
                     )
                   })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push('')
+                      }}
+                    >
+                      Add another Keyword
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            )}
-          </FieldArray>
+              )}
+            </FieldArray>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </React.Fragment>
   )
 }
