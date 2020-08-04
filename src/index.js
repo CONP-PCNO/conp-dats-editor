@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React from 'react'
 import { Formik, Form } from 'formik'
 import {
   Stepper,
@@ -120,15 +120,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1)
   }
 }))
-
-const dropzoneRef = createRef()
-const openDialog = () => {
-  // Note that the ref is set async,
-  // so it might be null at some point
-  if (dropzoneRef.current) {
-    dropzoneRef.current.open()
-  }
-}
 
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
