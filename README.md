@@ -15,16 +15,15 @@ npm install --save dats-creator-gui
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'dats-creator-gui'
-import 'dats-creator-gui/dist/index.css'
+import DatsCreatorGui from 'dats-creator-gui'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <DatsCreatorGui />
   }
 }
 ```
 
 ## License
 
-MIT © [liamocn](https://github.com/liamocn)
+MIT © [CONP-PCNO](https://github.com/CONP-PCNO)

@@ -192,7 +192,7 @@ export default function GeneralForm(props) {
                             required
                             fullWidth
                             label='Type'
-                            name={`type.${index}`}
+                            name={`types.${index}`}
                           />
                         </Grid>
                         <Grid container item xs={3} justify='center'>
@@ -244,7 +244,9 @@ export default function GeneralForm(props) {
                 </Tooltip>
               </Grid>
             </Grid>
-            <CustomTextField fullWidth label='Version' name='version' />
+            <Grid item xs={5}>
+              <CustomTextField fullWidth label='Version' name='version' />
+            </Grid>
           </Grid>
         </Grid>
       </div>
@@ -267,7 +269,7 @@ export default function GeneralForm(props) {
             <FieldArray name='licenses'>
               {(arrayHelpers) => (
                 <Grid container item spacing={5} xs={12}>
-                  {values.types.map((license, index) => {
+                  {values.licenses.map((license, index) => {
                     return (
                       <Grid
                         key={'' + Math.random()}
@@ -281,7 +283,7 @@ export default function GeneralForm(props) {
                             required
                             fullWidth
                             label='License'
-                            name={`license.${index}`}
+                            name={`licenses.${index}`}
                           />
                         </Grid>
                         <Grid container item xs={3} justify='center'>
@@ -333,7 +335,7 @@ export default function GeneralForm(props) {
             <FieldArray name='keywords'>
               {(arrayHelpers) => (
                 <Grid container item spacing={5} xs={12}>
-                  {values.types.map((keyword, index) => {
+                  {values.keywords.map((keyword, index) => {
                     return (
                       <Grid
                         key={'' + Math.random()}

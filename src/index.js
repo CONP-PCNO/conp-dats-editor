@@ -145,6 +145,10 @@ const defaultValues = {
     value: '',
     units: 'mb'
   },
+  access: {
+    landingPage: '',
+    authorizations: 'public'
+  },
   privacy: 'public',
   files: '',
   subjects: '',
