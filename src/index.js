@@ -20,7 +20,8 @@ import GeneralForm from './components/forms/GeneralForm/GeneralForm'
 import DistributionForm from './components/forms/DistributionForm/DistributionForm'
 import Review from './components/forms/Review/Review'
 import CreateDatsSuccess from './components/CreateDatsSuccess/CreateDatsSuccess'
-import DATS from './model/dats'
+import FormToDats from './model/formToDats'
+import DatsToForm from './model/datsToForm'
 
 const defaultValidationSchema = yup.object({
   title: yup.string().required(),
@@ -121,6 +122,58 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const defaultValues = {
+  title: '',
+  creators: [
+    {
+      type: 'pi',
+      name: '',
+      email: ''
+    }
+  ],
+  contact: {
+    name: '',
+    email: ''
+  },
+  description: '',
+  types: [''],
+  version: '',
+  licenses: [''],
+  keywords: [''],
+  formats: [''],
+  size: {
+    value: '',
+    units: 'mb'
+  },
+  privacy: 'public',
+  files: '',
+  subjects: '',
+  conpStatus: '',
+  derivedFrom: '',
+  parentDatasetId: '',
+  primaryPublications: [],
+  dimensions: [],
+  identifier: {
+    name: '',
+    source: ''
+  },
+  logo: '',
+  date: {
+    date: '',
+    description: ''
+  },
+  dates: [],
+  citations: [],
+  producedBy: '',
+  isAbout: [],
+  hasPart: '',
+  acknowledges: '',
+  refinement: '',
+  aggregation: '',
+  spatialCoverage: [],
+  attachments: []
+}
+
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
 function renderStep(step, classes, values, setFieldValue, setTouched) {
@@ -161,7 +214,14 @@ export const DatsCreatorGui = (props) => {
 
   const [activeStep, setActiveStep] = React.useState(0)
   const [dats, setDats] = React.useState()
+  const [valuesState, setValuesState] = React.useState(defaultValues)
   const isLastStep = activeStep === steps.length - 1
+
+  const onDatsReceived = (json) => {
+    const formData = new DatsToForm(json).getJson()
+    console.log(formData)
+    setValuesState(formData)
+  }
 
   const handleNext = () => {
     setActiveStep(activeStep + 1)
@@ -191,63 +251,13 @@ export const DatsCreatorGui = (props) => {
               <CreateDatsSuccess dats={dats} classes={classes} />
             ) : (
               <Formik
-                validateOnChange
-                initialValues={{
-                  title: '',
-                  creators: [
-                    {
-                      type: 'pi',
-                      name: '',
-                      email: ''
-                    }
-                  ],
-                  contact: {
-                    name: '',
-                    email: ''
-                  },
-                  description: '',
-                  types: [''],
-                  version: '',
-                  licenses: [''],
-                  keywords: [''],
-                  formats: [''],
-                  size: {
-                    value: '',
-                    units: 'mb'
-                  },
-                  privacy: 'public',
-                  files: '',
-                  subjects: '',
-                  conpStatus: '',
-                  derivedFrom: '',
-                  parentDatasetId: '',
-                  primaryPublications: [],
-                  dimensions: [],
-                  identifier: {
-                    name: '',
-                    source: ''
-                  },
-                  logo: '',
-                  date: {
-                    date: '',
-                    description: ''
-                  },
-                  dates: [],
-                  citations: [],
-                  producedBy: '',
-                  isAbout: [],
-                  hasPart: '',
-                  acknowledges: '',
-                  refinement: '',
-                  aggregation: '',
-                  spatialCoverage: [],
-                  attachments: []
-                }}
+                enableReinitialize
+                initialValues={valuesState}
                 validationSchema={validationSchema}
                 onSubmit={(data, { setSubmitting }) => {
                   setSubmitting(true)
                   // make async call
-                  const dats = new DATS(data)
+                  const dats = new FormToDats(data)
                   console.log('submit: ', dats.getJson())
                   setDats(dats.getJson())
                   setActiveStep(activeStep + 1)
@@ -263,7 +273,7 @@ export const DatsCreatorGui = (props) => {
                 }) => (
                   <Form>
                     <div className={classes.section}>
-                      <DatsUploader />
+                      <DatsUploader onDatsReceived={onDatsReceived} />
                     </div>
                     {renderStep(
                       activeStep,

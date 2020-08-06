@@ -1,4 +1,4 @@
-class DATS {
+class FormToDats {
   constructor(data) {
     this.data = data
   }
@@ -105,4 +105,4 @@ class DATS {
   }
 }
 
-export default DATS
+export default FormToDats

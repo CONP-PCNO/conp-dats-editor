@@ -30,6 +30,7 @@ const rejectStyle = {
 }
 
 const DatsUploader = (props) => {
+  const { onDatsReceived } = props
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       // eslint-disable-next-line no-undef
@@ -38,9 +39,9 @@ const DatsUploader = (props) => {
       reader.onabort = () => console.log('file reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = JSON.parse(reader.result)
-        console.log(binaryStr)
+        const json = JSON.parse(reader.result)
+        console.log(json)
+        onDatsReceived(json)
       }
       reader.readAsText(file)
     })
