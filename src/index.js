@@ -18,7 +18,7 @@ import * as yup from 'yup'
 import DatsUploader from './components/DatsUploader/DatsUploader'
 import GeneralForm from './components/forms/GeneralForm/GeneralForm'
 import DistributionForm from './components/forms/DistributionForm/DistributionForm'
-import Review from './components/forms/Review/Review'
+import ExtraPropertiesForm from './components/forms/ExtraPropertiesForm/ExtraPropertiesForm'
 import CreateDatsSuccess from './components/CreateDatsSuccess/CreateDatsSuccess'
 import FormToDats from './model/formToDats'
 import DatsToForm from './model/datsToForm'
@@ -180,33 +180,14 @@ const defaultValues = {
 
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
-function renderStep(step, classes, values, setFieldValue, setTouched) {
+function renderStep(step, classes, values) {
   switch (step) {
     case 0:
-      return (
-        <GeneralForm
-          classes={classes}
-          values={values}
-          setFieldValue={setFieldValue}
-          setTouched={setTouched}
-        />
-      )
+      return <GeneralForm classes={classes} values={values} />
     case 1:
-      return (
-        <DistributionForm
-          values={values}
-          setFieldValue={setFieldValue}
-          setTouched={setTouched}
-        />
-      )
+      return <DistributionForm classes={classes} values={values} />
     case 2:
-      return (
-        <Review
-          values={values}
-          setFieldValue={setFieldValue}
-          setTouched={setTouched}
-        />
-      )
+      return <ExtraPropertiesForm classes={classes} values={values} />
     default:
       throw new Error('Unknown step')
   }
@@ -279,13 +260,7 @@ export const DatsCreatorGui = (props) => {
                     <div className={classes.section}>
                       <DatsUploader onDatsReceived={onDatsReceived} />
                     </div>
-                    {renderStep(
-                      activeStep,
-                      classes,
-                      values,
-                      setFieldValue,
-                      setTouched
-                    )}
+                    {renderStep(activeStep, classes, values)}
                     <div className={classes.buttons}>
                       {activeStep !== 0 && (
                         <Button
