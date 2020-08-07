@@ -47,6 +47,12 @@ const defaultValidationSchema = yup.object({
       units: yup.string().required()
     })
     .required(),
+  access: yup
+    .object({
+      landingPage: yup.string().url().required(),
+      authorization: yup.string().required()
+    })
+    .required(),
   privacy: yup.string().required(),
   files: yup.number().integer().positive().required(),
   subjects: yup.number().integer().positive().required(),

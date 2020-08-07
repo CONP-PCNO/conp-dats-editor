@@ -35,7 +35,7 @@ class DatsToForm {
       },
       access: {
         landingPage: this.data.distributions[0].access.landingPage || '',
-        authorizations:
+        authorization:
           this.data.distributions[0]?.access?.authorizations[0]?.value ||
           'public'
       },
