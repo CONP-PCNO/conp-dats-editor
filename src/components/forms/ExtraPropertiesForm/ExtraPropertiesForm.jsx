@@ -5,7 +5,9 @@ import {
   Button,
   Divider,
   Tooltip,
-  IconButton
+  IconButton,
+  FormControlLabel,
+  Radio
 } from '@material-ui/core'
 import {
   MuiPickersUtilsProvider,
@@ -14,6 +16,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns'
 import { FieldArray } from 'formik'
 import CustomTextField from '../../fields/CustomTextField'
+import CustomRadioGroup from '../../fields/CustomRadioGroup'
 import InfoIcon from '@material-ui/icons/Info'
 import CancelIcon from '@material-ui/icons/Cancel'
 
@@ -217,20 +220,40 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
       <div className={classes.section}>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
-                  Logo
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='The logo for this dataset' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
+          <Grid container direction='row' spacing={1}>
+            <Grid item>
+              <Typography variant='h6' gutterBottom>
+                Logo
+              </Typography>
             </Grid>
-            <CustomTextField fullWidth label='Logo' name='logo' />
+            <Grid item>
+              <Tooltip title='The logo for this dataset' placement='right'>
+                <InfoIcon fontSize='small' color='action' />
+              </Tooltip>
+            </Grid>
+          </Grid>
+          <Grid item xs={3}>
+            <CustomRadioGroup name='logo.type' label='Type'>
+              <FormControlLabel value='url' control={<Radio />} label='URL' />
+              <FormControlLabel
+                value='fileName'
+                control={<Radio />}
+                label='Filename'
+              />
+            </CustomRadioGroup>
+          </Grid>
+          <Grid container item spacing={3} xs={9}>
+            <Grid item xs={12}>
+              {values.logo.type === 'url' ? (
+                <CustomTextField fullWidth label='URL' name='logo.url' />
+              ) : (
+                <CustomTextField
+                  fullWidth
+                  label='Path to File'
+                  name='logo.fileName'
+                />
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </div>
