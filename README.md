@@ -32,7 +32,7 @@ npm install # first time only
 npm run start
 ```
 
-2. Run the sample application
+2. Run the sample application (in another terminal)
 ```bash
 cd example/
 npm install # first time only
