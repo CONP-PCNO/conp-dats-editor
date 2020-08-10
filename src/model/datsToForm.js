@@ -4,7 +4,7 @@ class DatsToForm {
   }
 
   getJson() {
-    return {
+    const json = {
       title: this.data.title || '',
       creators:
         this.data.creators.map((a) => {
@@ -81,6 +81,45 @@ class DatsToForm {
       spatialCoverage: this.data.spatialCoverage?.map((a) => a.name) || [],
       attachments: []
     }
+
+    if (json.logo.includes('www')) {
+      json.logo = {
+        type: 'url',
+        url: json.logo,
+        fileName: ''
+      }
+    } else {
+      json.logo = {
+        type: 'fileName',
+        url: '',
+        fileName: json.logo
+      }
+    }
+
+    json.licenses.forEach((license, index) => {
+      if (
+        [
+          'CC BY',
+          'CC BY-SA',
+          'CC BY-NC',
+          'CC BY-NC-SA',
+          'CC BY-ND',
+          'CC BY-NC-ND'
+        ].includes('license')
+      ) {
+        json.licenses[index] = {
+          type: 'creativeCommons',
+          value: license
+        }
+      } else {
+        json.licenses[index] = {
+          type: 'other',
+          value: license
+        }
+      }
+    })
+
+    return json
   }
 }
 

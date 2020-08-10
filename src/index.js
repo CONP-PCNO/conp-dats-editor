@@ -65,7 +65,11 @@ const defaultValidationSchema = yup.object({
     name: yup.string(),
     source: yup.string().url()
   }),
-  logo: yup.string(),
+  logo: yup.object({
+    type: yup.string().oneOf(['url', 'fileName']),
+    fileName: yup.string(),
+    url: yup.string().url()
+  }),
   dates: yup.array().of(
     yup.object({
       date: yup.date(),
@@ -140,7 +144,12 @@ const defaultValues = {
   description: '',
   types: [''],
   version: '',
-  licenses: [''],
+  licenses: [
+    {
+      type: 'creativeCommons',
+      value: ''
+    }
+  ],
   keywords: [''],
   formats: [''],
   size: {
@@ -163,7 +172,11 @@ const defaultValues = {
     name: '',
     source: ''
   },
-  logo: '',
+  logo: {
+    type: 'url',
+    fileName: '',
+    url: ''
+  },
   dates: [],
   citations: [],
   producedBy: '',
