@@ -62,17 +62,13 @@ const defaultValidationSchema = yup.object({
   primaryPublications: yup.array().of(yup.string()),
   dimensions: yup.array().of(yup.string()),
   identifier: yup.object({
-    name: yup.string().required(),
-    source: yup.string().url().required()
+    name: yup.string(),
+    source: yup.string().url()
   }),
   logo: yup.string(),
-  date: yup.object({
-    date: yup.date().required(),
-    description: yup.string()
-  }),
   dates: yup.array().of(
     yup.object({
-      date: yup.date().required(),
+      date: yup.date(),
       description: yup.string()
     })
   ),
@@ -168,10 +164,6 @@ const defaultValues = {
     source: ''
   },
   logo: '',
-  date: {
-    date: '',
-    description: ''
-  },
   dates: [],
   citations: [],
   producedBy: '',

@@ -3,7 +3,6 @@ import {
   Grid,
   Typography,
   Button,
-  Chip,
   Divider,
   Tooltip,
   IconButton
@@ -19,7 +18,7 @@ import InfoIcon from '@material-ui/icons/Info'
 import CancelIcon from '@material-ui/icons/Cancel'
 
 export default function ExtraPropertiesForm(props) {
-  const { classes, values, setFieldValue } = props
+  const { classes, values } = props
   return (
     <React.Fragment>
       <div className={classes.section}>
@@ -257,52 +256,62 @@ export default function ExtraPropertiesForm(props) {
             <FieldArray name='dates'>
               {(arrayHelpers) => (
                 <Grid container item spacing={3} xs={12}>
+                  {values.dates.map((date, index) => {
+                    return (
+                      <Grid
+                        key={'' + Math.random()}
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={4}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                              id='date-picker-dialog'
+                              label='Date picker dialog'
+                              inputVariant='outlined'
+                              format='MM/dd/yyyy'
+                              name={`dates.${index}.name`}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date'
+                              }}
+                            />
+                          </MuiPickersUtilsProvider>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <CustomTextField
+                            fullWidth
+                            label='Description'
+                            name={`dates.${index}.description`}
+                          />
+                        </Grid>
+                        <Grid container item xs={1} justify='center'>
+                          <IconButton
+                            color='action'
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    )
+                  })}
                   <Grid item xs={6}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        id='date-picker-dialog'
-                        label='Date picker dialog'
-                        inputVariant='outlined'
-                        format='MM/dd/yyyy'
-                        value={values.date.date}
-                        onChange={(value) => setFieldValue('date.date', value)}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date'
-                        }}
-                      />
-                    </MuiPickersUtilsProvider>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <CustomTextField
-                      fullWidth
-                      label='Description'
-                      name='date.description'
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
                     <Button
+                      variant='outlined'
+                      color='secondary'
                       onClick={() => {
                         arrayHelpers.push({
-                          description: values.date.description,
-                          date: values.date.date,
-                          id: '' + Math.random()
+                          description: '',
+                          date: ''
                         })
                       }}
                     >
-                      Add
+                      {values.dates.length > 0
+                        ? 'Add another Date'
+                        : 'Add a Date'}
                     </Button>
-                  </Grid>
-                  <Grid item>
-                    {values.dates.map((date, index) => {
-                      return (
-                        <Chip
-                          key={date.id}
-                          label={date.description}
-                          onDelete={() => arrayHelpers.remove(index)}
-                          color='primary'
-                        />
-                      )
-                    })}
                   </Grid>
                 </Grid>
               )}
