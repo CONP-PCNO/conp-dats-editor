@@ -134,23 +134,25 @@ export default function GeneralForm(props) {
                 </Tooltip>
               </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <CustomTextField
-                fullWidth
-                label='Landing Page'
-                name='access.landingPage'
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <CustomSelectField
-                fullWidth
-                placeholder='Authorization'
-                name='access.authorization'
-              >
-                <MenuItem value='public'>Public</MenuItem>
-                <MenuItem value='registered'>Registered</MenuItem>
-                <MenuItem value='private'>Private</MenuItem>
-              </CustomSelectField>
+            <Grid container item spacing={3} xs={12}>
+              <Grid item xs={6}>
+                <CustomTextField
+                  fullWidth
+                  label='Landing Page'
+                  name='access.landingPage'
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <CustomSelectField
+                  fullWidth
+                  label='Authorization'
+                  name='access.authorization'
+                >
+                  <MenuItem value='public'>Public</MenuItem>
+                  <MenuItem value='registered'>Registered</MenuItem>
+                  <MenuItem value='private'>Private</MenuItem>
+                </CustomSelectField>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

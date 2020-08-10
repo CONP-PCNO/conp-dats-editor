@@ -279,12 +279,18 @@ export default function GeneralForm(props) {
                         xs={12}
                       >
                         <Grid item xs={6}>
-                          <CustomTextField
+                          <CustomSelectField
                             required
-                            fullWidth
                             label='License'
                             name={`licenses.${index}`}
-                          />
+                          >
+                            <MenuItem value='CC BY'>CC BY</MenuItem>
+                            <MenuItem value='CC BY-SA'>CC BY-SA</MenuItem>
+                            <MenuItem value='CC BY-NC'>CC BY-NC</MenuItem>
+                            <MenuItem value='CC BY-NC-SA'>CC BY-NC-SA</MenuItem>
+                            <MenuItem value='CC BY-ND'>CC BY-ND</MenuItem>
+                            <MenuItem value='CC BY-NC-ND'>CC BY-NC-ND</MenuItem>
+                          </CustomSelectField>
                         </Grid>
                         <Grid container item xs={3} justify='center'>
                           {index !== 0 && (

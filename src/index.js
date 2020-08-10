@@ -153,7 +153,7 @@ const defaultValues = {
   },
   access: {
     landingPage: '',
-    authorizations: 'public'
+    authorization: 'public'
   },
   privacy: 'public',
   files: '',
