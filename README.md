@@ -24,6 +24,23 @@ class Example extends Component {
 }
 ```
 
+## Development
+
+1. Start the component
+```bash
+npm install # first time only
+npm run start
+```
+
+2. Run the sample application
+```bash
+cd example/
+npm install # first time only
+npm run start
+```
+
+3. The application should now be running at localhost:3000
+
 ## License
 
 MIT © [CONP-PCNO](https://github.com/CONP-PCNO)
