@@ -192,6 +192,7 @@ const defaultValues = {
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
 function renderStep(step, classes, values) {
+  console.log('renderStep', step)
   switch (step) {
     case 0:
       return <GeneralForm classes={classes} values={values} />
@@ -211,7 +212,7 @@ export const DatsCreatorGui = (props) => {
   const [activeStep, setActiveStep] = React.useState(0)
   const [dats, setDats] = React.useState()
   const [valuesState, setValuesState] = React.useState(defaultValues)
-  const isLastStep = activeStep === steps.length - 1
+  const isLastStep = () => activeStep === steps.length - 1
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
@@ -220,7 +221,9 @@ export const DatsCreatorGui = (props) => {
   }
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1)
+    setTimeout(() => {
+      setActiveStep(activeStep + 1)
+    }, 200)
   }
 
   const handleBack = () => {
@@ -283,7 +286,7 @@ export const DatsCreatorGui = (props) => {
                         </Button>
                       )}
                       <div className={classes.wrapper}>
-                        {isLastStep ? (
+                        {isLastStep() ? (
                           <Button
                             disabled={isSubmitting}
                             type='submit'
