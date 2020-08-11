@@ -4,7 +4,7 @@ class FormToDats {
   }
 
   getJson() {
-    return {
+    const json = {
       identifier: {
         identifier: this.data.identifier.name,
         identifierSource: this.data.identifier.source
@@ -33,7 +33,7 @@ class FormToDats {
       }),
       licenses: this.data.licenses.map((license) => {
         return {
-          name: license
+          name: license.value
         }
       }),
       aggregation: this.data.aggregation,
@@ -46,10 +46,10 @@ class FormToDats {
         {
           formats: this.data.formats,
           access: {
-            landingPage: this.data.landingPage,
+            landingPage: this.data.access.landingPage,
             authorizations: [
               {
-                value: this.data.privacy
+                value: this.data.access.authorization
               }
             ]
           },
@@ -72,7 +72,10 @@ class FormToDats {
           category: 'logo',
           values: [
             {
-              value: this.data.logo
+              value:
+                this.data.logo.type === 'url'
+                  ? this.data.logo.url
+                  : this.data.logo.fileName
             }
           ]
         },
@@ -102,6 +105,8 @@ class FormToDats {
         }
       ]
     }
+
+    return json
   }
 }
 

@@ -5,7 +5,8 @@ const downloadDats = (dats) => {
   var element = document.createElement('a')
   element.setAttribute(
     'href',
-    'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dats))
+    'data:text/plain;charset=utf-8,' +
+      encodeURIComponent(JSON.stringify(dats, null, 2))
   )
   element.setAttribute('download', 'dats.json')
 
