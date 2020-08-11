@@ -69,7 +69,13 @@ export default function GeneralForm(props) {
                 <Grid container item spacing={5} xs={12}>
                   {values.creators.map((creator, index) => {
                     return (
-                      <Grid key={creator.id} container item spacing={3} xs={12}>
+                      <Grid
+                        key={'' + Math.random()}
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
                         <Grid item xs={6}>
                           <CustomTextField
                             required
@@ -118,8 +124,7 @@ export default function GeneralForm(props) {
                         arrayHelpers.push({
                           type: 'contributor',
                           name: '',
-                          email: '',
-                          id: '' + Math.random()
+                          email: ''
                         })
                       }}
                     >
@@ -327,7 +332,7 @@ export default function GeneralForm(props) {
                         <Grid container item xs={3} justify='center'>
                           {index !== 0 && (
                             <IconButton
-                              color='action'
+                              color='default'
                               onClick={() => arrayHelpers.remove(index)}
                             >
                               <CancelIcon />
@@ -396,7 +401,7 @@ export default function GeneralForm(props) {
                         <Grid container item xs={3} justify='center'>
                           {index !== 0 && (
                             <IconButton
-                              color='action'
+                              color='default'
                               onClick={() => arrayHelpers.remove(index)}
                             >
                               <CancelIcon />

@@ -59,7 +59,7 @@ export default function GeneralForm(props) {
                         <Grid container item xs={3} justify='center'>
                           {index !== 0 && (
                             <IconButton
-                              color='action'
+                              color='default'
                               onClick={() => arrayHelpers.remove(index)}
                             >
                               <CancelIcon />

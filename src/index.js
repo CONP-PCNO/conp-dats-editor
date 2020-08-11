@@ -192,7 +192,6 @@ const defaultValues = {
 const steps = ['General Info', 'Distribution', 'Extra Properties']
 
 function renderStep(step, classes, values) {
-  console.log('renderStep', step)
   switch (step) {
     case 0:
       return <GeneralForm classes={classes} values={values} />

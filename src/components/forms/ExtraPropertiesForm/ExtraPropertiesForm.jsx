@@ -99,14 +99,12 @@ export default function ExtraPropertiesForm(props) {
                             />
                           </Grid>
                           <Grid container item xs={3} justify='center'>
-                            {index !== 0 && (
-                              <IconButton
-                                color='action'
-                                onClick={() => arrayHelpers.remove(index)}
-                              >
-                                <CancelIcon />
-                              </IconButton>
-                            )}
+                            <IconButton
+                              color='default'
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <CancelIcon />
+                            </IconButton>
                           </Grid>
                         </Grid>
                       )
@@ -120,7 +118,9 @@ export default function ExtraPropertiesForm(props) {
                         arrayHelpers.push('')
                       }}
                     >
-                      Add another Primary Publication
+                      {values.primaryPublications.length > 0
+                        ? 'Add another Primary Publication'
+                        : 'Add a Primary Publication'}
                     </Button>
                   </Grid>
                 </Grid>
@@ -311,7 +311,7 @@ export default function ExtraPropertiesForm(props) {
                         </Grid>
                         <Grid container item xs={1} justify='center'>
                           <IconButton
-                            color='action'
+                            color='default'
                             onClick={() => arrayHelpers.remove(index)}
                           >
                             <CancelIcon />
