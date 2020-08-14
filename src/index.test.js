@@ -1,7 +1,21 @@
-import { ExampleComponent } from '.'
+import React from 'react'
+import { render, waitFor, fireEvent } from '@testing-library/react'
+import { DatsCreatorGui } from '.'
 
-describe('ExampleComponent', () => {
+describe('DatsCreatorGui', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(DatsCreatorGui).toBeTruthy()
+  })
+  it('submits correct values', async () => {
+    const { container } = render(<DatsCreatorGui />)
+    const title = container.querySelector('input[name="title"]')
+
+    await waitFor(() => {
+      fireEvent.change(title, {
+        target: {
+          value: 'mocktitle'
+        }
+      })
+    })
   })
 })
