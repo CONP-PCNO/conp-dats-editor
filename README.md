@@ -28,15 +28,15 @@ class Example extends Component {
 
 1. Start the component
 ```bash
-npm install # first time only
-npm run start
+yarn install # first time only
+yarn start
 ```
 
 2. Run the sample application (in another terminal)
 ```bash
 cd example/
-npm install # first time only
-npm run start
+yarn install # first time only
+yarn start
 ```
 
 3. The application should now be running at localhost:3000
