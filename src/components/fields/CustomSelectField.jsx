@@ -15,7 +15,13 @@ const CustomSelectField = ({ ...props }) => {
   return (
     <FormControl className={classes.formControl} variant='outlined'>
       <InputLabel>{props.label}</InputLabel>
-      <FastField component={Select} {...props}>
+      <FastField
+        component={Select}
+        {...props}
+        inputProps={{
+          'data-testid': `${props.name}`
+        }}
+      >
         {props.children}
       </FastField>
     </FormControl>
