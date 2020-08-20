@@ -2,10 +2,11 @@ import React from 'react'
 import { screen, render, waitFor, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { DatsCreatorGui } from '..'
+import { defaultSchema } from './schemas/defaultSchema'
 
 describe('Field values and errors', () => {
   beforeEach(() => {
-    render(<DatsCreatorGui />)
+    render(<DatsCreatorGui validationSchema={defaultSchema} />)
   })
   it('title handles errors', async () => {
     const testId = 'title'
