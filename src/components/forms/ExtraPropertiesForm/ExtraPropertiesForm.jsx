@@ -72,7 +72,10 @@ export default function ExtraPropertiesForm(props) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Tooltip title='Primary Publications' placement='right'>
+                <Tooltip
+                  title='The primary publication(s) associated with the dataset, usually describing how the dataset was produced'
+                  placement='right'
+                >
                   <InfoIcon fontSize='small' color='action' />
                 </Tooltip>
               </Grid>
@@ -141,7 +144,7 @@ export default function ExtraPropertiesForm(props) {
               </Grid>
               <Grid item>
                 <Tooltip
-                  title='The dimensions of the dataset'
+                  title='The different dimensions (granular components) making up a dataset. Providing dimensions give more details about the data types'
                   placement='right'
                 >
                   <InfoIcon fontSize='small' color='action' />
@@ -163,7 +166,10 @@ export default function ExtraPropertiesForm(props) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Tooltip title='Identifier' placement='right'>
+                <Tooltip
+                  title='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
+                  placement='right'
+                >
                   <InfoIcon fontSize='small' color='action' />
                 </Tooltip>
               </Grid>
@@ -269,7 +275,7 @@ export default function ExtraPropertiesForm(props) {
               </Grid>
               <Grid item>
                 <Tooltip
-                  title='Important dates related to the dataset'
+                  title='Relevant dates for the dataset. If you provide a date, it must come with a description of the date'
                   placement='right'
                 >
                   <InfoIcon fontSize='small' color='action' />
@@ -349,31 +355,14 @@ export default function ExtraPropertiesForm(props) {
             <Grid container direction='row' spacing={1}>
               <Grid item>
                 <Typography variant='h6' gutterBottom>
-                  Citations
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='Citations' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <CustomTextField fullWidth label='Citations' name='citations' />
-          </Grid>
-        </Grid>
-      </div>
-      <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
                   Produced By
                 </Typography>
               </Grid>
               <Grid item>
-                <Tooltip title='Produced By' placement='right'>
+                <Tooltip
+                  title='Process which generated a given dataset'
+                  placement='right'
+                >
                   <InfoIcon fontSize='small' color='action' />
                 </Tooltip>
               </Grid>
@@ -399,26 +388,6 @@ export default function ExtraPropertiesForm(props) {
               </Grid>
             </Grid>
             <CustomTextField fullWidth label='Is About' name='isAbout' />
-          </Grid>
-        </Grid>
-      </div>
-      <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
-                  Has Part
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='Dataset parts' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <CustomTextField fullWidth label='Has Part' name='hasPart' />
           </Grid>
         </Grid>
       </div>
@@ -456,55 +425,14 @@ export default function ExtraPropertiesForm(props) {
             <Grid container direction='row' spacing={1}>
               <Grid item>
                 <Typography variant='h6' gutterBottom>
-                  Refinement
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='Refinement' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <CustomTextField fullWidth label='Refinement' name='refinement' />
-          </Grid>
-        </Grid>
-      </div>
-      <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
-                  Aggregation
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='Aggregation' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <CustomTextField
-              fullWidth
-              placeholder='Aggregation'
-              name='aggregation'
-            />
-          </Grid>
-        </Grid>
-      </div>
-      <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
                   Spatial Coverage
                 </Typography>
               </Grid>
               <Grid item>
-                <Tooltip title='Spatial Coverage' placement='right'>
+                <Tooltip
+                  title='The geographical extension and span covered by the dataset and its measured dimensions/variables'
+                  placement='right'
+                >
                   <InfoIcon fontSize='small' color='action' />
                 </Tooltip>
               </Grid>
