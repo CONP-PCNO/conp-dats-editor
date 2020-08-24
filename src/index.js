@@ -208,7 +208,7 @@ export const DatsCreatorGui = (props) => {
   const validationSchema = props.validationSchema || defaultValidationSchema
   const classes = useStyles()
 
-  const [activeStep, setActiveStep] = React.useState(0)
+  const [activeStep, setActiveStep] = React.useState(props.activeStep || 0)
   const [dats, setDats] = React.useState()
   const [valuesState, setValuesState] = React.useState(defaultValues)
   const isLastStep = () => activeStep === steps.length - 1
