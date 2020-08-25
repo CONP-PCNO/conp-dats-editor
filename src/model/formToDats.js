@@ -88,6 +88,38 @@ class FormToDats {
           ]
         },
         {
+          category: 'origin_institution',
+          values: [
+            {
+              value: this.data.origin.institution
+            }
+          ]
+        },
+        {
+          category: 'origin_city',
+          values: [
+            {
+              value: this.data.origin.city
+            }
+          ]
+        },
+        {
+          category: 'origin_province',
+          values: [
+            {
+              value: this.data.origin.province
+            }
+          ]
+        },
+        {
+          category: 'origin_country',
+          values: [
+            {
+              value: this.data.origin.country
+            }
+          ]
+        },
+        {
           category: 'files',
           values: [
             {

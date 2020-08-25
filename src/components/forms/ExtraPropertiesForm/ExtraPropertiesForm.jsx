@@ -30,6 +30,51 @@ export default function ExtraPropertiesForm(props) {
             <Grid container direction='row' spacing={1}>
               <Grid item>
                 <Typography variant='h6' gutterBottom>
+                  Origin
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Tooltip title='The origin of this dataset' placement='right'>
+                  <InfoIcon fontSize='small' color='action' />
+                </Tooltip>
+              </Grid>
+            </Grid>
+            <Grid container item spacing={3} xs={12}>
+              <Grid item xs={6}>
+                <CustomTextField
+                  fullWidth
+                  label='Institution'
+                  name='origin.institution'
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <CustomTextField fullWidth label='City' name='origin.city' />
+              </Grid>
+              <Grid item xs={6}>
+                <CustomTextField
+                  fullWidth
+                  label='Province'
+                  name='origin.province'
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <CustomTextField
+                  fullWidth
+                  label='Country'
+                  name='origin.country'
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+      <Divider variant='middle' />
+      <div className={classes.section}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Grid container direction='row' spacing={1}>
+              <Grid item>
+                <Typography variant='h6' gutterBottom>
                   Derived From
                 </Typography>
               </Grid>

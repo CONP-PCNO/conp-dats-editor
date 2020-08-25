@@ -164,6 +164,12 @@ const defaultValues = {
   files: '',
   subjects: '',
   conpStatus: '',
+  origin: {
+    institution: '',
+    city: '',
+    province: '',
+    country: ''
+  },
   derivedFrom: '',
   parentDatasetId: '',
   primaryPublications: [],

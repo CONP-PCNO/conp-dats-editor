@@ -53,6 +53,24 @@ class DatsToForm {
           ?.filter((p) => p.category === 'CONP_status')[0]
           .values.map((a) => a.value)[0]
           .toLowerCase() || '',
+      origin: {
+        institution:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'origin_institution')[0]
+            .values.map((a) => a.value)[0] || '',
+        city:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'origin_city')[0]
+            .values.map((a) => a.value)[0] || '',
+        province:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'origin_province')[0]
+            .values.map((a) => a.value)[0] || '',
+        country:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'origin_country')[0]
+            .values.map((a) => a.value)[0] || ''
+      },
       derivedFrom: '',
       parentDatasetId: '',
       primaryPublications:
