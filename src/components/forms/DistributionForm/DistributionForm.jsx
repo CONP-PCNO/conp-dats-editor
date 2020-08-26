@@ -188,7 +188,7 @@ export default function GeneralForm(props) {
             <Grid container direction='row' spacing={1}>
               <Grid item>
                 <Typography variant='h6' gutterBottom>
-                  Files
+                  Number of Files
                 </Typography>
               </Grid>
               <Grid item>
@@ -211,7 +211,7 @@ export default function GeneralForm(props) {
             <Grid container direction='row' spacing={1}>
               <Grid item>
                 <Typography variant='h6' gutterBottom>
-                  Subjects
+                  Number Subjects
                 </Typography>
               </Grid>
               <Grid item>
