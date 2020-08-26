@@ -268,13 +268,20 @@ export const DatsCreatorGui = (props) => {
                   setSubmitting(false)
                 }}
               >
-                {({ values, errors, touched, isSubmitting }) => (
+                {({ values, errors, touched, isSubmitting, resetForm }) => (
                   <Form>
                     <div className={classes.section}>
                       <DatsUploader onDatsReceived={onDatsReceived} />
                     </div>
                     {renderStep(activeStep, classes, values)}
                     <div className={classes.buttons}>
+                      <Button
+                        variant='contained'
+                        onClick={resetForm}
+                        className={classes.button}
+                      >
+                        Clear
+                      </Button>
                       {activeStep !== 0 && (
                         <Button
                           variant='contained'
