@@ -71,13 +71,13 @@ describe('Distribution Form: field values and errors', () => {
     await waitFor(() => {
       fireEvent.change(input, {
         target: {
-          value: 'mb'
+          value: 'MB'
         }
       })
     })
 
     await waitFor(() => {
-      expect(input.value).toBe('mb')
+      expect(input.value).toBe('MB')
     })
   })
   it('Access->LandingPage handles correct values', async () => {
