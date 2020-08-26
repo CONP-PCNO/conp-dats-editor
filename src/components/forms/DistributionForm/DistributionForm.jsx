@@ -108,10 +108,10 @@ export default function GeneralForm(props) {
               </Grid>
               <Grid item xs={3}>
                 <CustomSelectField name='size.units' label='Units'>
-                  <MenuItem value='mb'>MB</MenuItem>
-                  <MenuItem value='gb'>GB</MenuItem>
-                  <MenuItem value='tb'>TB</MenuItem>
-                  <MenuItem value='pb'>PB</MenuItem>
+                  <MenuItem value='MB'>MB</MenuItem>
+                  <MenuItem value='GB'>GB</MenuItem>
+                  <MenuItem value='TB'>TB</MenuItem>
+                  <MenuItem value='PB'>PB</MenuItem>
                 </CustomSelectField>
               </Grid>
             </Grid>

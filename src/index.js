@@ -154,7 +154,7 @@ const defaultValues = {
   formats: [''],
   size: {
     value: '',
-    units: 'mb'
+    units: 'MB'
   },
   access: {
     landingPage: '',

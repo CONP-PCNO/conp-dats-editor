@@ -31,7 +31,7 @@ class DatsToForm {
       formats: this.data.distributions[0]?.formats || [],
       size: {
         value: this.data.distributions[0]?.size || '',
-        units: this.data.distributions[0]?.unit.value.toLowerCase() || ''
+        units: this.data.distributions[0]?.unit.value.toUpperCase() || ''
       },
       access: {
         landingPage: this.data.distributions[0].access.landingPage || '',
