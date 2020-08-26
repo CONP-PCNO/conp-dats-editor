@@ -42,7 +42,7 @@ export default function GeneralForm(props) {
                   {values.formats.map((format, index) => {
                     return (
                       <Grid
-                        key={'' + Math.random()}
+                        key={'format_' + index}
                         container
                         item
                         spacing={3}

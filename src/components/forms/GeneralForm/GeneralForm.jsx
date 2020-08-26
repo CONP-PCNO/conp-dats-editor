@@ -70,7 +70,7 @@ export default function GeneralForm(props) {
                   {values.creators.map((creator, index) => {
                     return (
                       <Grid
-                        key={'' + Math.random()}
+                        key={'creator_' + index}
                         container
                         item
                         spacing={3}
@@ -106,7 +106,7 @@ export default function GeneralForm(props) {
                         <Grid container item xs={3} justify='center'>
                           {index !== 0 && (
                             <IconButton
-                              color='action'
+                              color='default'
                               onClick={() => arrayHelpers.remove(index)}
                             >
                               <CancelIcon />
@@ -189,7 +189,7 @@ export default function GeneralForm(props) {
                   {values.types.map((type, index) => {
                     return (
                       <Grid
-                        key={'' + Math.random()}
+                        key={'type' + index}
                         container
                         item
                         spacing={3}
@@ -206,7 +206,7 @@ export default function GeneralForm(props) {
                         <Grid container item xs={3} justify='center'>
                           {index !== 0 && (
                             <IconButton
-                              color='action'
+                              color='default'
                               onClick={() => arrayHelpers.remove(index)}
                             >
                               <CancelIcon />
@@ -280,7 +280,7 @@ export default function GeneralForm(props) {
                   {values.licenses.map((license, index) => {
                     return (
                       <Grid
-                        key={'' + Math.random()}
+                        key={'license_' + index}
                         container
                         item
                         spacing={3}
@@ -384,7 +384,7 @@ export default function GeneralForm(props) {
                   {values.keywords.map((keyword, index) => {
                     return (
                       <Grid
-                        key={'' + Math.random()}
+                        key={'keyword_' + index}
                         container
                         item
                         spacing={3}

@@ -132,7 +132,7 @@ export default function ExtraPropertiesForm(props) {
                     (primaryPublication, index) => {
                       return (
                         <Grid
-                          key={'' + Math.random()}
+                          key={'primaryPublication_' + index}
                           container
                           item
                           spacing={3}
@@ -333,7 +333,7 @@ export default function ExtraPropertiesForm(props) {
                   {values.dates.map((date, index) => {
                     return (
                       <Grid
-                        key={'' + Math.random()}
+                        key={'date_' + index}
                         container
                         item
                         spacing={3}
