@@ -268,13 +268,7 @@ export const DatsCreatorGui = (props) => {
                   setSubmitting(false)
                 }}
               >
-                {({
-                  values,
-                  errors,
-                  isSubmitting,
-                  setFieldValue,
-                  setTouched
-                }) => (
+                {({ values, errors, touched, isSubmitting }) => (
                   <Form>
                     <div className={classes.section}>
                       <DatsUploader onDatsReceived={onDatsReceived} />
@@ -319,6 +313,28 @@ export const DatsCreatorGui = (props) => {
                         )}
                       </div>
                     </div>
+                    {Object.keys(errors).length > 0 ? (
+                      <div className={classes.section}>
+                        <Typography variant='h6' gutterBottom>
+                          To succesfully create the DATS.json file, you must
+                          first resolve issues with the following fields:
+                        </Typography>
+                        {Object.keys(errors).map((key) =>
+                          Object.keys(touched).includes(key) ? (
+                            <Typography
+                              key={'' + Math.random()}
+                              variant='subtitle1'
+                              gutterBottom
+                            >
+                              {key}:{' '}
+                              {Array.isArray(errors[key])
+                                ? errors[key].map((e) => Object.values(e))
+                                : errors[key]}
+                            </Typography>
+                          ) : null
+                        )}
+                      </div>
+                    ) : null}
                   </Form>
                 )}
               </Formik>
