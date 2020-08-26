@@ -258,6 +258,7 @@ export const DatsCreatorGui = (props) => {
                 enableReinitialize
                 initialValues={valuesState}
                 validationSchema={validationSchema}
+                validateOnChange={false}
                 onSubmit={(data, { setSubmitting }) => {
                   setSubmitting(true)
                   // make async call
