@@ -31,6 +31,14 @@ class FormToDats {
           name: item
         }
       }),
+      dimensions: this.data.dimensions.map((item) => {
+        return {
+          name: {
+            value: item.name
+          },
+          description: item.description
+        }
+      }),
       licenses: this.data.licenses.map((license) => {
         return {
           name: license.value

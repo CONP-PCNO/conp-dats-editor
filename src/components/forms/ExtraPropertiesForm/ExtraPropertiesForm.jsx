@@ -196,7 +196,62 @@ export default function ExtraPropertiesForm(props) {
                 </Tooltip>
               </Grid>
             </Grid>
-            <CustomTextField fullWidth label='Dimensions' name='dimensions' />
+            <FieldArray name='dimensions'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
+                  {values.dimensions.map((dimension, index) => {
+                    return (
+                      <Grid
+                        key={'dimension_' + index}
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={5}>
+                          <CustomTextField
+                            fullWidth
+                            label='Name'
+                            name={`dimensions.${index}.name`}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <CustomTextField
+                            fullWidth
+                            label='Description'
+                            name={`dimensions.${index}.description`}
+                          />
+                        </Grid>
+                        <Grid container item xs={2} justify='center'>
+                          <IconButton
+                            color='default'
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    )
+                  })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push({
+                          name: '',
+                          description: ''
+                        })
+                      }}
+                    >
+                      {values.dimensions.length > 0
+                        ? 'Add another Dimension'
+                        : 'Add a Dimension'}
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
+            </FieldArray>
           </Grid>
         </Grid>
       </div>

@@ -93,7 +93,7 @@ export default function GeneralForm(props) {
                         </Grid>
                         <Grid item xs={3}>
                           <CustomSelectField
-                            name={`creators.${index}.type`}
+                            name={`creators.${index}.role`}
                             label='Role'
                             required
                           >
