@@ -26,11 +26,7 @@ class FormToDats {
           name: item
         }
       }),
-      spatialCoverage: this.data.spatialCoverage.map((item) => {
-        return {
-          name: item
-        }
-      }),
+      spatialCoverage: this.data.spatialCoverage,
       dimensions: this.data.dimensions.map((item) => {
         return {
           name: {

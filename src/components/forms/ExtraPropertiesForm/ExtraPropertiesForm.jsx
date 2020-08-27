@@ -537,11 +537,62 @@ export default function ExtraPropertiesForm(props) {
                 </Tooltip>
               </Grid>
             </Grid>
-            <CustomTextField
-              fullWidth
-              label='Spatial Coverage'
-              name='spatialCoverage'
-            />
+            <FieldArray name='spatialCoverage'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
+                  {values.spatialCoverage.map((s, index) => {
+                    return (
+                      <Grid
+                        key={'spatialCoverage_' + index}
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={5}>
+                          <CustomTextField
+                            fullWidth
+                            label='Name'
+                            name={`spatialCoverage.${index}.name`}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <CustomTextField
+                            fullWidth
+                            label='Description'
+                            name={`spatialCoverage.${index}.description`}
+                          />
+                        </Grid>
+                        <Grid container item xs={2} justify='center'>
+                          <IconButton
+                            color='default'
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    )
+                  })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push({
+                          name: '',
+                          description: ''
+                        })
+                      }}
+                    >
+                      {values.spatialCoverage.length > 0
+                        ? 'Add another Spatial Coverage'
+                        : 'Add a Spatial Coverage'}
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
+            </FieldArray>
           </Grid>
         </Grid>
       </div>

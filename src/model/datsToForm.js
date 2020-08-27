@@ -17,11 +17,17 @@ class DatsToForm {
       contact:
         this.data.extraProperties
           .filter((p) => p.category === 'contact')[0]
-          .values.map((a) => {
-            return {
-              name: a.value.split(', ')[0],
-              email: a.value.split(', ')[1] || ''
+          ?.values.map((a) => {
+            const split = a.value.split(', ')
+            const contact = {
+              name: split[0]
             }
+            split.forEach((v) => {
+              if (v.includes('@')) {
+                contact.email = v
+              }
+            })
+            return contact
           })[0] || '',
       description: this.data.description || '',
       types: this.data.types.map((a) => a.information.value) || [],
@@ -102,7 +108,7 @@ class DatsToForm {
       acknowledges: '',
       refinement: '',
       aggregation: this.data.aggregation || '',
-      spatialCoverage: this.data.spatialCoverage?.map((a) => a.name) || [],
+      spatialCoverage: this.data.spatialCoverage || [],
       attachments: []
     }
 
