@@ -79,8 +79,7 @@ class DatsToForm {
       },
       derivedFrom: '',
       parentDatasetId: '',
-      primaryPublications:
-        this.data.primaryPublications?.map((a) => a.title) || [],
+      primaryPublications: this.data.primaryPublications || [],
       dimensions:
         this.data.dimensions?.map((a) => {
           return {

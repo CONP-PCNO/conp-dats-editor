@@ -138,13 +138,308 @@ export default function ExtraPropertiesForm(props) {
                           spacing={3}
                           xs={12}
                         >
-                          <Grid item xs={6}>
+                          <Grid item xs={12}>
                             <CustomTextField
                               required
                               fullWidth
-                              label='Primary Publication'
-                              name={`primaryPublications.${index}`}
+                              label='Title'
+                              name={`primaryPublications.${index}.title`}
                             />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <CustomTextField
+                              required
+                              fullWidth
+                              label='Publication Venue'
+                              name={`primaryPublications.${index}.publicationVenue`}
+                            />
+                          </Grid>
+                          <FieldArray
+                            name={`primaryPublications.${index}.authors`}
+                          >
+                            {(arrayHelpers) => (
+                              <Grid container item spacing={5} xs={12}>
+                                {values.primaryPublications[index].authors.map(
+                                  (author, idx) => {
+                                    return (
+                                      <Grid
+                                        key={'author_' + index}
+                                        container
+                                        item
+                                        spacing={3}
+                                        xs={12}
+                                      >
+                                        <Grid item xs={12}>
+                                          <CustomTextField
+                                            required
+                                            fullWidth
+                                            label='Full Name'
+                                            name={`primaryPublications.${index}.authors.${idx}.fullName`}
+                                          />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                          <CustomTextField
+                                            required
+                                            fullWidth
+                                            label='First Name'
+                                            name={`primaryPublications.${index}.authors.${idx}.firstName`}
+                                          />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                          <CustomTextField
+                                            required
+                                            fullWidth
+                                            label='Middle Initial'
+                                            name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
+                                          />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                          <CustomTextField
+                                            required
+                                            fullWidth
+                                            label='Last Name'
+                                            name={`primaryPublications.${index}.authors.${idx}.lastName`}
+                                          />
+                                        </Grid>
+                                        <FieldArray
+                                          name={`primaryPublications.${index}.authors.${idx}.affiliations`}
+                                        >
+                                          {(arrayHelpers) => (
+                                            <Grid
+                                              container
+                                              item
+                                              spacing={5}
+                                              xs={12}
+                                            >
+                                              {values.primaryPublications[
+                                                index
+                                              ].authors[idx].affiliations.map(
+                                                (affiliation, i) => {
+                                                  return (
+                                                    <Grid
+                                                      key={
+                                                        'affiliation_' + index
+                                                      }
+                                                      container
+                                                      item
+                                                      spacing={3}
+                                                      xs={12}
+                                                    >
+                                                      <Grid item xs={6}>
+                                                        <CustomTextField
+                                                          required
+                                                          fullWidth
+                                                          label='Affiliation'
+                                                          name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
+                                                        />
+                                                      </Grid>
+                                                      <Grid
+                                                        container
+                                                        item
+                                                        xs={3}
+                                                        justify='center'
+                                                      >
+                                                        <IconButton
+                                                          color='default'
+                                                          onClick={() =>
+                                                            arrayHelpers.remove(
+                                                              i
+                                                            )
+                                                          }
+                                                        >
+                                                          <CancelIcon />
+                                                        </IconButton>
+                                                      </Grid>
+                                                    </Grid>
+                                                  )
+                                                }
+                                              )}
+                                              <Grid item xs={6}>
+                                                <Button
+                                                  variant='outlined'
+                                                  color='secondary'
+                                                  onClick={() => {
+                                                    arrayHelpers.push('')
+                                                  }}
+                                                >
+                                                  {values.primaryPublications[
+                                                    index
+                                                  ].authors[idx].affiliations
+                                                    .length > 0
+                                                    ? 'Add another Affiliation'
+                                                    : 'Add an Affiliation'}
+                                                </Button>
+                                              </Grid>
+                                            </Grid>
+                                          )}
+                                        </FieldArray>
+                                        <Grid
+                                          container
+                                          item
+                                          xs={3}
+                                          justify='center'
+                                        >
+                                          <IconButton
+                                            color='default'
+                                            onClick={() =>
+                                              arrayHelpers.remove(idx)
+                                            }
+                                          >
+                                            <CancelIcon />
+                                          </IconButton>
+                                        </Grid>
+                                      </Grid>
+                                    )
+                                  }
+                                )}
+                                <Grid item xs={6}>
+                                  <Button
+                                    variant='outlined'
+                                    color='secondary'
+                                    onClick={() => {
+                                      arrayHelpers.push({
+                                        fullName: '',
+                                        firstName: '',
+                                        middleInitial: '',
+                                        lastName: '',
+                                        affiliations: []
+                                      })
+                                    }}
+                                  >
+                                    {values.primaryPublications[index].authors
+                                      .length > 0
+                                      ? 'Add another Author'
+                                      : 'Add an Author'}
+                                  </Button>
+                                </Grid>
+                              </Grid>
+                            )}
+                          </FieldArray>
+                          <Grid item xs={12}>
+                            <Grid container direction='row' spacing={1}>
+                              <Grid item>
+                                <Typography variant='h6' gutterBottom>
+                                  Dates
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <Tooltip
+                                  title='Relevant dates for the publication. If you provide a date, it must come with a description of the date'
+                                  placement='right'
+                                >
+                                  <InfoIcon fontSize='small' color='action' />
+                                </Tooltip>
+                              </Grid>
+                            </Grid>
+                            <FieldArray
+                              name={`primaryPublications.${index}.dates`}
+                            >
+                              {(arrayHelpers) => (
+                                <Grid container item spacing={3} xs={12}>
+                                  {values.primaryPublications[index].dates.map(
+                                    (date, idx) => {
+                                      return (
+                                        <Grid
+                                          key={'date_' + idx}
+                                          container
+                                          item
+                                          spacing={3}
+                                          xs={12}
+                                        >
+                                          <Grid item xs={4}>
+                                            <MuiPickersUtilsProvider
+                                              utils={DateFnsUtils}
+                                            >
+                                              <KeyboardDatePicker
+                                                id='date-picker-dialog'
+                                                label='Date picker dialog'
+                                                inputVariant='outlined'
+                                                format='MM/dd/yyyy'
+                                                name={`primaryPublications.${index}.dates.${idx}.description`}
+                                                KeyboardButtonProps={{
+                                                  'aria-label': 'change date'
+                                                }}
+                                              />
+                                            </MuiPickersUtilsProvider>
+                                          </Grid>
+                                          <Grid item xs={6}>
+                                            <CustomTextField
+                                              fullWidth
+                                              label='Description'
+                                              name={`primaryPublications.${index}.dates.${idx}.description`}
+                                            />
+                                          </Grid>
+                                          <Grid
+                                            container
+                                            item
+                                            xs={1}
+                                            justify='center'
+                                          >
+                                            <IconButton
+                                              color='default'
+                                              onClick={() =>
+                                                arrayHelpers.remove(index)
+                                              }
+                                            >
+                                              <CancelIcon />
+                                            </IconButton>
+                                          </Grid>
+                                        </Grid>
+                                      )
+                                    }
+                                  )}
+                                  <Grid item xs={6}>
+                                    <Button
+                                      variant='outlined'
+                                      color='secondary'
+                                      onClick={() => {
+                                        arrayHelpers.push({
+                                          description: '',
+                                          date: ''
+                                        })
+                                      }}
+                                    >
+                                      {values.dates.length > 0
+                                        ? 'Add another Date'
+                                        : 'Add a Date'}
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              )}
+                            </FieldArray>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Grid container direction='row' spacing={1}>
+                              <Grid item>
+                                <Typography variant='h6' gutterBottom>
+                                  Identifier
+                                </Typography>
+                              </Grid>
+                              <Grid item>
+                                <Tooltip
+                                  title='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
+                                  placement='right'
+                                >
+                                  <InfoIcon fontSize='small' color='action' />
+                                </Tooltip>
+                              </Grid>
+                            </Grid>
+                            <Grid container item spacing={3} xs={12}>
+                              <Grid item xs={6}>
+                                <CustomTextField
+                                  fullWidth
+                                  label='Identifier'
+                                  name={`primaryPublications.${index}.identifier.identifier`}
+                                />
+                              </Grid>
+                              <Grid item xs={6}>
+                                <CustomTextField
+                                  fullWidth
+                                  label='Source'
+                                  name={`primaryPublications.${index}.identifier.identifierSource`}
+                                />
+                              </Grid>
+                            </Grid>
                           </Grid>
                           <Grid container item xs={3} justify='center'>
                             <IconButton
@@ -163,7 +458,16 @@ export default function ExtraPropertiesForm(props) {
                       variant='outlined'
                       color='secondary'
                       onClick={() => {
-                        arrayHelpers.push('')
+                        arrayHelpers.push({
+                          title: '',
+                          publicationVenue: '',
+                          authors: [],
+                          dates: [],
+                          identifier: {
+                            identifier: '',
+                            identifierSource: ''
+                          }
+                        })
                       }}
                     >
                       {values.primaryPublications.length > 0

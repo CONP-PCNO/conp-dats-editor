@@ -26,6 +26,7 @@ class FormToDats {
           name: item
         }
       }),
+      primaryPublications: this.data.primaryPublications,
       spatialCoverage: this.data.spatialCoverage,
       dimensions: this.data.dimensions.map((item) => {
         return {
