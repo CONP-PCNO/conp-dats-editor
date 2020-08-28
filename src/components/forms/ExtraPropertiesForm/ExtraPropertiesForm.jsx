@@ -140,7 +140,6 @@ export default function ExtraPropertiesForm(props) {
                         >
                           <Grid item xs={12}>
                             <CustomTextField
-                              required
                               fullWidth
                               label='Title'
                               name={`primaryPublications.${index}.title`}
@@ -148,7 +147,6 @@ export default function ExtraPropertiesForm(props) {
                           </Grid>
                           <Grid item xs={12}>
                             <CustomTextField
-                              required
                               fullWidth
                               label='Publication Venue'
                               name={`primaryPublications.${index}.publicationVenue`}
@@ -171,7 +169,6 @@ export default function ExtraPropertiesForm(props) {
                                       >
                                         <Grid item xs={12}>
                                           <CustomTextField
-                                            required
                                             fullWidth
                                             label='Full Name'
                                             name={`primaryPublications.${index}.authors.${idx}.fullName`}
@@ -179,7 +176,6 @@ export default function ExtraPropertiesForm(props) {
                                         </Grid>
                                         <Grid item xs={12}>
                                           <CustomTextField
-                                            required
                                             fullWidth
                                             label='First Name'
                                             name={`primaryPublications.${index}.authors.${idx}.firstName`}
@@ -187,7 +183,6 @@ export default function ExtraPropertiesForm(props) {
                                         </Grid>
                                         <Grid item xs={12}>
                                           <CustomTextField
-                                            required
                                             fullWidth
                                             label='Middle Initial'
                                             name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
@@ -195,7 +190,6 @@ export default function ExtraPropertiesForm(props) {
                                         </Grid>
                                         <Grid item xs={12}>
                                           <CustomTextField
-                                            required
                                             fullWidth
                                             label='Last Name'
                                             name={`primaryPublications.${index}.authors.${idx}.lastName`}
@@ -227,7 +221,6 @@ export default function ExtraPropertiesForm(props) {
                                                     >
                                                       <Grid item xs={6}>
                                                         <CustomTextField
-                                                          required
                                                           fullWidth
                                                           label='Affiliation'
                                                           name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
