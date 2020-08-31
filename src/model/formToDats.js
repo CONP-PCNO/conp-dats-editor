@@ -8,7 +8,15 @@ class FormToDats {
       title: this.data.title,
       description: this.data.description,
       identifier: this.data.identifier,
-      dates: this.data.dates,
+      dates: this.data.dates.map((date) => {
+        return {
+          date:
+            typeof date.date === 'object'
+              ? date.date.toISOString().split('T')[0]
+              : date.date,
+          type: date.type
+        }
+      }),
       creators: this.data.creators,
       types: this.data.types.map((type) => {
         return {
@@ -17,7 +25,6 @@ class FormToDats {
           }
         }
       }),
-
       version: this.data.version,
       privacy: this.data.privacy,
       licenses: this.data.licenses.map((license) => {
