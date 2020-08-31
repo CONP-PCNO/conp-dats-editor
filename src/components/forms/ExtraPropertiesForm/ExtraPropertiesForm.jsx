@@ -161,7 +161,7 @@ export default function ExtraPropertiesForm(props) {
                                   (author, idx) => {
                                     return (
                                       <Grid
-                                        key={'author_' + index}
+                                        key={'author_' + idx}
                                         container
                                         item
                                         spacing={3}
@@ -576,14 +576,14 @@ export default function ExtraPropertiesForm(props) {
                 <CustomTextField
                   fullWidth
                   label='Identifier'
-                  name='identifier.name'
+                  name='identifier.identifier'
                 />
               </Grid>
               <Grid item xs={6}>
                 <CustomTextField
                   fullWidth
                   label='Source'
-                  name='identifier.source'
+                  name='identifier.identifierSource'
                 />
               </Grid>
             </Grid>

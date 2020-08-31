@@ -175,8 +175,8 @@ const defaultValues = {
   primaryPublications: [],
   dimensions: [],
   identifier: {
-    name: '',
-    source: ''
+    identifier: '',
+    identifierSource: ''
   },
   logo: {
     type: 'url',
@@ -188,7 +188,7 @@ const defaultValues = {
   producedBy: '',
   isAbout: [],
   hasPart: '',
-  acknowledges: '',
+  acknowledges: [],
   refinement: '',
   aggregation: '',
   spatialCoverage: [],

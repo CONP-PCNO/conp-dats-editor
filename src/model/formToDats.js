@@ -5,10 +5,7 @@ class FormToDats {
 
   getJson() {
     const json = {
-      identifier: {
-        identifier: this.data.identifier.name,
-        identifierSource: this.data.identifier.source
-      },
+      identifier: this.data.identifier,
       title: this.data.title,
       description: this.data.description,
       creators: this.data.creators,

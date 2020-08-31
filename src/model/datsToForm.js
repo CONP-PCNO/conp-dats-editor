@@ -87,9 +87,9 @@ class DatsToForm {
             description: a.description
           }
         }) || [],
-      identifier: {
-        name: '',
-        source: ''
+      identifier: this.data.identifier || {
+        identifier: '',
+        identifierSource: ''
       },
       logo:
         this.data.extraProperties
