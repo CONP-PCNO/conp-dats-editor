@@ -26,6 +26,12 @@ class FormToDats {
           name: item
         }
       }),
+      acknowledges: [
+        {
+          name: 'Grants',
+          funders: this.data.acknowledges
+        }
+      ],
       primaryPublications: this.data.primaryPublications,
       spatialCoverage: this.data.spatialCoverage,
       dimensions: this.data.dimensions.map((item) => {

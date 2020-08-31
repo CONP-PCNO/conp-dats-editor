@@ -800,18 +800,69 @@ export default function ExtraPropertiesForm(props) {
               </Grid>
               <Grid item>
                 <Tooltip
-                  title='Acknowledgements for this dataset'
+                  title='The grant(s) which funded and supported the work reported by the dataset.'
                   placement='right'
                 >
                   <InfoIcon fontSize='small' color='action' />
                 </Tooltip>
               </Grid>
             </Grid>
-            <CustomTextField
-              fullWidth
-              label='Acknowledges'
-              name='acknowledges'
-            />
+            <FieldArray name='acknowledges'>
+              {(arrayHelpers) => (
+                <Grid container item spacing={5} xs={12}>
+                  {values.acknowledges.map((s, index) => {
+                    return (
+                      <Grid
+                        key={'acknowledges_' + index}
+                        container
+                        item
+                        spacing={3}
+                        xs={12}
+                      >
+                        <Grid item xs={5}>
+                          <CustomTextField
+                            fullWidth
+                            label='Name'
+                            name={`acknowledges.${index}.name`}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <CustomTextField
+                            fullWidth
+                            label='Description'
+                            name={`acknowledges.${index}.abbreviation`}
+                          />
+                        </Grid>
+                        <Grid container item xs={2} justify='center'>
+                          <IconButton
+                            color='default'
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    )
+                  })}
+                  <Grid item xs={6}>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push({
+                          name: '',
+                          abbreviation: ''
+                        })
+                      }}
+                    >
+                      {values.acknowledges.length > 0
+                        ? 'Add another Acknowledgement'
+                        : 'Add an Acknowledgement'}
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
+            </FieldArray>
           </Grid>
         </Grid>
       </div>

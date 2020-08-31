@@ -104,11 +104,10 @@ class DatsToForm {
       producedBy: '',
       isAbout: this.data.isAbout?.map((a) => a.name) || [],
       hasPart: '',
-      acknowledges: '',
+      acknowledges: this.data.acknowledges?.[0].funders || [],
       refinement: '',
       aggregation: this.data.aggregation || '',
-      spatialCoverage: this.data.spatialCoverage || [],
-      attachments: []
+      spatialCoverage: this.data.spatialCoverage || []
     }
 
     if (json.logo.includes('www')) {
