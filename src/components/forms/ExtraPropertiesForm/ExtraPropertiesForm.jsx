@@ -10,11 +10,13 @@ import {
   Radio
 } from '@material-ui/core'
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers'
+  TimePicker,
+  DatePicker,
+  DateTimePicker
+} from 'formik-material-ui-pickers'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { FieldArray } from 'formik'
+import { FieldArray, Field } from 'formik'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
 import InfoIcon from '@material-ui/icons/Info'
@@ -343,15 +345,11 @@ export default function ExtraPropertiesForm(props) {
                                             <MuiPickersUtilsProvider
                                               utils={DateFnsUtils}
                                             >
-                                              <KeyboardDatePicker
-                                                id='date-picker-dialog'
-                                                label='Date picker dialog'
-                                                inputVariant='outlined'
+                                              <Field
+                                                component={DatePicker}
+                                                name={`primaryPublications.${index}.dates.${idx}.date`}
+                                                label='Date'
                                                 format='MM/dd/yyyy'
-                                                name={`primaryPublications.${index}.dates.${idx}.description`}
-                                                KeyboardButtonProps={{
-                                                  'aria-label': 'change date'
-                                                }}
                                               />
                                             </MuiPickersUtilsProvider>
                                           </Grid>
@@ -388,7 +386,7 @@ export default function ExtraPropertiesForm(props) {
                                       onClick={() => {
                                         arrayHelpers.push({
                                           description: '',
-                                          date: ''
+                                          date: new Date().toISOString()
                                         })
                                       }}
                                     >
@@ -693,15 +691,11 @@ export default function ExtraPropertiesForm(props) {
                       >
                         <Grid item xs={4}>
                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDatePicker
-                              id='date-picker-dialog'
-                              label='Date picker dialog'
-                              inputVariant='outlined'
+                            <Field
+                              component={DatePicker}
+                              name={`dates.${index}.date`}
+                              label='Date'
                               format='MM/dd/yyyy'
-                              name={`dates.${index}.name`}
-                              KeyboardButtonProps={{
-                                'aria-label': 'change date'
-                              }}
                             />
                           </MuiPickersUtilsProvider>
                         </Grid>
@@ -709,7 +703,7 @@ export default function ExtraPropertiesForm(props) {
                           <CustomTextField
                             fullWidth
                             label='Description'
-                            name={`dates.${index}.description`}
+                            name={`dates.${index}.type.value`}
                           />
                         </Grid>
                         <Grid container item xs={1} justify='center'>
@@ -729,8 +723,8 @@ export default function ExtraPropertiesForm(props) {
                       color='secondary'
                       onClick={() => {
                         arrayHelpers.push({
-                          description: '',
-                          date: ''
+                          type: { value: '' },
+                          date: new Date().toISOString()
                         })
                       }}
                     >

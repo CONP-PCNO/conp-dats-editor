@@ -16,6 +16,7 @@ class FormToDats {
           }
         }
       }),
+      dates: this.data.dates,
       version: this.data.version,
       privacy: this.data.privacy,
       isAbout: this.data.isAbout.map((item) => {
