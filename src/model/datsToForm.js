@@ -64,6 +64,10 @@ class DatsToForm {
           this.data.extraProperties
             ?.filter((p) => p.category === 'origin_institution')[0]
             ?.values.map((a) => a.value)[0] || '',
+        consortium:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'origin_consortium')[0]
+            ?.values.map((a) => a.value)[0] || '',
         city:
           this.data.extraProperties
             ?.filter((p) => p.category === 'origin_city')[0]

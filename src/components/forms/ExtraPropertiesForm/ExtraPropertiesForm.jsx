@@ -9,11 +9,7 @@ import {
   FormControlLabel,
   Radio
 } from '@material-ui/core'
-import {
-  TimePicker,
-  DatePicker,
-  DateTimePicker
-} from 'formik-material-ui-pickers'
+import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { FieldArray, Field } from 'formik'
@@ -47,6 +43,13 @@ export default function ExtraPropertiesForm(props) {
                   fullWidth
                   label='Institution'
                   name='origin.institution'
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <CustomTextField
+                  fullWidth
+                  label='Consortium'
+                  name='origin.consortium'
                 />
               </Grid>
               <Grid item xs={6}>

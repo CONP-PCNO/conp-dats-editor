@@ -5,9 +5,10 @@ class FormToDats {
 
   getJson() {
     const json = {
-      identifier: this.data.identifier,
       title: this.data.title,
       description: this.data.description,
+      identifier: this.data.identifier,
+      dates: this.data.dates,
       creators: this.data.creators,
       types: this.data.types.map((type) => {
         return {
@@ -16,22 +17,39 @@ class FormToDats {
           }
         }
       }),
-      dates: this.data.dates,
+
       version: this.data.version,
       privacy: this.data.privacy,
+      licenses: this.data.licenses.map((license) => {
+        return {
+          name: license.value
+        }
+      }),
+      distributions: [
+        {
+          formats: this.data.formats,
+          size: this.data.size.value,
+          unit: {
+            value: this.data.size.units
+          },
+          access: {
+            landingPage: this.data.access.landingPage,
+            authorizations: [
+              {
+                value: this.data.access.authorization
+              }
+            ]
+          }
+        }
+      ],
+      primaryPublications: this.data.primaryPublications,
       isAbout: this.data.isAbout.map((item) => {
         return {
           name: item
         }
       }),
-      acknowledges: [
-        {
-          name: 'Grants',
-          funders: this.data.acknowledges
-        }
-      ],
-      primaryPublications: this.data.primaryPublications,
       spatialCoverage: this.data.spatialCoverage,
+      aggregation: this.data.aggregation,
       dimensions: this.data.dimensions.map((item) => {
         return {
           name: {
@@ -40,54 +58,37 @@ class FormToDats {
           description: item.description
         }
       }),
-      licenses: this.data.licenses.map((license) => {
-        return {
-          name: license.value
+      acknowledges: [
+        {
+          name: 'Grants',
+          funders: this.data.acknowledges
         }
-      }),
-      aggregation: this.data.aggregation,
+      ],
+
       keywords: this.data.keywords.map((keyword) => {
         return {
           value: keyword
         }
       }),
-      distributions: [
-        {
-          formats: this.data.formats,
-          access: {
-            landingPage: this.data.access.landingPage,
-            authorizations: [
-              {
-                value: this.data.access.authorization
-              }
-            ]
-          },
-          size: this.data.size.value,
-          unit: {
-            value: this.data.size.units
-          }
-        }
-      ],
+
       extraProperties: [
         {
-          category: 'contact',
+          category: 'subjects',
           values: [
             {
-              value: `${this.data.contact.name}, ${this.data.contact.email}`
+              value: this.data.subjects
             }
           ]
         },
         {
-          category: 'logo',
+          category: 'files',
           values: [
             {
-              value:
-                this.data.logo.type === 'url'
-                  ? this.data.logo.url
-                  : this.data.logo.fileName
+              value: this.data.files
             }
           ]
         },
+
         {
           category: 'CONP_status',
           values: [
@@ -96,14 +97,26 @@ class FormToDats {
             }
           ]
         },
-        {
-          category: 'origin_institution',
-          values: [
-            {
-              value: this.data.origin.institution
+        this.data.origin.institution
+          ? {
+              category: 'origin_institution',
+              values: [
+                {
+                  value: this.data.origin.institution
+                }
+              ]
             }
-          ]
-        },
+          : null,
+        this.data.origin.consortium
+          ? {
+              category: 'origin_consortium',
+              values: [
+                {
+                  value: this.data.origin.consortium
+                }
+              ]
+            }
+          : null,
         {
           category: 'origin_city',
           values: [
@@ -129,25 +142,28 @@ class FormToDats {
           ]
         },
         {
-          category: 'files',
+          category: 'logo',
           values: [
             {
-              value: this.data.files
+              value:
+                this.data.logo.type === 'url'
+                  ? this.data.logo.url
+                  : this.data.logo.fileName
             }
           ]
         },
         {
-          category: 'subjects',
+          category: 'contact',
           values: [
             {
-              value: this.data.subjects
+              value: `${this.data.contact.name}, ${this.data.contact.email}`
             }
           ]
         }
       ]
     }
 
-    return json
+    return Object.assign({}, json)
   }
 }
 
