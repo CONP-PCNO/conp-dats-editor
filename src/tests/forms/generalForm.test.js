@@ -1,5 +1,11 @@
 import React from 'react'
-import { screen, render, waitFor, fireEvent } from '@testing-library/react'
+import {
+  screen,
+  render,
+  cleanup,
+  waitFor,
+  fireEvent
+} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { DatsCreatorGui } from '../..'
 import { defaultSchema } from '../schemas/defaultSchema'
@@ -7,6 +13,9 @@ import { defaultSchema } from '../schemas/defaultSchema'
 describe('General Form: field values and errors', () => {
   beforeEach(() => {
     render(<DatsCreatorGui validationSchema={defaultSchema} />)
+  })
+  afterEach(() => {
+    cleanup()
   })
   it('title handles errors', async () => {
     const testId = 'title'

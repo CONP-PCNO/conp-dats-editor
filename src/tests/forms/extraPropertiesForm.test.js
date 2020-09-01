@@ -1,5 +1,11 @@
 import React from 'react'
-import { screen, render, waitFor, fireEvent } from '@testing-library/react'
+import {
+  screen,
+  render,
+  cleanup,
+  waitFor,
+  fireEvent
+} from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { DatsCreatorGui } from '../..'
 import { defaultSchema } from '../schemas/defaultSchema'
@@ -7,6 +13,9 @@ import { defaultSchema } from '../schemas/defaultSchema'
 describe('Extra Properties Form: field values and errors', () => {
   beforeEach(() => {
     render(<DatsCreatorGui activeStep={2} validationSchema={defaultSchema} />)
+  })
+  afterEach(() => {
+    cleanup()
   })
   it('Dimensions handles correct values', async () => {
     const addButton = await waitFor(() => screen.findByText('Add a Dimension'))
