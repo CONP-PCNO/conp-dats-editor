@@ -9,7 +9,10 @@ describe('Extra Properties Form: field values and errors', () => {
     render(<DatsCreatorGui activeStep={2} validationSchema={defaultSchema} />)
   })
   it('Dimensions handles correct values', async () => {
-    const testId = 'dimensions'
+    const addButton = await waitFor(() => screen.findByText('Add a Dimension'))
+
+    fireEvent.click(addButton)
+    const testId = 'dimensions.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
 
     await waitFor(() => {
@@ -25,7 +28,7 @@ describe('Extra Properties Form: field values and errors', () => {
     })
   })
   it('identifier.name handles correct values', async () => {
-    const testId = 'identifier.name'
+    const testId = 'identifier.identifier'
     const input = await waitFor(() => screen.findByTestId(testId))
 
     await waitFor(() => {
@@ -41,7 +44,7 @@ describe('Extra Properties Form: field values and errors', () => {
     })
   })
   it('identifier.source handles correct values', async () => {
-    const testId = 'identifier.source'
+    const testId = 'identifier.identifierSource'
     const input = await waitFor(() => screen.findByTestId(testId))
 
     await waitFor(() => {
@@ -72,7 +75,7 @@ describe('Extra Properties Form: field values and errors', () => {
       expect(input.value).toBe('Test Name')
     })
   })
-  it('COntact->Email handles correct values', async () => {
+  it('Contact->Email handles correct values', async () => {
     const testId = 'contact.email'
     const input = await waitFor(() => screen.findByTestId(testId))
 
@@ -137,7 +140,13 @@ describe('Extra Properties Form: field values and errors', () => {
     })
   })
   it('Acknowledges handles correct values', async () => {
-    const testId = 'acknowledges'
+    const addButton = await waitFor(() =>
+      screen.findByText('Add an Acknowledgement')
+    )
+
+    fireEvent.click(addButton)
+
+    const testId = 'acknowledges.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
 
     await waitFor(() => {
@@ -153,7 +162,12 @@ describe('Extra Properties Form: field values and errors', () => {
     })
   })
   it('Spatial Coverage handles correct values', async () => {
-    const testId = 'spatialCoverage'
+    const addButton = await waitFor(() =>
+      screen.findByText('Add a Spatial Coverage')
+    )
+
+    fireEvent.click(addButton)
+    const testId = 'spatialCoverage.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
 
     await waitFor(() => {
