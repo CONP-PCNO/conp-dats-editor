@@ -115,6 +115,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     padding: theme.spacing(2)
   },
+  subsection: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2)
+  },
   stepper: {
     padding: theme.spacing(3, 0, 5)
   },
@@ -343,7 +349,7 @@ export const DatsCreatorGui = (props) => {
                         )}
                       </div>
                     ) : null}
-                    {JSON.stringify(values, null, 2)}
+                    {/* {JSON.stringify(values, null, 2)} */}
                   </Form>
                 )}
               </Formik>

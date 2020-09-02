@@ -41,6 +41,13 @@ yarn start
 
 3. The application should now be running at localhost:3000
 
+## Unit tests
+
+1. Tests are in the form *.test.js under the ./src/tests folder. You can run them with
+```bash
+yarn test:unit
+```
+
 ## License
 
 MIT © [CONP-PCNO](https://github.com/CONP-PCNO)
