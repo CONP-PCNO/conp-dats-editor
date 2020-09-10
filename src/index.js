@@ -232,6 +232,7 @@ export const DatsCreatorGui = (props) => {
   const [valuesState, setValuesState] = React.useState(defaultValues)
   const isLastStep = () => activeStep === steps.length - 2
   const shouldShowClearButton = () => activeStep <= steps.length - 2
+  const shouldShowNextButton = () => activeStep <= steps.length - 2
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
@@ -314,7 +315,7 @@ export const DatsCreatorGui = (props) => {
                         >
                           Confirm
                         </Button>
-                      ) : (
+                      ) : shouldShowNextButton() ? (
                         <Button
                           variant='contained'
                           color='primary'
@@ -323,7 +324,7 @@ export const DatsCreatorGui = (props) => {
                         >
                           Next
                         </Button>
-                      )}
+                      ) : null}
                       {isSubmitting && (
                         <CircularProgress
                           size={24}
