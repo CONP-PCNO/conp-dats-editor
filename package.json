@@ -62,6 +62,7 @@
     "formik": "^2.1.5",
     "formik-material-ui": "^3.0.0-alpha.0",
     "formik-material-ui-pickers": "^0.0.11",
+    "moment": "^2.27.0",
     "react-dropzone": "^11.0.3",
     "yup": "^0.29.3"
   }

@@ -364,7 +364,7 @@ export default function ExtraPropertiesForm(props) {
                                             <CustomTextField
                                               fullWidth
                                               label='Description'
-                                              name={`primaryPublications.${index}.dates.${idx}.description`}
+                                              name={`primaryPublications.${index}.dates.${idx}.type.value`}
                                             />
                                           </Grid>
                                           <Grid

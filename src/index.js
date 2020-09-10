@@ -377,7 +377,7 @@ export const DatsCreatorGui = (props) => {
                       )}
                     </div>
                   ) : null}
-                  {/* {JSON.stringify(values, null, 2)} */}
+                  {JSON.stringify(values, null, 2)}
                 </Form>
               )}
             </Formik>

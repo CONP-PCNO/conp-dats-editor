@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 class DatsToForm {
   constructor(data) {
     this.data = data
@@ -123,6 +125,18 @@ class DatsToForm {
         fileName: json.logo
       }
     }
+
+    json.dates = json.dates.map((date) => {
+      return Object.assign(date, { date: moment(date.date) })
+    })
+
+    json.primaryPublications = json.primaryPublications.map((pp) => {
+      return Object.assign(pp, {
+        dates: pp.dates.map((date) => {
+          return Object.assign(date, { date: moment(date.date) })
+        })
+      })
+    })
 
     json.licenses.forEach((license, index) => {
       if (

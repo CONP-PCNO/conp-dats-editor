@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 class FormToDats {
   constructor(data) {
     this.data = data
@@ -10,10 +12,7 @@ class FormToDats {
       identifier: this.data.identifier,
       dates: this.data.dates.map((date) => {
         return {
-          date:
-            typeof date.date === 'object'
-              ? date.date.toISOString().split('T')[0]
-              : date.date,
+          date: moment(date.date).format('YYYY-MM-DD'),
           type: date.type
         }
       }),
@@ -49,7 +48,15 @@ class FormToDats {
           }
         }
       ],
-      primaryPublications: this.data.primaryPublications,
+      primaryPublications: this.data.primaryPublications.map((pp) => {
+        return Object.assign(pp, {
+          dates: pp.dates.map((date) => {
+            return Object.assign(date, {
+              date: moment(date.date).format('YYYY-MM-DD')
+            })
+          })
+        })
+      }),
       isAbout: this.data.isAbout.map((item) => {
         return {
           name: item
