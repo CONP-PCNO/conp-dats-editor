@@ -243,6 +243,7 @@ export const DatsCreatorGui = (props) => {
   const handleNext = () => {
     setTimeout(() => {
       setActiveStep(activeStep + 1)
+      window.scrollTo(0, 0)
     }, 200)
   }
 
@@ -253,6 +254,7 @@ export const DatsCreatorGui = (props) => {
   const handleClear = () => {
     setValuesState(defaultValues)
     setActiveStep(0)
+    window.scrollTo(0, 0)
   }
 
   return (
