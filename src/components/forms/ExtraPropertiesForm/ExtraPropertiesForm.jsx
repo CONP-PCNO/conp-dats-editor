@@ -830,7 +830,7 @@ export default function ExtraPropertiesForm(props) {
                         <Grid item xs={5}>
                           <CustomTextField
                             fullWidth
-                            label='Description'
+                            label='Abbreviation'
                             name={`acknowledges.${index}.abbreviation`}
                           />
                         </Grid>
