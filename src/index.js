@@ -201,9 +201,14 @@ const defaultValues = {
   attachments: []
 }
 
-const steps = ['General Info', 'Distribution', 'Extra Properties']
+const steps = [
+  'General Info',
+  'Distribution',
+  'Extra Properties',
+  'Review & Download'
+]
 
-function renderStep(step, classes, values) {
+function renderStep(step, classes, values, dats) {
   switch (step) {
     case 0:
       return <GeneralForm classes={classes} values={values} />
@@ -211,6 +216,8 @@ function renderStep(step, classes, values) {
       return <DistributionForm classes={classes} values={values} />
     case 2:
       return <ExtraPropertiesForm classes={classes} values={values} />
+    case 3:
+      return <CreateDatsSuccess classes={classes} values={values} dats={dats} />
     default:
       throw new Error('Unknown step')
   }
@@ -223,7 +230,8 @@ export const DatsCreatorGui = (props) => {
   const [activeStep, setActiveStep] = React.useState(props.activeStep || 0)
   const [dats, setDats] = React.useState()
   const [valuesState, setValuesState] = React.useState(defaultValues)
-  const isLastStep = () => activeStep === steps.length - 1
+  const isLastStep = () => activeStep === steps.length - 2
+  const shouldShowClearButton = () => activeStep <= steps.length - 2
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
@@ -257,31 +265,27 @@ export const DatsCreatorGui = (props) => {
             ))}
           </Stepper>
           <React.Fragment>
-            {activeStep === steps.length ? (
-              <CreateDatsSuccess dats={dats} classes={classes} />
-            ) : (
-              <Formik
-                enableReinitialize
-                initialValues={valuesState}
-                validationSchema={validationSchema}
-                validateOnChange={false}
-                onSubmit={(data, { setSubmitting }) => {
-                  setSubmitting(true)
-                  // make async call
-                  const dats = new FormToDats(data)
-                  console.log('submit: ', dats.getJson())
-                  setDats(dats.getJson())
-                  setActiveStep(activeStep + 1)
-                  setSubmitting(false)
-                }}
-              >
-                {({ values, errors, touched, isSubmitting, resetForm }) => (
-                  <Form>
-                    <div className={classes.section}>
-                      <DatsUploader onDatsReceived={onDatsReceived} />
-                    </div>
-                    {renderStep(activeStep, classes, values)}
-                    <div className={classes.buttons}>
+            <Formik
+              enableReinitialize
+              initialValues={valuesState}
+              validationSchema={validationSchema}
+              validateOnChange={false}
+              onSubmit={(data, { setSubmitting }) => {
+                setSubmitting(true)
+                const dats = new FormToDats(data)
+                setDats(dats.getJson())
+                setActiveStep(activeStep + 1)
+                setSubmitting(false)
+              }}
+            >
+              {({ values, errors, touched, isSubmitting, resetForm }) => (
+                <Form>
+                  <div className={classes.section}>
+                    <DatsUploader onDatsReceived={onDatsReceived} />
+                  </div>
+                  {renderStep(activeStep, classes, values, dats)}
+                  <div className={classes.buttons}>
+                    {shouldShowClearButton() ? (
                       <Button
                         variant='contained'
                         onClick={resetForm}
@@ -289,71 +293,71 @@ export const DatsCreatorGui = (props) => {
                       >
                         Clear
                       </Button>
-                      {activeStep !== 0 && (
+                    ) : null}
+                    {activeStep !== 0 && (
+                      <Button
+                        variant='contained'
+                        onClick={handleBack}
+                        className={classes.button}
+                      >
+                        Back
+                      </Button>
+                    )}
+                    <div className={classes.wrapper}>
+                      {isLastStep() ? (
                         <Button
+                          disabled={isSubmitting}
+                          type='submit'
                           variant='contained'
-                          onClick={handleBack}
+                          color='primary'
                           className={classes.button}
                         >
-                          Back
+                          Confirm
+                        </Button>
+                      ) : (
+                        <Button
+                          variant='contained'
+                          color='primary'
+                          onClick={handleNext}
+                          className={classes.button}
+                        >
+                          Next
                         </Button>
                       )}
-                      <div className={classes.wrapper}>
-                        {isLastStep() ? (
-                          <Button
-                            disabled={isSubmitting}
-                            type='submit'
-                            variant='contained'
-                            color='primary'
-                            className={classes.button}
-                          >
-                            Confirm
-                          </Button>
-                        ) : (
-                          <Button
-                            variant='contained'
-                            color='primary'
-                            onClick={handleNext}
-                            className={classes.button}
-                          >
-                            Next
-                          </Button>
-                        )}
-                        {isSubmitting && (
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
-                        )}
-                      </div>
+                      {isSubmitting && (
+                        <CircularProgress
+                          size={24}
+                          className={classes.buttonProgress}
+                        />
+                      )}
                     </div>
-                    {Object.keys(errors).length > 0 ? (
-                      <div className={classes.section}>
-                        <Typography variant='h6' gutterBottom>
-                          To succesfully create the DATS.json file, you must
-                          first resolve issues with the following fields:
-                        </Typography>
-                        {Object.keys(errors).map((key) =>
-                          Object.keys(touched).includes(key) ? (
-                            <Typography
-                              key={'' + Math.random()}
-                              variant='subtitle1'
-                              gutterBottom
-                            >
-                              {key}:{' '}
-                              {Array.isArray(errors[key])
-                                ? errors[key].map((e) => Object.values(e))
-                                : errors[key]}
-                            </Typography>
-                          ) : null
-                        )}
-                      </div>
-                    ) : null}
-                    {/* {JSON.stringify(values, null, 2)} */}
-                  </Form>
-                )}
-              </Formik>
-            )}
+                  </div>
+                  {Object.keys(errors).length > 0 ? (
+                    <div className={classes.section}>
+                      <Typography variant='h6' gutterBottom>
+                        To succesfully create the DATS.json file, you must first
+                        resolve issues with the following fields:
+                      </Typography>
+                      {Object.keys(errors).map((key) =>
+                        Object.keys(touched).includes(key) ? (
+                          <Typography
+                            key={'' + Math.random()}
+                            variant='subtitle1'
+                            gutterBottom
+                          >
+                            {key}:{' '}
+                            {Array.isArray(errors[key])
+                              ? errors[key].map((e) => Object.values(e))
+                              : errors[key]}
+                          </Typography>
+                        ) : null
+                      )}
+                    </div>
+                  ) : null}
+                  {/* {JSON.stringify(values, null, 2)} */}
+                </Form>
+              )}
+            </Formik>
           </React.Fragment>
         </Paper>
       </div>

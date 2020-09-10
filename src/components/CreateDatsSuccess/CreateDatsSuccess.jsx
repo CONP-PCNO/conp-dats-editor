@@ -26,7 +26,11 @@ function CreateDatsSuccess(props) {
         DATS.json created successfully
       </Typography>
       <Typography variant='subtitle1'>
-        Your DATS.json file has been created an is accessible below
+        The DATS.json file has been created and should be accessible below or in
+        your downloaded files. If the file was not automatically downloaded,
+        click on the 'DOWNLOAD' button below to download it. To edit the current
+        DATS file, click on the 'EDIT' button. To start the creation of a new
+        DATS.json file, click on 'CREATE A NEW DATS'.
       </Typography>
       <div className={classes.wrapper}>
         <Button
