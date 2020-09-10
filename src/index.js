@@ -250,6 +250,11 @@ export const DatsCreatorGui = (props) => {
     setActiveStep(activeStep - 1)
   }
 
+  const handleClear = () => {
+    setValuesState(defaultValues)
+    setActiveStep(0)
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -279,7 +284,7 @@ export const DatsCreatorGui = (props) => {
                 setSubmitting(false)
               }}
             >
-              {({ values, errors, touched, isSubmitting, resetForm }) => (
+              {({ values, errors, touched, isSubmitting, handleReset }) => (
                 <Form>
                   <div className={classes.section}>
                     <DatsUploader onDatsReceived={onDatsReceived} />
@@ -289,7 +294,10 @@ export const DatsCreatorGui = (props) => {
                     {shouldShowClearButton() ? (
                       <Button
                         variant='contained'
-                        onClick={resetForm}
+                        onClick={() => {
+                          handleClear()
+                          handleReset()
+                        }}
                         className={classes.button}
                       >
                         Clear
@@ -324,7 +332,19 @@ export const DatsCreatorGui = (props) => {
                         >
                           Next
                         </Button>
-                      ) : null}
+                      ) : (
+                        <Button
+                          variant='contained'
+                          color='primary'
+                          onClick={() => {
+                            handleClear()
+                            handleReset()
+                          }}
+                          className={classes.button}
+                        >
+                          Start again
+                        </Button>
+                      )}
                       {isSubmitting && (
                         <CircularProgress
                           size={24}
