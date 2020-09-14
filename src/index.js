@@ -344,7 +344,7 @@ export const DatsCreatorGui = (props) => {
                           }}
                           className={classes.button}
                         >
-                          Start again
+                          Create a new DATS
                         </Button>
                       )}
                       {isSubmitting && (

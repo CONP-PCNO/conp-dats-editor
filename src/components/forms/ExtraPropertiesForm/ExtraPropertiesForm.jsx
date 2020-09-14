@@ -162,123 +162,147 @@ export default function ExtraPropertiesForm(props) {
                           >
                             {(arrayHelpers) => (
                               <div className={classes.subsection}>
+                                <Grid item>
+                                  <Typography variant='h6' gutterBottom>
+                                    Authors
+                                  </Typography>
+                                </Grid>
                                 <Grid container item spacing={5} xs={12} ml={2}>
                                   {values.primaryPublications[
                                     index
                                   ].authors.map((author, idx) => {
                                     return (
-                                      <Grid
-                                        key={'author_' + idx}
-                                        container
-                                        item
-                                        spacing={3}
-                                        xs={12}
-                                      >
-                                        <Grid item xs={12}>
-                                          <CustomTextField
-                                            fullWidth
-                                            label='Full Name'
-                                            name={`primaryPublications.${index}.authors.${idx}.fullName`}
-                                          />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                          <CustomTextField
-                                            fullWidth
-                                            label='First Name'
-                                            name={`primaryPublications.${index}.authors.${idx}.firstName`}
-                                          />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                          <CustomTextField
-                                            fullWidth
-                                            label='Middle Initial'
-                                            name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
-                                          />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                          <CustomTextField
-                                            fullWidth
-                                            label='Last Name'
-                                            name={`primaryPublications.${index}.authors.${idx}.lastName`}
-                                          />
-                                        </Grid>
-                                        <FieldArray
-                                          name={`primaryPublications.${index}.authors.${idx}.affiliations`}
-                                        >
-                                          {(arrayHelpers) => (
-                                            <div className={classes.subsection}>
-                                              <Grid
-                                                container
-                                                item
-                                                spacing={5}
-                                                xs={12}
-                                              >
-                                                {values.primaryPublications[
-                                                  index
-                                                ].authors[idx].affiliations.map(
-                                                  (affiliation, i) => {
-                                                    return (
-                                                      <Grid
-                                                        key={
-                                                          'affiliation_' + index
-                                                        }
-                                                        container
-                                                        item
-                                                        spacing={3}
-                                                        xs={12}
-                                                      >
-                                                        <Grid item xs={6}>
-                                                          <CustomTextField
-                                                            fullWidth
-                                                            label='Affiliation'
-                                                            name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
-                                                          />
-                                                        </Grid>
-                                                        <Grid
-                                                          container
-                                                          item
-                                                          xs={3}
-                                                          justify='center'
-                                                        >
-                                                          <IconButton
-                                                            color='default'
-                                                            onClick={() =>
-                                                              arrayHelpers.remove(
-                                                                i
-                                                              )
-                                                            }
-                                                          >
-                                                            <CancelIcon />
-                                                          </IconButton>
-                                                        </Grid>
-                                                      </Grid>
-                                                    )
-                                                  }
-                                                )}
-                                                <Grid item xs={6}>
-                                                  <Button
-                                                    variant='outlined'
-                                                    color='secondary'
-                                                    onClick={() => {
-                                                      arrayHelpers.push('')
-                                                    }}
-                                                  >
-                                                    {values.primaryPublications[
-                                                      index
-                                                    ].authors[idx].affiliations
-                                                      .length > 0
-                                                      ? 'Add another Affiliation'
-                                                      : 'Add an Affiliation'}
-                                                  </Button>
-                                                </Grid>
-                                              </Grid>
-                                            </div>
-                                          )}
-                                        </FieldArray>
+                                      <Grid key={'author_' + idx}
+                                      container
+                                      item
+                                      spacing={3}
+                                      xs={12}>
                                         <Grid
                                           container
                                           item
-                                          xs={3}
+                                          spacing={3}
+                                          xs={10}
+                                        >
+                                          <Grid item xs={12}>
+                                            <CustomTextField
+                                              fullWidth
+                                              label='Full Name'
+                                              name={`primaryPublications.${index}.authors.${idx}.fullName`}
+                                            />
+                                          </Grid>
+                                          <Grid item xs={12}>
+                                            <CustomTextField
+                                              fullWidth
+                                              label='First Name'
+                                              name={`primaryPublications.${index}.authors.${idx}.firstName`}
+                                            />
+                                          </Grid>
+                                          <Grid item xs={12}>
+                                            <CustomTextField
+                                              fullWidth
+                                              label='Middle Initial'
+                                              name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
+                                            />
+                                          </Grid>
+                                          <Grid item xs={12}>
+                                            <CustomTextField
+                                              fullWidth
+                                              label='Last Name'
+                                              name={`primaryPublications.${index}.authors.${idx}.lastName`}
+                                            />
+                                          </Grid>
+                                          <FieldArray
+                                            name={`primaryPublications.${index}.authors.${idx}.affiliations`}
+                                          >
+                                            {(arrayHelpers) => (
+                                              <div
+                                                className={classes.subsection}
+                                              >
+                                                <Grid item>
+                                                  <Typography
+                                                    variant='h6'
+                                                    gutterBottom
+                                                  >
+                                                    Affiliations
+                                                  </Typography>
+                                                </Grid>
+                                                <Grid
+                                                  container
+                                                  item
+                                                  spacing={5}
+                                                  xs={12}
+                                                >
+                                                  {values.primaryPublications[
+                                                    index
+                                                  ].authors[
+                                                    idx
+                                                  ].affiliations.map(
+                                                    (affiliation, i) => {
+                                                      return (
+                                                        <Grid
+                                                          key={
+                                                            'affiliation_' +
+                                                            index
+                                                          }
+                                                          container
+                                                          item
+                                                          spacing={3}
+                                                          xs={12}
+                                                        >
+                                                          <Grid item xs={6}>
+                                                            <CustomTextField
+                                                              fullWidth
+                                                              label='Affiliation'
+                                                              name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
+                                                            />
+                                                          </Grid>
+                                                          <Grid
+                                                            container
+                                                            item
+                                                            xs={3}
+                                                            justify='center'
+                                                          >
+                                                            <IconButton
+                                                              color='default'
+                                                              onClick={() =>
+                                                                arrayHelpers.remove(
+                                                                  i
+                                                                )
+                                                              }
+                                                            >
+                                                              <CancelIcon />
+                                                            </IconButton>
+                                                          </Grid>
+                                                        </Grid>
+                                                      )
+                                                    }
+                                                  )}
+                                                  <Grid item xs={6}>
+                                                    <Button
+                                                      variant='outlined'
+                                                      color='secondary'
+                                                      onClick={() => {
+                                                        arrayHelpers.push('')
+                                                      }}
+                                                    >
+                                                      {values
+                                                        .primaryPublications[
+                                                        index
+                                                      ].authors[idx]
+                                                        .affiliations.length > 0
+                                                        ? 'Add another Affiliation'
+                                                        : 'Add an Affiliation'}
+                                                    </Button>
+                                                  </Grid>
+                                                </Grid>
+                                              </div>
+                                            )}
+                                          </FieldArray>
+                                        </Grid>
+                                        <Grid
+                                          container
+                                          item
+                                          xs={2}
                                           justify='center'
                                         >
                                           <IconButton
