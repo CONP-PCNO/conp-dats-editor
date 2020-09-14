@@ -1,11 +1,8 @@
 import React from 'react'
 import {
-  Grid,
   Typography,
   Button,
   MenuItem,
-  Tooltip,
-  IconButton,
   Divider,
   FormControlLabel,
   Radio,
@@ -18,11 +15,9 @@ import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
-import InfoIcon from '@material-ui/icons/Info'
-import CancelIcon from '@material-ui/icons/Cancel'
 
 export default function GeneralForm(props) {
-  const { classes, values } = props
+  const { values } = props
   return (
     <React.Fragment>
       <Typography variant='h5' gutterBottom>
