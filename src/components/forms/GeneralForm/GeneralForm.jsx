@@ -128,7 +128,7 @@ export default function GeneralForm(props) {
                   </FieldGroup>
                 )
               })}
-              <Grid item xs={6}>
+              <Box py={1}>
                 <Button
                   variant='outlined'
                   color='secondary'
@@ -138,206 +138,122 @@ export default function GeneralForm(props) {
                 >
                   Add another Type
                 </Button>
-              </Grid>
+              </Box>
             </Box>
           )}
         </FieldArray>
       </Section>
       <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
-                  Version
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip
-                  title='Version number of the dataset'
-                  placement='right'
+      <Section>
+        <SectionTitle name='Version' tooltip='Version number of the dataset' />
+        <CustomTextField label='Version' name='version' />
+      </Section>
+      <Divider variant='middle' />
+      <Section>
+        <SectionTitle name='Licenses' tooltip='Dataset Licenses' />
+        <FieldArray name='licenses'>
+          {(arrayHelpers) => (
+            <Box display='flex flex-column'>
+              {values.licenses.map((license, index) => {
+                return (
+                  <FieldGroup
+                    key={'license_' + index}
+                    index={index}
+                    arrayHelpers={arrayHelpers}
+                  >
+                    <CustomRadioGroup
+                      name={`licenses.${index}.type`}
+                      label='Type'
+                    >
+                      <FormControlLabel
+                        value='creativeCommons'
+                        control={<Radio />}
+                        label='Creative Commons'
+                      />
+                      <FormControlLabel
+                        value='other'
+                        control={<Radio />}
+                        label='Other'
+                      />
+                    </CustomRadioGroup>
+                    {license.type === 'creativeCommons' ? (
+                      <CustomSelectField
+                        required
+                        label='License'
+                        name={`licenses.${index}.value`}
+                      >
+                        <MenuItem value='CC BY'>CC BY</MenuItem>
+                        <MenuItem value='CC BY-SA'>CC BY-SA</MenuItem>
+                        <MenuItem value='CC BY-NC'>CC BY-NC</MenuItem>
+                        <MenuItem value='CC BY-NC-SA'>CC BY-NC-SA</MenuItem>
+                        <MenuItem value='CC BY-ND'>CC BY-ND</MenuItem>
+                        <MenuItem value='CC BY-NC-ND'>CC BY-NC-ND</MenuItem>
+                      </CustomSelectField>
+                    ) : (
+                      <CustomTextField
+                        fullWidth
+                        label='License'
+                        name={`licenses.${index}.value`}
+                      />
+                    )}
+                  </FieldGroup>
+                )
+              })}
+              <Box py={1}>
+                <Button
+                  variant='outlined'
+                  color='secondary'
+                  onClick={() => {
+                    arrayHelpers.push({
+                      type: 'creativeCommons',
+                      value: ''
+                    })
+                  }}
                 >
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <Grid item xs={5}>
-              <CustomTextField fullWidth label='Version' name='version' />
-            </Grid>
-          </Grid>
-        </Grid>
-      </div>
+                  Add another License
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </FieldArray>
+      </Section>
       <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
-                  Licenses
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='Dataset Licenses' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <FieldArray name='licenses'>
-              {(arrayHelpers) => (
-                <Grid container item spacing={5} xs={12}>
-                  {values.licenses.map((license, index) => {
-                    return (
-                      <Grid
-                        key={'license_' + index}
-                        container
-                        item
-                        spacing={3}
-                        xs={12}
-                      >
-                        <Grid item xs={3}>
-                          <CustomRadioGroup
-                            name={`licenses.${index}.type`}
-                            label='Type'
-                          >
-                            <FormControlLabel
-                              value='creativeCommons'
-                              control={<Radio />}
-                              label='Creative Commons'
-                            />
-                            <FormControlLabel
-                              value='other'
-                              control={<Radio />}
-                              label='Other'
-                            />
-                          </CustomRadioGroup>
-                        </Grid>
-                        <Grid item xs={6}>
-                          {license.type === 'creativeCommons' ? (
-                            <CustomSelectField
-                              required
-                              label='License'
-                              name={`licenses.${index}.value`}
-                            >
-                              <MenuItem value='CC BY'>CC BY</MenuItem>
-                              <MenuItem value='CC BY-SA'>CC BY-SA</MenuItem>
-                              <MenuItem value='CC BY-NC'>CC BY-NC</MenuItem>
-                              <MenuItem value='CC BY-NC-SA'>
-                                CC BY-NC-SA
-                              </MenuItem>
-                              <MenuItem value='CC BY-ND'>CC BY-ND</MenuItem>
-                              <MenuItem value='CC BY-NC-ND'>
-                                CC BY-NC-ND
-                              </MenuItem>
-                            </CustomSelectField>
-                          ) : (
-                            <CustomTextField
-                              fullWidth
-                              label='License'
-                              name={`licenses.${index}.value`}
-                            />
-                          )}
-                        </Grid>
-                        <Grid container item xs={3} justify='center'>
-                          {index !== 0 && (
-                            <IconButton
-                              color='default'
-                              onClick={() => arrayHelpers.remove(index)}
-                            >
-                              <CancelIcon />
-                            </IconButton>
-                          )}
-                        </Grid>
-                      </Grid>
-                    )
-                  })}
-                  <Grid item xs={6}>
-                    <Button
-                      variant='outlined'
-                      color='secondary'
-                      onClick={() => {
-                        arrayHelpers.push({
-                          type: 'creativeCommons',
-                          value: ''
-                        })
-                      }}
-                    >
-                      Add another License
-                    </Button>
-                  </Grid>
-                </Grid>
-              )}
-            </FieldArray>
-          </Grid>
-        </Grid>
-      </div>
-      <Divider variant='middle' />
-      <div className={classes.section}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Grid container direction='row' spacing={1}>
-              <Grid item>
-                <Typography variant='h6' gutterBottom>
-                  Keywords
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Tooltip title='Dataset Keywords' placement='right'>
-                  <InfoIcon fontSize='small' color='action' />
-                </Tooltip>
-              </Grid>
-            </Grid>
-            <FieldArray name='keywords'>
-              {(arrayHelpers) => (
-                <Grid container item spacing={5} xs={12}>
-                  {values.keywords.map((keyword, index) => {
-                    return (
-                      <Grid
-                        key={'keyword_' + index}
-                        container
-                        item
-                        spacing={3}
-                        xs={12}
-                      >
-                        <Grid item xs={6}>
-                          <CustomTextField
-                            required
-                            fullWidth
-                            label='Keyword'
-                            name={`keywords.${index}`}
-                          />
-                        </Grid>
-                        <Grid container item xs={3} justify='center'>
-                          {index !== 0 && (
-                            <IconButton
-                              color='default'
-                              onClick={() => arrayHelpers.remove(index)}
-                            >
-                              <CancelIcon />
-                            </IconButton>
-                          )}
-                        </Grid>
-                      </Grid>
-                    )
-                  })}
-                  <Grid item xs={6}>
-                    <Button
-                      variant='outlined'
-                      color='secondary'
-                      onClick={() => {
-                        arrayHelpers.push('')
-                      }}
-                    >
-                      Add another Keyword
-                    </Button>
-                  </Grid>
-                </Grid>
-              )}
-            </FieldArray>
-          </Grid>
-        </Grid>
-      </div>
+      <Section>
+        <SectionTitle name='Keywords' tooltip='Dataset Keywords' />
+        <FieldArray name='keywords'>
+          {(arrayHelpers) => (
+            <Box display='flex flex-column'>
+              {values.keywords.map((keyword, index) => {
+                return (
+                  <FieldGroup
+                    key={'keyword_' + index}
+                    index={index}
+                    arrayHelpers={arrayHelpers}
+                  >
+                    <CustomTextField
+                      required
+                      fullWidth
+                      label='Keyword'
+                      name={`keywords.${index}`}
+                    />
+                  </FieldGroup>
+                )
+              })}
+              <Box py={1}>
+                <Button
+                  variant='outlined'
+                  color='secondary'
+                  onClick={() => {
+                    arrayHelpers.push('')
+                  }}
+                >
+                  Add another Keyword
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </FieldArray>
+      </Section>
     </React.Fragment>
   )
 }
