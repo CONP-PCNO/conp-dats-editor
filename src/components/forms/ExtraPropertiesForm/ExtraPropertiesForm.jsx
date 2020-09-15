@@ -413,8 +413,40 @@ export default function ExtraPropertiesForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Is About' tooltip='What this dataset is about' />
-        <CustomTextField label='Is About' name='isAbout' />
+        <SectionTitle
+          name='Is About'
+          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset'
+        />
+        <FieldArray name='isAbout'>
+          {(arrayHelpers) => (
+            <Box display='flex flex-column'>
+              {values.isAbout.map((s, index) => {
+                return (
+                  <FieldGroup
+                    key={'isAbout_' + index}
+                    index={index}
+                    arrayHelpers={arrayHelpers}
+                  >
+                    <CustomTextField label='Name' name={`isAbout.${index}`} />
+                  </FieldGroup>
+                )
+              })}
+              <Box py={1}>
+                <Button
+                  variant='outlined'
+                  color='secondary'
+                  onClick={() => {
+                    arrayHelpers.push('')
+                  }}
+                >
+                  {values.isAbout.length > 0
+                    ? 'Add another Entity'
+                    : 'Add an Entity'}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </FieldArray>
       </Section>
       <Divider variant='middle' />
       <Section>
