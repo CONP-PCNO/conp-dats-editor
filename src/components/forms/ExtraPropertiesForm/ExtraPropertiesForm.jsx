@@ -51,6 +51,8 @@ export default function ExtraPropertiesForm(props) {
               {values.primaryPublications.map((primaryPublication, index) => {
                 return (
                   <FieldGroup
+                    column
+                    indexed
                     key={'primaryPublication_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
@@ -65,13 +67,19 @@ export default function ExtraPropertiesForm(props) {
                     />
                     <FieldArray name={`primaryPublications.${index}.authors`}>
                       {(arrayHelpers) => (
-                        <Box display='flex flex-column'>
+                        <Section>
+                          <SectionTitle
+                            name='Authors'
+                            tooltip='Authors of the publication'
+                          />
                           {values.primaryPublications[index].authors.map(
                             (author, idx) => {
                               return (
                                 <FieldGroup
+                                  column
+                                  indexed
                                   key={'author_' + index}
-                                  index={index}
+                                  index={idx}
                                   arrayHelpers={arrayHelpers}
                                 >
                                   <CustomTextField
@@ -94,15 +102,21 @@ export default function ExtraPropertiesForm(props) {
                                     name={`primaryPublications.${index}.authors.${idx}.affiliations`}
                                   >
                                     {(arrayHelpers) => (
-                                      <Box display='flex flex-column'>
+                                      <Section>
+                                        <SectionTitle
+                                          name='Affiliations'
+                                          tooltip='Author affiliations'
+                                        />
                                         {values.primaryPublications[
                                           index
                                         ].authors[idx].affiliations.map(
                                           (affiliation, i) => {
                                             return (
                                               <FieldGroup
+                                                column
+                                                indexed
                                                 key={'affiliation_' + index}
-                                                index={index}
+                                                index={i}
                                                 arrayHelpers={arrayHelpers}
                                               >
                                                 <CustomTextField
@@ -128,7 +142,7 @@ export default function ExtraPropertiesForm(props) {
                                               : 'Add an Affiliation'}
                                           </Button>
                                         </Box>
-                                      </Box>
+                                      </Section>
                                     )}
                                   </FieldArray>
                                 </FieldGroup>
@@ -155,7 +169,7 @@ export default function ExtraPropertiesForm(props) {
                                 : 'Add an Author'}
                             </Button>
                           </Box>
-                        </Box>
+                        </Section>
                       )}
                     </FieldArray>
                     <Section>

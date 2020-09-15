@@ -1,22 +1,35 @@
 import React from 'react'
-import { IconButton, Box } from '@material-ui/core'
+import { IconButton, Box, Typography } from '@material-ui/core'
 import CancelIcon from '@material-ui/icons/Cancel'
 
 const FieldGroup = (props) => {
   return (
     <Box
       key={props.key}
-      display='flex'
-      justifyContent='space-between'
+      display={props.column ? 'flex flex-column' : 'flex'}
       flexWrap='wrap'
-      py={1}
+      alignItems={props.column ? 'stretch' : 'center'}
+      width='100%'
+      my={2}
     >
+      {props.indexed ? (
+        <Typography variant='subtitle1'>{props.index + 1 + '. '}</Typography>
+      ) : null}
       {Array.isArray(props.children) ? (
         props.children.map((child, index) => {
-          return <Box key={props.key + '_' + index}>{child}</Box>
+          return (
+            <Box
+              key={props.key + '_' + index}
+              display='flex'
+              justifyContent='space-between'
+              m={1}
+            >
+              {child}
+            </Box>
+          )
         })
       ) : (
-        <Box>{props.children}</Box>
+        <Box p={1}>{props.children}</Box>
       )}
       <Box>
         {props.index !== 0 && (
