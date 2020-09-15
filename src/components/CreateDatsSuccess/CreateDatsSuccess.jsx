@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Typography } from '@material-ui/core'
+import moment from 'moment'
 
 const downloadDats = (dats) => {
   var element = document.createElement('a')
@@ -8,7 +9,10 @@ const downloadDats = (dats) => {
     'data:text/plain;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(dats, null, 2))
   )
-  element.setAttribute('download', 'DATS.json')
+  element.setAttribute(
+    'download',
+    `DATS_${moment().format('YYMMDDHHmmss')}.json`
+  )
 
   element.style.display = 'none'
   document.body.appendChild(element)
