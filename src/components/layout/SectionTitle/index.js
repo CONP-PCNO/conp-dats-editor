@@ -7,7 +7,10 @@ const SectionTitle = (props) => {
     <Grid item xs={12}>
       <Grid container direction='row' spacing={1}>
         <Grid item>
-          <Typography variant='h6' gutterBottom>
+          <Typography
+            variant={props.subsection ? 'subtitle1' : 'h6'}
+            gutterBottom
+          >
             {props.name}
           </Typography>
         </Grid>

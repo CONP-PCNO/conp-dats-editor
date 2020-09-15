@@ -8,6 +8,7 @@ const CustomTextField = ({ ...props }) => {
       component={TextField}
       {...props}
       variant='outlined'
+      fullWidth
       inputProps={{
         'data-testid': `${props.name}`
       }}

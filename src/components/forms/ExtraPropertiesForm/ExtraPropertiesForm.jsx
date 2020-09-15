@@ -67,8 +67,9 @@ export default function ExtraPropertiesForm(props) {
                     />
                     <FieldArray name={`primaryPublications.${index}.authors`}>
                       {(arrayHelpers) => (
-                        <Section>
+                        <Section subsection>
                           <SectionTitle
+                            subsection
                             name='Authors'
                             tooltip='Authors of the publication'
                           />
@@ -102,8 +103,9 @@ export default function ExtraPropertiesForm(props) {
                                     name={`primaryPublications.${index}.authors.${idx}.affiliations`}
                                   >
                                     {(arrayHelpers) => (
-                                      <Section>
+                                      <Section subsection>
                                         <SectionTitle
+                                          subsection
                                           name='Affiliations'
                                           tooltip='Author affiliations'
                                         />
@@ -172,8 +174,9 @@ export default function ExtraPropertiesForm(props) {
                         </Section>
                       )}
                     </FieldArray>
-                    <Section>
+                    <Section subsection>
                       <SectionTitle
+                        subsection
                         name='Dates'
                         tooltip='Relevant dates for the publication. If you provide a date, it must come with a description of the date'
                       />
@@ -226,8 +229,9 @@ export default function ExtraPropertiesForm(props) {
                         )}
                       </FieldArray>
                     </Section>
-                    <Section>
+                    <Section subsection>
                       <SectionTitle
+                        subsection
                         name='Identifier'
                         tooltip='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
                       />

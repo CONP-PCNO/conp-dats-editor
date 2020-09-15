@@ -116,7 +116,6 @@ export default function GeneralForm(props) {
                   >
                     <CustomTextField
                       required
-                      fullWidth
                       label='Type'
                       name={`types.${index}`}
                     />
@@ -186,7 +185,6 @@ export default function GeneralForm(props) {
                       </CustomSelectField>
                     ) : (
                       <CustomTextField
-                        fullWidth
                         label='License'
                         name={`licenses.${index}.value`}
                       />
@@ -227,7 +225,6 @@ export default function GeneralForm(props) {
                   >
                     <CustomTextField
                       required
-                      fullWidth
                       label='Keyword'
                       name={`keywords.${index}`}
                     />
