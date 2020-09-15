@@ -138,7 +138,7 @@ describe('General Form: field values and errors', () => {
     })
 
     await waitFor(() => {
-      expect(input.value).toBe('pi')
+      expect(input.value).toBe('Principal Investigator')
     })
   })
   it('description handles errors', async () => {

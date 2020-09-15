@@ -16,7 +16,14 @@ class FormToDats {
           type: date.type
         }
       }),
-      creators: this.data.creators,
+      creators: this.data.creators.map((creator) => {
+        const c = {
+          name: creator.name
+        }
+        if (creator.role) c.role = creator.role
+        if (creator.email) c.email = creator.email
+        return c
+      }),
       types: this.data.types.map((type) => {
         return {
           information: {

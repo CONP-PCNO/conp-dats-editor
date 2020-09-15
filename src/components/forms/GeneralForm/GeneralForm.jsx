@@ -61,8 +61,13 @@ export default function GeneralForm(props) {
                       label='Role'
                       required
                     >
-                      <MenuItem value='pi'>Principal Investigator</MenuItem>
-                      <MenuItem value='contributor'>Contributor</MenuItem>
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value='Principal Investigator'>
+                        Principal Investigator
+                      </MenuItem>
+                      <MenuItem value='Contributor'>Contributor</MenuItem>
                     </CustomSelectField>
                   </FieldGroup>
                 )

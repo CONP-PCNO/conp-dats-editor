@@ -138,7 +138,7 @@ const defaultValues = {
   title: '',
   creators: [
     {
-      role: 'pi',
+      role: 'Principal Investigator',
       name: '',
       email: ''
     }

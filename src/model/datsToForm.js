@@ -13,7 +13,7 @@ class DatsToForm {
           return {
             name: a.name,
             email: '',
-            role: 'contributor'
+            role: 'Contributor'
           }
         }) || [],
       contact:
