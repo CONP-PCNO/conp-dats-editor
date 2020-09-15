@@ -26,7 +26,7 @@ export default function ExtraPropertiesForm(props) {
         <SectionTitle name='Origin' tooltip='The origin of this dataset' />
         <CustomTextField label='Institution' name='origin.institution' />
         <CustomTextField label='Consortium' name='origin.consortium' />
-        <CustomTextField fullWidth label='City' name='origin.city' />
+        <CustomTextField label='City' name='origin.city' />
         <CustomTextField label='Province' name='origin.province' />
         <CustomTextField label='Country' name='origin.country' />
       </Section>
@@ -36,12 +36,8 @@ export default function ExtraPropertiesForm(props) {
           name='Derived From'
           tooltip='The sources this dataset is derived from'
         />
-        <CustomTextField fullWidth label='Derived From' name='derivedFrom' />
-        <CustomTextField
-          fullWidth
-          label='Parent dataset id'
-          name='parentDatasetId'
-        />
+        <CustomTextField label='Derived From' name='derivedFrom' />
+        <CustomTextField label='Parent dataset id' name='parentDatasetId' />
       </Section>
       <Divider variant='middle' />
       <Section>
@@ -60,12 +56,10 @@ export default function ExtraPropertiesForm(props) {
                     arrayHelpers={arrayHelpers}
                   >
                     <CustomTextField
-                      fullWidth
                       label='Title'
                       name={`primaryPublications.${index}.title`}
                     />
                     <CustomTextField
-                      fullWidth
                       label='Publication Venue'
                       name={`primaryPublications.${index}.publicationVenue`}
                     />
@@ -81,22 +75,18 @@ export default function ExtraPropertiesForm(props) {
                                   arrayHelpers={arrayHelpers}
                                 >
                                   <CustomTextField
-                                    fullWidth
                                     label='Full Name'
                                     name={`primaryPublications.${index}.authors.${idx}.fullName`}
                                   />
                                   <CustomTextField
-                                    fullWidth
                                     label='First Name'
                                     name={`primaryPublications.${index}.authors.${idx}.firstName`}
                                   />
                                   <CustomTextField
-                                    fullWidth
                                     label='Middle Initial'
                                     name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
                                   />
                                   <CustomTextField
-                                    fullWidth
                                     label='Last Name'
                                     name={`primaryPublications.${index}.authors.${idx}.lastName`}
                                   />
@@ -116,7 +106,6 @@ export default function ExtraPropertiesForm(props) {
                                                 arrayHelpers={arrayHelpers}
                                               >
                                                 <CustomTextField
-                                                  fullWidth
                                                   label='Affiliation'
                                                   name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
                                                 />
@@ -196,7 +185,6 @@ export default function ExtraPropertiesForm(props) {
                                       />
                                     </MuiPickersUtilsProvider>
                                     <CustomTextField
-                                      fullWidth
                                       label='Description'
                                       name={`primaryPublications.${index}.dates.${idx}.type.value`}
                                     />
@@ -230,12 +218,10 @@ export default function ExtraPropertiesForm(props) {
                         tooltip='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
                       />
                       <CustomTextField
-                        fullWidth
                         label='Identifier'
                         name={`primaryPublications.${index}.identifier.identifier`}
                       />
                       <CustomTextField
-                        fullWidth
                         label='Source'
                         name={`primaryPublications.${index}.identifier.identifierSource`}
                       />
@@ -286,12 +272,10 @@ export default function ExtraPropertiesForm(props) {
                     arrayHelpers={arrayHelpers}
                   >
                     <CustomTextField
-                      fullWidth
                       label='Name'
                       name={`dimensions.${index}.name`}
                     />
                     <CustomTextField
-                      fullWidth
                       label='Description'
                       name={`dimensions.${index}.description`}
                     />
@@ -324,16 +308,8 @@ export default function ExtraPropertiesForm(props) {
           name='Identifier'
           tooltip='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
         />
-        <CustomTextField
-          fullWidth
-          label='Identifier'
-          name='identifier.identifier'
-        />
-        <CustomTextField
-          fullWidth
-          label='Source'
-          name='identifier.identifierSource'
-        />
+        <CustomTextField label='Identifier' name='identifier.identifier' />
+        <CustomTextField label='Source' name='identifier.identifierSource' />
       </Section>
       <Divider variant='middle' />
       <Section>
@@ -341,8 +317,8 @@ export default function ExtraPropertiesForm(props) {
           name='Contact'
           tooltip='Contact information for this dataset'
         />
-        <CustomTextField fullWidth label='Name' name='contact.name' />
-        <CustomTextField fullWidth label='Email' name='contact.email' />
+        <CustomTextField label='Name' name='contact.name' />
+        <CustomTextField label='Email' name='contact.email' />
       </Section>
       <Divider variant='middle' />
       <Section>
@@ -356,13 +332,9 @@ export default function ExtraPropertiesForm(props) {
           />
         </CustomRadioGroup>
         {values.logo.type === 'url' ? (
-          <CustomTextField fullWidth label='URL' name='logo.url' />
+          <CustomTextField label='URL' name='logo.url' />
         ) : (
-          <CustomTextField
-            fullWidth
-            label='Path to File'
-            name='logo.fileName'
-          />
+          <CustomTextField label='Path to File' name='logo.fileName' />
         )}
       </Section>
       <Section>
@@ -389,7 +361,6 @@ export default function ExtraPropertiesForm(props) {
                       />
                     </MuiPickersUtilsProvider>
                     <CustomTextField
-                      fullWidth
                       label='Description'
                       name={`dates.${index}.type.value`}
                     />
@@ -444,12 +415,10 @@ export default function ExtraPropertiesForm(props) {
                     arrayHelpers={arrayHelpers}
                   >
                     <CustomTextField
-                      fullWidth
                       label='Name'
                       name={`acknowledges.${index}.name`}
                     />
                     <CustomTextField
-                      fullWidth
                       label='Abbreviation'
                       name={`acknowledges.${index}.abbreviation`}
                     />
@@ -493,12 +462,10 @@ export default function ExtraPropertiesForm(props) {
                     arrayHelpers={arrayHelpers}
                   >
                     <CustomTextField
-                      fullWidth
                       label='Name'
                       name={`spatialCoverage.${index}.name`}
                     />
                     <CustomTextField
-                      fullWidth
                       label='Description'
                       name={`spatialCoverage.${index}.description`}
                     />
