@@ -20,7 +20,12 @@ class FormToDats {
         const c = {
           name: creator.name
         }
-        if (creator.role) c.role = creator.role
+        if (creator.role)
+          c.roles = [
+            {
+              value: creator.role
+            }
+          ]
         if (creator.email) c.email = creator.email
         return c
       }),
@@ -109,7 +114,6 @@ class FormToDats {
             }
           ]
         },
-
         {
           category: 'CONP_status',
           values: [
@@ -118,26 +122,6 @@ class FormToDats {
             }
           ]
         },
-        this.data.origin.institution
-          ? {
-              category: 'origin_institution',
-              values: [
-                {
-                  value: this.data.origin.institution
-                }
-              ]
-            }
-          : null,
-        this.data.origin.consortium
-          ? {
-              category: 'origin_consortium',
-              values: [
-                {
-                  value: this.data.origin.consortium
-                }
-              ]
-            }
-          : null,
         {
           category: 'origin_city',
           values: [
@@ -199,6 +183,33 @@ class FormToDats {
         }
       ]
     }
+
+    if (this.data.origin.institution)
+      json.extraProperties.splice(
+        json.extraProperties.findIndex((e) => e.category === 'CONP_status') + 1,
+        0,
+        {
+          category: 'origin_institution',
+          values: [
+            {
+              value: this.data.origin.institution
+            }
+          ]
+        }
+      )
+    if (this.data.origin.consortium)
+      json.extraProperties.splice(
+        json.extraProperties.findIndex((e) => e.category === 'CONP_status') + 1,
+        0,
+        {
+          category: 'origin_consortium',
+          values: [
+            {
+              value: this.data.origin.consortium
+            }
+          ]
+        }
+      )
 
     return Object.assign({}, json)
   }
