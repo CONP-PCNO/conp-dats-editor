@@ -180,6 +180,22 @@ class FormToDats {
               value: `${this.data.contact.name}, ${this.data.contact.email}`
             }
           ]
+        },
+        {
+          category: 'derivedFrom',
+          values: [
+            {
+              value: this.data.derivedFrom
+            }
+          ]
+        },
+        {
+          category: 'parent_dataset_id',
+          values: [
+            {
+              value: this.data.parentDatasetId
+            }
+          ]
         }
       ]
     }

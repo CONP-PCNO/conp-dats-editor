@@ -13,7 +13,7 @@ class DatsToForm {
           return {
             name: a.name,
             email: '',
-            role: 'Contributor'
+            role: ''
           }
         }) || [],
       contact:
@@ -83,8 +83,14 @@ class DatsToForm {
             ?.filter((p) => p.category === 'origin_country')[0]
             ?.values.map((a) => a.value)[0] || ''
       },
-      derivedFrom: '',
-      parentDatasetId: '',
+      derivedFrom:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'derivedFrom')[0]
+          .values.map((a) => a.value)[0] || '',
+      parentDatasetId:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'parent_dataset_id')[0]
+          .values.map((a) => a.value)[0] || '',
       primaryPublications: this.data.primaryPublications || [],
       dimensions:
         this.data.dimensions?.map((a) => {
