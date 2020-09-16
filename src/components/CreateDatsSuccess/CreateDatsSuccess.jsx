@@ -29,12 +29,17 @@ function CreateDatsSuccess(props) {
       <Typography variant='h5' gutterBottom>
         DATS.json created successfully
       </Typography>
-      <Typography variant='subtitle1'>
+      <Typography variant='body1' gutterBottom>
         The DATS.json file has been created and should be accessible below or in
         your downloaded files. If the file was not automatically downloaded,
-        click on the 'DOWNLOAD' button below to download it. To edit the current
-        DATS file, click on the 'EDIT' button. To start the creation of a new
-        DATS.json file, click on 'CREATE A NEW DATS'.
+        click on the 'DOWNLOAD' button below to download it.
+      </Typography>
+      <Typography variant='body1' gutterBottom>
+        To edit the current DATS file, click on the 'EDIT' button.
+      </Typography>
+      <Typography variant='body1' gutterBottom>
+        To start the creation of a new DATS.json file, click on 'CREATE A NEW
+        DATS'.
       </Typography>
       <div className={classes.wrapper}>
         <Button

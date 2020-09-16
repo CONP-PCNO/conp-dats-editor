@@ -233,6 +233,7 @@ export const DatsCreatorGui = (props) => {
   const isLastStep = () => activeStep === steps.length - 2
   const shouldShowClearButton = () => activeStep <= steps.length - 2
   const shouldShowNextButton = () => activeStep <= steps.length - 2
+  const shouldShowUploader = () => activeStep <= steps.length - 2
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
@@ -288,9 +289,11 @@ export const DatsCreatorGui = (props) => {
             >
               {({ values, errors, touched, isSubmitting, handleReset }) => (
                 <Form>
-                  <div className={classes.section}>
-                    <DatsUploader onDatsReceived={onDatsReceived} />
-                  </div>
+                  {shouldShowUploader() ? (
+                    <div className={classes.section}>
+                      <DatsUploader onDatsReceived={onDatsReceived} />
+                    </div>
+                  ) : null}
                   {renderStep(activeStep, classes, values, dats)}
                   <div className={classes.buttons}>
                     {shouldShowClearButton() ? (
@@ -311,7 +314,7 @@ export const DatsCreatorGui = (props) => {
                         onClick={handleBack}
                         className={classes.button}
                       >
-                        Back
+                        {shouldShowNextButton() ? 'Back' : 'Edit'}
                       </Button>
                     )}
                     <div className={classes.wrapper}>
