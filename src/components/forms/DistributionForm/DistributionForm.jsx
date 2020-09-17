@@ -100,8 +100,8 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle name='CONP Status' tooltip='CONP Status' />
         <CustomSelectField name='conpStatus' label='CONP Status'>
-          <MenuItem value='conp'>CONP</MenuItem>
-          <MenuItem value='canadian'>Canadian</MenuItem>
+          <MenuItem value='CONP'>CONP</MenuItem>
+          <MenuItem value='Canadian'>Canadian</MenuItem>
           <MenuItem value='external'>External</MenuItem>
         </CustomSelectField>
       </Section>

@@ -59,8 +59,7 @@ class DatsToForm {
       conpStatus:
         this.data.extraProperties
           ?.filter((p) => p.category === 'CONP_status')[0]
-          ?.values.map((a) => a.value)[0]
-          .toLowerCase() || '',
+          ?.values.map((a) => a.value)[0] || '',
       origin: {
         institution:
           this.data.extraProperties
