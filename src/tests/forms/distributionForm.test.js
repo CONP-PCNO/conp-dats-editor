@@ -176,13 +176,13 @@ describe('Distribution Form: field values and errors', () => {
     await waitFor(() => {
       fireEvent.change(input, {
         target: {
-          value: 'conp'
+          value: 'CONP'
         }
       })
     })
 
     await waitFor(() => {
-      expect(input.value).toBe('conp')
+      expect(input.value).toBe('CONP')
     })
   })
 })
