@@ -1,13 +1,13 @@
-# dats-creator-gui
+# conp-dats-editor
 
 > Graphical user interface for creating dats.json files
 
-[![NPM](https://img.shields.io/npm/v/dats-creator-gui.svg)](https://www.npmjs.com/package/dats-creator-gui) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/conp-dats-editor.svg)](https://www.npmjs.com/package/conp-dats-editor) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save dats-creator-gui
+npm install --save conp-dats-editor
 ```
 
 ## Usage
@@ -15,11 +15,11 @@ npm install --save dats-creator-gui
 ```jsx
 import React, { Component } from 'react'
 
-import DatsCreatorGui from 'dats-creator-gui'
+import DatsEditorForm from 'conp-dats-editor'
 
 class Example extends Component {
   render() {
-    return <DatsCreatorGui />
+    return <DatsEditorForm />
   }
 }
 ```

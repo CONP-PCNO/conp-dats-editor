@@ -223,7 +223,7 @@ function renderStep(step, classes, values, dats) {
   }
 }
 
-export const DatsCreatorGui = (props) => {
+export const DatsEditorForm = (props) => {
   const validationSchema = props.validationSchema || defaultValidationSchema
   const classes = useStyles()
 

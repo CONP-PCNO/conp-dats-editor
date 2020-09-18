@@ -7,12 +7,12 @@ import {
   fireEvent
 } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import { DatsCreatorGui } from '../..'
+import { DatsEditorForm } from '../..'
 import { defaultSchema } from '../schemas/defaultSchema'
 
 describe('General Form: field values and errors', () => {
   beforeEach(() => {
-    render(<DatsCreatorGui validationSchema={defaultSchema} />)
+    render(<DatsEditorForm validationSchema={defaultSchema} />)
   })
   afterEach(() => {
     cleanup()

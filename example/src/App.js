@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { DatsCreatorGui } from 'dats-creator-gui'
+import { DatsEditorForm } from 'conp-dats-editor'
 
 const App = () => {
-  return <DatsCreatorGui />
+  return <DatsEditorForm />
 }
 
 export default App

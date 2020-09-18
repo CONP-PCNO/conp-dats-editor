@@ -1,6 +1,6 @@
 {
-  "short_name": "dats-creator-gui",
-  "name": "dats-creator-gui",
+  "short_name": "conp-dats-editor",
+  "name": "conp-dats-editor",
   "icons": [
     {
       "src": "favicon.ico",

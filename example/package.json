@@ -1,5 +1,5 @@
 {
-  "name": "dats-creator-gui-example",
+  "name": "conp-dats-editor-example",
   "homepage": ".",
   "version": "0.0.0",
   "private": true,
@@ -13,7 +13,7 @@
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
     "react-scripts": "link:../node_modules/react-scripts",
-    "dats-creator-gui": "link:.."
+    "conp-dats-editor": "link:.."
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
