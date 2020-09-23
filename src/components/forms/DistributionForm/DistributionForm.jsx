@@ -23,6 +23,7 @@ export default function GeneralForm(props) {
                 return (
                   <FieldGroup
                     key={'format_' + index}
+                    name={'format_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >

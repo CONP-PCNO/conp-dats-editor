@@ -54,6 +54,7 @@ export default function ExtraPropertiesForm(props) {
                     column
                     indexed
                     key={'primaryPublication_' + index}
+                    name={'primaryPublication_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -80,6 +81,7 @@ export default function ExtraPropertiesForm(props) {
                                   column
                                   indexed
                                   key={'author_' + index}
+                                  name={'author_' + index}
                                   index={idx}
                                   arrayHelpers={arrayHelpers}
                                 >
@@ -118,6 +120,7 @@ export default function ExtraPropertiesForm(props) {
                                                 column
                                                 indexed
                                                 key={'affiliation_' + index}
+                                                name={'affiliation_' + index}
                                                 index={i}
                                                 arrayHelpers={arrayHelpers}
                                               >
@@ -188,6 +191,7 @@ export default function ExtraPropertiesForm(props) {
                                 return (
                                   <FieldGroup
                                     key={'date_' + index}
+                                    name={'date_' + index}
                                     index={index}
                                     arrayHelpers={arrayHelpers}
                                   >
@@ -286,6 +290,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'dimension_' + index}
+                    name={'dimension_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -367,6 +372,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'date_' + index}
+                    name={'date_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -424,6 +430,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'isAbout_' + index}
+                    name={'isAbout_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -461,6 +468,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'acknowledges_' + index}
+                    name={'acknowledges_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -508,6 +516,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'spatialCoverage_' + index}
+                    name={'spatialCoverage_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >

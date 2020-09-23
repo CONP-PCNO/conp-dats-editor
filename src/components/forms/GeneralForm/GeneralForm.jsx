@@ -42,6 +42,7 @@ export default function GeneralForm(props) {
                 return (
                   <FieldGroup
                     key={'creator_' + index}
+                    name={'creator_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -116,6 +117,7 @@ export default function GeneralForm(props) {
                 return (
                   <FieldGroup
                     key={'type' + index}
+                    name={'type' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -157,6 +159,7 @@ export default function GeneralForm(props) {
                 return (
                   <FieldGroup
                     key={'license_' + index}
+                    name={'license_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -225,6 +228,7 @@ export default function GeneralForm(props) {
                 return (
                   <FieldGroup
                     key={'keyword_' + index}
+                    name={'keyword_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
