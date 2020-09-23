@@ -42,7 +42,7 @@ class DatsToForm {
         units: this.data.distributions[0]?.unit.value.toUpperCase() || ''
       },
       access: {
-        landingPage: this.data.distributions[0].access.landingPage || '',
+        landingPage: this.data.distributions[0]?.access?.landingPage || '',
         authorization:
           this.data.distributions[0]?.access?.authorizations[0]?.value ||
           'public'
