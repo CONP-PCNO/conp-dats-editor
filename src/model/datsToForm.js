@@ -85,11 +85,11 @@ class DatsToForm {
       derivedFrom:
         this.data.extraProperties
           ?.filter((p) => p.category === 'derivedFrom')[0]
-          .values.map((a) => a.value)[0] || '',
+          ?.values.map((a) => a.value)[0] || '',
       parentDatasetId:
         this.data.extraProperties
           ?.filter((p) => p.category === 'parent_dataset_id')[0]
-          .values.map((a) => a.value)[0] || '',
+          ?.values.map((a) => a.value)[0] || '',
       primaryPublications: this.data.primaryPublications || [],
       dimensions:
         this.data.dimensions?.map((a) => {
@@ -105,7 +105,7 @@ class DatsToForm {
       logo:
         this.data.extraProperties
           ?.filter((p) => p.category === 'logo')[0]
-          .values.map((a) => a.value)[0] || '',
+          ?.values.map((a) => a.value)[0] || '',
       dates: this.data.dates || [],
       citations: [],
       producedBy: '',
