@@ -52,6 +52,11 @@ describe('General Form: field values and errors', () => {
     })
   })
   it('creators name handles errors', async () => {
+    // const radio = await waitFor(() => screen.findByLabelText('Organization'))
+    // await waitFor(() => {
+    //   fireEvent.change(radio, { target: { value: 'Organization' } })
+    // })
+
     const testId = 'creators.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
 
@@ -70,6 +75,11 @@ describe('General Form: field values and errors', () => {
     // })
   })
   it('creators name handles correct values', async () => {
+    // const radio = await waitFor(() => screen.findByLabelText('Organization'))
+    // await waitFor(() => {
+    //   fireEvent.change(radio, { target: { value: 'Organization' } })
+    // })
+
     const testId = 'creators.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
 
@@ -86,6 +96,11 @@ describe('General Form: field values and errors', () => {
     })
   })
   it('creators email handles errors', async () => {
+    const radio = await waitFor(() => screen.findByLabelText('Person'))
+    await waitFor(() => {
+      fireEvent.click(radio)
+    })
+
     const testId = 'creators.0.email'
     const input = await waitFor(() => screen.findByTestId(testId))
 
@@ -110,6 +125,11 @@ describe('General Form: field values and errors', () => {
     // })
   })
   it('creators email handles correct values', async () => {
+    const radio = await waitFor(() => screen.findByLabelText('Person'))
+    await waitFor(() => {
+      fireEvent.click(radio)
+    })
+
     const testId = 'creators.0.email'
     const input = await waitFor(() => screen.findByTestId(testId))
 
