@@ -27,13 +27,13 @@ const defaultValidationSchema = yup.object({
   title: yup.string().required(),
   creators: yup.array().of(
     yup.object({
-      name: yup.string().required(),
+      name: yup.string(),
       email: yup.string().email()
     })
   ),
   contact: yup.object().shape({
-    name: yup.string().required(),
-    email: yup.string().email().required()
+    name: yup.string(),
+    email: yup.string().email()
   }),
   description: yup.string().required(),
   types: yup.array().of(yup.string()).min(1).required(),
@@ -138,9 +138,8 @@ const defaultValues = {
   title: '',
   creators: [
     {
-      role: 'Principal Investigator',
-      name: '',
-      email: ''
+      type: 'Organization',
+      role: 'Principal Investigator'
     }
   ],
   contact: {

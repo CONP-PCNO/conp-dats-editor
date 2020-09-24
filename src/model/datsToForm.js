@@ -11,8 +11,10 @@ class DatsToForm {
       creators:
         this.data.creators.map((a) => {
           return {
-            name: a.name,
-            email: '',
+            ...a,
+            type: Object.keys(a).includes('fullName')
+              ? 'Person'
+              : 'Organization',
             role: a.roles?.[0].value || ''
           }
         }) || [],

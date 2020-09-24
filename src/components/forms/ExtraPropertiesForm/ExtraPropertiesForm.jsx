@@ -81,8 +81,8 @@ export default function ExtraPropertiesForm(props) {
                               <FieldGroup
                                 column
                                 indexed
-                                key={'author_' + index}
-                                name={'author_' + index}
+                                key={'author_' + idx}
+                                name={'author_' + idx}
                                 index={idx}
                                 arrayHelpers={arrayHelpers}
                               >
@@ -120,8 +120,8 @@ export default function ExtraPropertiesForm(props) {
                                           <FieldGroup
                                             column
                                             indexed
-                                            key={'affiliation_' + index}
-                                            name={'affiliation_' + index}
+                                            key={'affiliation_' + i}
+                                            name={'affiliation_' + i}
                                             index={i}
                                             arrayHelpers={arrayHelpers}
                                           >

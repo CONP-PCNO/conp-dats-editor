@@ -34,7 +34,10 @@ export default function GeneralForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Creators' tooltip='Dataset Contributors' />
+        <SectionTitle
+          name='Creators'
+          tooltip='The person(s) or organization(s) which contributed to the creation of the dataset'
+        />
         <FieldArray name='creators'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
@@ -46,17 +49,102 @@ export default function GeneralForm(props) {
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
-                    <CustomTextField
-                      required
-                      fullWidth
-                      label='Name/Institution'
-                      name={`creators.${index}.name`}
-                    />
-                    <CustomTextField
-                      fullWidth
-                      label='Email'
-                      name={`creators.${index}.email`}
-                    />
+                    <CustomRadioGroup
+                      name={`creators.${index}.type`}
+                      label='Type'
+                    >
+                      <FormControlLabel
+                        value='Person'
+                        control={<Radio />}
+                        label='Person'
+                      />
+                      <FormControlLabel
+                        value='Organization'
+                        control={<Radio />}
+                        label='Organization'
+                      />
+                    </CustomRadioGroup>
+                    {creator.type === 'Organization' ? (
+                      <Section>
+                        <CustomTextField
+                          required
+                          label='Name/Institution'
+                          name={`creators.${index}.name`}
+                        />
+                        <CustomTextField
+                          label='Abbreviation'
+                          name={`creators.${index}.abbreviation`}
+                        />
+                      </Section>
+                    ) : (
+                      <Section>
+                        <CustomTextField
+                          label='Full Name'
+                          name={`creators.${index}.fullName`}
+                        />
+                        <CustomTextField
+                          label='First Name'
+                          name={`creators.${index}.firstName`}
+                        />
+                        <CustomTextField
+                          label='Middle Initial'
+                          name={`creators.${index}.middleInitial`}
+                        />
+                        <CustomTextField
+                          fullWidth
+                          label='Last Name'
+                          name={`creators.${index}.lastName`}
+                        />
+                        <CustomTextField
+                          label='Email'
+                          name={`creators.${index}.email`}
+                        />
+                        <FieldArray name={`creators.${index}.affiliations`}>
+                          {(arrayHelpers) => (
+                            <Section subsection>
+                              <SectionTitle
+                                subsection
+                                name='Affiliations'
+                                tooltip='Creator affiliations'
+                              />
+                              {(values.creators[index]?.affiliations || []).map(
+                                (affiliation, i) => {
+                                  return (
+                                    <FieldGroup
+                                      column
+                                      indexed
+                                      key={'affiliation_' + i}
+                                      name={'affiliation_' + i}
+                                      index={i}
+                                      arrayHelpers={arrayHelpers}
+                                    >
+                                      <CustomTextField
+                                        label='Affiliation'
+                                        name={`creators.${index}.affiliations.${i}.name`}
+                                      />
+                                    </FieldGroup>
+                                  )
+                                }
+                              )}
+                              <Box py={1}>
+                                <Button
+                                  variant='outlined'
+                                  color='secondary'
+                                  onClick={() => {
+                                    arrayHelpers.push('')
+                                  }}
+                                >
+                                  {(values.creators[index]?.affiliations || [])
+                                    .length > 0
+                                    ? 'Add another Affiliation'
+                                    : 'Add an Affiliation'}
+                                </Button>
+                              </Box>
+                            </Section>
+                          )}
+                        </FieldArray>
+                      </Section>
+                    )}
                     <CustomSelectField
                       name={`creators.${index}.role`}
                       label='Role'
@@ -79,9 +167,13 @@ export default function GeneralForm(props) {
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
-                      type: 'contributor',
-                      name: '',
-                      email: ''
+                      type: 'Organization'
+                      // name: '',
+                      // fullName: '',
+                      // firstName: '',
+                      // middleInitial: '',
+                      // lastName: '',
+                      // email: ''
                     })
                   }}
                 >
