@@ -374,7 +374,7 @@ export const DatsEditorForm = (props) => {
                             {key}:{' '}
                             {Array.isArray(errors[key])
                               ? errors[key].map((e) => Object.values(e))
-                              : errors[key]}
+                              : JSON.stringify(errors[key])}
                           </Typography>
                         ) : null
                       )}

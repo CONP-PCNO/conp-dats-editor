@@ -32,19 +32,19 @@ class DatsToForm {
             return contact
           })[0] || '',
       description: this.data.description || '',
-      types: this.data.types.map((a) => a.information.value) || [],
+      types: this.data.types.map((a) => a?.information?.value) || [],
       version: this.data.version || '',
-      licenses: this.data.licenses.map((a) => a.name) || [],
-      keywords: this.data.keywords.map((a) => a.value) || [],
+      licenses: this.data.licenses.map((a) => a?.name) || [],
+      keywords: this.data.keywords.map((a) => a?.value) || [],
       formats: this.data.distributions[0]?.formats || [],
       size: {
         value: this.data.distributions[0]?.size || '',
-        units: this.data.distributions[0]?.unit.value.toUpperCase() || ''
+        units: this.data.distributions[0]?.unit?.value.toUpperCase() || ''
       },
       access: {
         landingPage: this.data.distributions[0]?.access?.landingPage || '',
         authorization:
-          this.data.distributions[0]?.access?.authorizations[0]?.value ||
+          this.data.distributions[0]?.access?.authorizations?.[0]?.value ||
           'public'
       },
       privacy: this.data.privacy || '',
@@ -137,7 +137,7 @@ class DatsToForm {
 
     json.primaryPublications = json.primaryPublications.map((pp) => {
       return Object.assign(pp, {
-        dates: pp.dates.map((date) => {
+        dates: (pp?.dates || []).map((date) => {
           return Object.assign(date, { date: moment(date.date) })
         })
       })
