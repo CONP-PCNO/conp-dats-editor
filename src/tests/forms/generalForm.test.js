@@ -27,13 +27,13 @@ describe('General Form: field values and errors', () => {
 
     fireEvent.blur(input)
 
-    // const errorText = await waitFor(() =>
-    //   screen.findByText('is a required field', { exact: false })
-    // )
+    const errorText = await waitFor(() =>
+      screen.findAllByText('title is a required field', { exact: false })
+    )
 
-    // await waitFor(() => {
-    //   expect(errorText).toBeInTheDocument()
-    // })
+    await waitFor(() => {
+      expect(errorText.length).toBeGreaterThan(0)
+    })
   })
   it('title handles correct values', async () => {
     const testId = 'title'
@@ -51,34 +51,11 @@ describe('General Form: field values and errors', () => {
       expect(input.value).toBe('Test Title')
     })
   })
-  it('creators name handles errors', async () => {
-    // const radio = await waitFor(() => screen.findByLabelText('Organization'))
-    // await waitFor(() => {
-    //   fireEvent.change(radio, { target: { value: 'Organization' } })
-    // })
-
-    const testId = 'creators.0.name'
-    const input = await waitFor(() => screen.findByTestId(testId))
-
-    await waitFor(() => {
-      expect(input).not.toBe(null)
-    })
-
-    fireEvent.blur(input)
-
-    // const errorText = await waitFor(() =>
-    //   screen.findByText('is a required field', { exact: false })
-    // )
-
-    // await waitFor(() => {
-    //   expect(errorText).toBeInTheDocument()
-    // })
-  })
   it('creators name handles correct values', async () => {
-    // const radio = await waitFor(() => screen.findByLabelText('Organization'))
-    // await waitFor(() => {
-    //   fireEvent.change(radio, { target: { value: 'Organization' } })
-    // })
+    const radio = await waitFor(() => screen.findByLabelText('Organization'))
+    await waitFor(() => {
+      fireEvent.click(radio)
+    })
 
     const testId = 'creators.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
@@ -94,35 +71,6 @@ describe('General Form: field values and errors', () => {
     await waitFor(() => {
       expect(input.value).toBe('Test Name')
     })
-  })
-  it('creators email handles errors', async () => {
-    const radio = await waitFor(() => screen.findByLabelText('Person'))
-    await waitFor(() => {
-      fireEvent.click(radio)
-    })
-
-    const testId = 'creators.0.email'
-    const input = await waitFor(() => screen.findByTestId(testId))
-
-    await waitFor(() => {
-      expect(input).not.toBe(null)
-    })
-
-    await waitFor(() => {
-      fireEvent.change(input, {
-        target: {
-          value: 'T'
-        }
-      })
-    })
-
-    // const errorText = await waitFor(() => {
-    //   screen.findByText('must be a valid email', { exact: false })
-    // })
-
-    // await waitFor(() => {
-    //   expect(errorText).toBeInTheDocument()
-    // })
   })
   it('creators email handles correct values', async () => {
     const radio = await waitFor(() => screen.findByLabelText('Person'))
@@ -171,13 +119,13 @@ describe('General Form: field values and errors', () => {
 
     fireEvent.blur(input)
 
-    // const errorText = await waitFor(() =>
-    //   screen.findByText('is a required field', { exact: false })
-    // )
+    const errorText = await waitFor(() =>
+      screen.findAllByText('is a required field', { exact: false })
+    )
 
-    // await waitFor(() => {
-    //   expect(errorText).toBeInTheDocument()
-    // })
+    await waitFor(() => {
+      expect(errorText.length).toBeGreaterThan(0)
+    })
   })
   it('description handles correct values', async () => {
     const testId = 'description'
@@ -194,30 +142,6 @@ describe('General Form: field values and errors', () => {
     await waitFor(() => {
       expect(input.value).toBe('Test Description')
     })
-  })
-  it('version handles errors', async () => {
-    const testId = 'version'
-    const input = await waitFor(() => screen.findByTestId(testId))
-
-    await waitFor(() => {
-      expect(input).not.toBe(null)
-    })
-
-    await waitFor(() => {
-      fireEvent.change(input, {
-        target: {
-          value: 'string'
-        }
-      })
-    })
-
-    // const errorText = await waitFor(() =>
-    //   screen.findByText('must be a `number` type', { exact: false })
-    // )
-
-    // await waitFor(() => {
-    //   expect(errorText).toBeInTheDocument()
-    // })
   })
   it('version handles correct values', async () => {
     const testId = 'version'
