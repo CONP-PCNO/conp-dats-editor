@@ -168,12 +168,6 @@ export default function GeneralForm(props) {
                   onClick={() => {
                     arrayHelpers.push({
                       type: 'Organization'
-                      // name: '',
-                      // fullName: '',
-                      // firstName: '',
-                      // middleInitial: '',
-                      // lastName: '',
-                      // email: ''
                     })
                   }}
                 >
