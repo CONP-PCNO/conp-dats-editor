@@ -11,8 +11,10 @@ class DatsToForm {
       creators:
         this.data.creators.map((a) => {
           return {
-            name: a.name,
-            email: '',
+            ...a,
+            type: Object.keys(a).includes('fullName')
+              ? 'Person'
+              : 'Organization',
             role: a.roles?.[0].value || ''
           }
         }) || [],
@@ -32,19 +34,19 @@ class DatsToForm {
             return contact
           })[0] || '',
       description: this.data.description || '',
-      types: this.data.types.map((a) => a.information.value) || [],
+      types: this.data.types.map((a) => a?.information?.value) || [],
       version: this.data.version || '',
-      licenses: this.data.licenses.map((a) => a.name) || [],
-      keywords: this.data.keywords.map((a) => a.value) || [],
+      licenses: this.data.licenses.map((a) => a?.name) || [],
+      keywords: this.data.keywords.map((a) => a?.value) || [],
       formats: this.data.distributions[0]?.formats || [],
       size: {
         value: this.data.distributions[0]?.size || '',
-        units: this.data.distributions[0]?.unit.value.toUpperCase() || ''
+        units: this.data.distributions[0]?.unit?.value.toUpperCase() || ''
       },
       access: {
-        landingPage: this.data.distributions[0].access.landingPage || '',
+        landingPage: this.data.distributions[0]?.access?.landingPage || '',
         authorization:
-          this.data.distributions[0]?.access?.authorizations[0]?.value ||
+          this.data.distributions[0]?.access?.authorizations?.[0]?.value ||
           'public'
       },
       privacy: this.data.privacy || '',
@@ -85,11 +87,11 @@ class DatsToForm {
       derivedFrom:
         this.data.extraProperties
           ?.filter((p) => p.category === 'derivedFrom')[0]
-          .values.map((a) => a.value)[0] || '',
+          ?.values.map((a) => a.value)[0] || '',
       parentDatasetId:
         this.data.extraProperties
           ?.filter((p) => p.category === 'parent_dataset_id')[0]
-          .values.map((a) => a.value)[0] || '',
+          ?.values.map((a) => a.value)[0] || '',
       primaryPublications: this.data.primaryPublications || [],
       dimensions:
         this.data.dimensions?.map((a) => {
@@ -105,7 +107,7 @@ class DatsToForm {
       logo:
         this.data.extraProperties
           ?.filter((p) => p.category === 'logo')[0]
-          .values.map((a) => a.value)[0] || '',
+          ?.values.map((a) => a.value)[0] || '',
       dates: this.data.dates || [],
       citations: [],
       producedBy: '',
@@ -137,7 +139,7 @@ class DatsToForm {
 
     json.primaryPublications = json.primaryPublications.map((pp) => {
       return Object.assign(pp, {
-        dates: pp.dates.map((date) => {
+        dates: (pp?.dates || []).map((date) => {
           return Object.assign(date, { date: moment(date.date) })
         })
       })

@@ -54,6 +54,7 @@ export default function ExtraPropertiesForm(props) {
                     column
                     indexed
                     key={'primaryPublication_' + index}
+                    name={'primaryPublication_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -73,84 +74,86 @@ export default function ExtraPropertiesForm(props) {
                             name='Authors'
                             tooltip='Authors of the publication'
                           />
-                          {values.primaryPublications[index].authors.map(
-                            (author, idx) => {
-                              return (
-                                <FieldGroup
-                                  column
-                                  indexed
-                                  key={'author_' + index}
-                                  index={idx}
-                                  arrayHelpers={arrayHelpers}
+                          {(
+                            values.primaryPublications[index]?.authors || []
+                          ).map((author, idx) => {
+                            return (
+                              <FieldGroup
+                                column
+                                indexed
+                                key={'author_' + idx}
+                                name={'author_' + idx}
+                                index={idx}
+                                arrayHelpers={arrayHelpers}
+                              >
+                                <CustomTextField
+                                  label='Full Name'
+                                  name={`primaryPublications.${index}.authors.${idx}.fullName`}
+                                />
+                                <CustomTextField
+                                  label='First Name'
+                                  name={`primaryPublications.${index}.authors.${idx}.firstName`}
+                                />
+                                <CustomTextField
+                                  label='Middle Initial'
+                                  name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
+                                />
+                                <CustomTextField
+                                  label='Last Name'
+                                  name={`primaryPublications.${index}.authors.${idx}.lastName`}
+                                />
+                                <FieldArray
+                                  name={`primaryPublications.${index}.authors.${idx}.affiliations`}
                                 >
-                                  <CustomTextField
-                                    label='Full Name'
-                                    name={`primaryPublications.${index}.authors.${idx}.fullName`}
-                                  />
-                                  <CustomTextField
-                                    label='First Name'
-                                    name={`primaryPublications.${index}.authors.${idx}.firstName`}
-                                  />
-                                  <CustomTextField
-                                    label='Middle Initial'
-                                    name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
-                                  />
-                                  <CustomTextField
-                                    label='Last Name'
-                                    name={`primaryPublications.${index}.authors.${idx}.lastName`}
-                                  />
-                                  <FieldArray
-                                    name={`primaryPublications.${index}.authors.${idx}.affiliations`}
-                                  >
-                                    {(arrayHelpers) => (
-                                      <Section subsection>
-                                        <SectionTitle
-                                          subsection
-                                          name='Affiliations'
-                                          tooltip='Author affiliations'
-                                        />
-                                        {values.primaryPublications[
-                                          index
-                                        ].authors[idx].affiliations.map(
-                                          (affiliation, i) => {
-                                            return (
-                                              <FieldGroup
-                                                column
-                                                indexed
-                                                key={'affiliation_' + index}
-                                                index={i}
-                                                arrayHelpers={arrayHelpers}
-                                              >
-                                                <CustomTextField
-                                                  label='Affiliation'
-                                                  name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
-                                                />
-                                              </FieldGroup>
-                                            )
-                                          }
-                                        )}
-                                        <Box py={1}>
-                                          <Button
-                                            variant='outlined'
-                                            color='secondary'
-                                            onClick={() => {
-                                              arrayHelpers.push('')
-                                            }}
+                                  {(arrayHelpers) => (
+                                    <Section subsection>
+                                      <SectionTitle
+                                        subsection
+                                        name='Affiliations'
+                                        tooltip='Author affiliations'
+                                      />
+                                      {(
+                                        values.primaryPublications[index]
+                                          ?.authors[idx]?.affiliations || []
+                                      ).map((affiliation, i) => {
+                                        return (
+                                          <FieldGroup
+                                            column
+                                            indexed
+                                            key={'affiliation_' + i}
+                                            name={'affiliation_' + i}
+                                            index={i}
+                                            arrayHelpers={arrayHelpers}
                                           >
-                                            {values.primaryPublications[index]
-                                              .authors[idx].affiliations
-                                              .length > 0
-                                              ? 'Add another Affiliation'
-                                              : 'Add an Affiliation'}
-                                          </Button>
-                                        </Box>
-                                      </Section>
-                                    )}
-                                  </FieldArray>
-                                </FieldGroup>
-                              )
-                            }
-                          )}
+                                            <CustomTextField
+                                              label='Affiliation'
+                                              name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
+                                            />
+                                          </FieldGroup>
+                                        )
+                                      })}
+                                      <Box py={1}>
+                                        <Button
+                                          variant='outlined'
+                                          color='secondary'
+                                          onClick={() => {
+                                            arrayHelpers.push('')
+                                          }}
+                                        >
+                                          {(
+                                            values.primaryPublications[index]
+                                              ?.authors[idx]?.affiliations || []
+                                          ).length > 0
+                                            ? 'Add another Affiliation'
+                                            : 'Add an Affiliation'}
+                                        </Button>
+                                      </Box>
+                                    </Section>
+                                  )}
+                                </FieldArray>
+                              </FieldGroup>
+                            )
+                          })}
                           <Box py={1}>
                             <Button
                               variant='outlined'
@@ -165,8 +168,9 @@ export default function ExtraPropertiesForm(props) {
                                 })
                               }}
                             >
-                              {values.primaryPublications[index].authors
-                                .length > 0
+                              {(
+                                values.primaryPublications[index]?.authors || []
+                              ).length > 0
                                 ? 'Add another Author'
                                 : 'Add an Author'}
                             </Button>
@@ -188,6 +192,7 @@ export default function ExtraPropertiesForm(props) {
                                 return (
                                   <FieldGroup
                                     key={'date_' + index}
+                                    name={'date_' + index}
                                     index={index}
                                     arrayHelpers={arrayHelpers}
                                   >
@@ -286,6 +291,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'dimension_' + index}
+                    name={'dimension_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -367,6 +373,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'date_' + index}
+                    name={'date_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -424,6 +431,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'isAbout_' + index}
+                    name={'isAbout_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -461,6 +469,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'acknowledges_' + index}
+                    name={'acknowledges_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
@@ -508,6 +517,7 @@ export default function ExtraPropertiesForm(props) {
                 return (
                   <FieldGroup
                     key={'spatialCoverage_' + index}
+                    name={'spatialCoverage_' + index}
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >

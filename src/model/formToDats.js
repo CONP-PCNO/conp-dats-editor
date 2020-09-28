@@ -17,16 +17,15 @@ class FormToDats {
         }
       }),
       creators: this.data.creators.map((creator) => {
-        const c = {
-          name: creator.name
-        }
+        const c = creator
+        delete c.type
+        delete c.role
         if (creator.role)
           c.roles = [
             {
               value: creator.role
             }
           ]
-        if (creator.email) c.email = creator.email
         return c
       }),
       types: this.data.types.map((type) => {

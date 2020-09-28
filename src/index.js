@@ -27,13 +27,13 @@ const defaultValidationSchema = yup.object({
   title: yup.string().required(),
   creators: yup.array().of(
     yup.object({
-      name: yup.string().required(),
+      name: yup.string(),
       email: yup.string().email()
     })
   ),
   contact: yup.object().shape({
-    name: yup.string().required(),
-    email: yup.string().email().required()
+    name: yup.string(),
+    email: yup.string().email()
   }),
   description: yup.string().required(),
   types: yup.array().of(yup.string()).min(1).required(),
@@ -138,9 +138,8 @@ const defaultValues = {
   title: '',
   creators: [
     {
-      role: 'Principal Investigator',
-      name: '',
-      email: ''
+      type: 'Organization',
+      role: 'Principal Investigator'
     }
   ],
   contact: {
@@ -264,7 +263,7 @@ export const DatsEditorForm = (props) => {
       <div className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component='h1' variant='h4' align='center'>
-            Create DATS.json
+            DATS Editor
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
@@ -374,7 +373,7 @@ export const DatsEditorForm = (props) => {
                             {key}:{' '}
                             {Array.isArray(errors[key])
                               ? errors[key].map((e) => Object.values(e))
-                              : errors[key]}
+                              : JSON.stringify(errors[key])}
                           </Typography>
                         ) : null
                       )}

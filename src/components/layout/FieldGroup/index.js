@@ -9,7 +9,6 @@ const FieldGroup = (props) => {
         <Typography variant='subtitle1'>{props.index + 1 + '. '}</Typography>
       ) : null}
       <Box
-        key={props.key}
         display={props.column ? 'flex flex-column' : 'flex'}
         flexWrap='wrap'
         alignItems={props.column ? 'stretch' : 'center'}
@@ -20,7 +19,7 @@ const FieldGroup = (props) => {
           props.children.map((child, index) => {
             return (
               <Box
-                key={props.key + '_' + index}
+                key={props.name + '_' + index}
                 display='flex'
                 width='100%'
                 justifyContent='space-between'
