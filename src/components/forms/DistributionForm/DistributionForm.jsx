@@ -69,11 +69,13 @@ export default function GeneralForm(props) {
           tooltip='The information about access modality for the dataset distribution.'
         />
         <SectionTitle
+          subsection
           name='Landing Page'
           tooltip='A web page that contains information about the associated dataset or other research object and a direct link to the object itself.'
         />
         <CustomTextField label='Landing Page' name='access.landingPage' />
         <SectionTitle
+          subsection
           name='Authorizations'
           tooltip='Types of verification that accessing the resource is allowed. Authorization occurs before successful authentication and refers to the process of obtaining approval to use a data set. Ideally specified from a controlled vocabulary or ontology.'
         />
