@@ -88,7 +88,7 @@ const DatsUploader = (props) => {
     <div className='container'>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <p>Upload you DATS.json file here</p>
+        <p>Upload your DATS.json file here</p>
         <em>(Only *.json files will be accepted)</em>
       </div>
       <aside>
