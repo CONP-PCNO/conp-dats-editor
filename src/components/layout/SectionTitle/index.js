@@ -1,26 +1,14 @@
 import React from 'react'
-import { Grid, Typography, Tooltip } from '@material-ui/core'
-import InfoIcon from '@material-ui/icons/Info'
+import { Box, Typography } from '@material-ui/core'
 
 const SectionTitle = (props) => {
   return (
-    <Grid item xs={12}>
-      <Grid container direction='row' spacing={1}>
-        <Grid item>
-          <Typography
-            variant={props.subsection ? 'subtitle1' : 'h6'}
-            gutterBottom
-          >
-            {props.name}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Tooltip title={props.tooltip} placement='right'>
-            <InfoIcon fontSize='small' color='action' />
-          </Tooltip>
-        </Grid>
-      </Grid>
-    </Grid>
+    <Box display='flex flex-column'>
+      <Typography variant={props.subsection ? 'subtitle1' : 'h6'} gutterBottom>
+        {props.name}
+      </Typography>
+      <Typography variant='caption'>{props.tooltip}</Typography>
+    </Box>
   )
 }
 

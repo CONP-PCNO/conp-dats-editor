@@ -24,7 +24,10 @@ export default function GeneralForm(props) {
         General Information
       </Typography>
       <Section>
-        <SectionTitle name='Title' tooltip='The Title of the Dataset' />
+        <SectionTitle
+          name='Title'
+          tooltip='The name of the dataset, usually one sentece or short description of the dataset.'
+        />
         <CustomTextField
           required
           fullWidth
@@ -36,7 +39,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Creators'
-          tooltip='The person(s) or organization(s) which contributed to the creation of the dataset'
+          tooltip='The person(s) or organization(s) which contributed to the creation of the dataset.'
         />
         <FieldArray name='creators'>
           {(arrayHelpers) => (
@@ -186,7 +189,10 @@ export default function GeneralForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Description' tooltip='Description of the Dataset' />
+        <SectionTitle
+          name='Description'
+          tooltip='A textual narrative comprised of one or more statements describing the dataset.'
+        />
         <CustomTextField
           required
           fullWidth
@@ -200,7 +206,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Data Types'
-          tooltip='The data types included in the dataset'
+          tooltip='A term, ideally from a controlled terminology, identifying the dataset type or nature of the data, placing it in a typology'
         />
         <FieldArray name='types'>
           {(arrayHelpers) => (
@@ -238,12 +244,18 @@ export default function GeneralForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Version' tooltip='Version number of the dataset' />
+        <SectionTitle
+          name='Version'
+          tooltip='A release point for the dataset when applicable.'
+        />
         <CustomTextField label='Version' name='version' />
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Licenses' tooltip='Dataset Licenses' />
+        <SectionTitle
+          name='Licenses'
+          tooltip='The terms of use of the dataset.'
+        />
         <FieldArray name='licenses'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
@@ -312,7 +324,10 @@ export default function GeneralForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Keywords' tooltip='Dataset Keywords' />
+        <SectionTitle
+          name='Keywords'
+          tooltip='Tags associated with the dataset, which will help in its discovery.'
+        />
         <FieldArray name='keywords'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
