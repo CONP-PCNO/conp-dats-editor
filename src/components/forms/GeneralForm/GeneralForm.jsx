@@ -27,7 +27,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Title'
-          tooltip='The name of the dataset, usually one sentece or short description of the dataset.'
+          tooltip='The name of the dataset, usually one sentence or short description of the dataset.'
         />
         <CustomTextField
           required

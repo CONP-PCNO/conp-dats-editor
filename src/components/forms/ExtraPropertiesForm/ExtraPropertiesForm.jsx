@@ -61,7 +61,7 @@ export default function ExtraPropertiesForm(props) {
                     <SectionTitle
                       subsection
                       name='Title'
-                      tooltip='The name of the publication, usually one sentece or short description of the publication.'
+                      tooltip='The name of the publication, usually one sentence or short description of the publication.'
                     />
                     <CustomTextField
                       label='Title'
