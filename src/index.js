@@ -151,8 +151,8 @@ const defaultValues = {
   version: '',
   licenses: [
     {
-      type: 'creativeCommons',
-      value: ''
+      value: '',
+      valueOther: ''
     }
   ],
   keywords: [''],

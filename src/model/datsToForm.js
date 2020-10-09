@@ -153,17 +153,20 @@ class DatsToForm {
           'CC BY-NC',
           'CC BY-NC-SA',
           'CC BY-ND',
-          'CC BY-NC-ND'
+          'CC BY-NC-ND',
+          'ODbL',
+          'ODC-By',
+          'PDDL'
         ].includes('license')
       ) {
         json.licenses[index] = {
-          type: 'creativeCommons',
-          value: license
+          value: license,
+          valueOther: ''
         }
       } else {
         json.licenses[index] = {
-          type: 'other',
-          value: license
+          value: 'other',
+          valueOther: license
         }
       }
     })
