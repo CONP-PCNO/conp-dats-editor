@@ -3,6 +3,7 @@ import {
   Typography,
   Button,
   MenuItem,
+  ListSubheader,
   Divider,
   FormControlLabel,
   Radio,
@@ -261,40 +262,32 @@ export default function GeneralForm(props) {
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
-                    <CustomRadioGroup
-                      name={`licenses.${index}.type`}
-                      label='Type'
+                    <CustomSelectField
+                      required
+                      label='License'
+                      name={`licenses.${index}.value`}
                     >
-                      <FormControlLabel
-                        value='creativeCommons'
-                        control={<Radio />}
-                        label='Creative Commons'
-                      />
-                      <FormControlLabel
-                        value='other'
-                        control={<Radio />}
-                        label='Other'
-                      />
-                    </CustomRadioGroup>
-                    {license.type === 'creativeCommons' ? (
-                      <CustomSelectField
-                        required
-                        label='License'
-                        name={`licenses.${index}.value`}
-                      >
-                        <MenuItem value='CC BY'>CC BY</MenuItem>
-                        <MenuItem value='CC BY-SA'>CC BY-SA</MenuItem>
-                        <MenuItem value='CC BY-NC'>CC BY-NC</MenuItem>
-                        <MenuItem value='CC BY-NC-SA'>CC BY-NC-SA</MenuItem>
-                        <MenuItem value='CC BY-ND'>CC BY-ND</MenuItem>
-                        <MenuItem value='CC BY-NC-ND'>CC BY-NC-ND</MenuItem>
-                      </CustomSelectField>
-                    ) : (
+                      <ListSubheader>Creative Commons</ListSubheader>
+                      <MenuItem value='CC BY'>CC BY</MenuItem>
+                      <MenuItem value='CC BY-SA'>CC BY-SA</MenuItem>
+                      <MenuItem value='CC BY-NC'>CC BY-NC</MenuItem>
+                      <MenuItem value='CC BY-NC-SA'>CC BY-NC-SA</MenuItem>
+                      <MenuItem value='CC BY-ND'>CC BY-ND</MenuItem>
+                      <MenuItem value='CC BY-NC-ND'>CC BY-NC-ND</MenuItem>
+                      <MenuItem value='CC0'>CC0</MenuItem>
+                      <ListSubheader>Open Data Commons</ListSubheader>
+                      <MenuItem value='ODbL'>ODbL</MenuItem>
+                      <MenuItem value='ODC-By'>ODC-By</MenuItem>
+                      <MenuItem value='PDDL'>PDDL</MenuItem>
+                      <ListSubheader>Other</ListSubheader>
+                      <MenuItem value='other'>Other (Please Specify)</MenuItem>
+                    </CustomSelectField>
+                    {license.value === 'other' ? (
                       <CustomTextField
                         label='License'
-                        name={`licenses.${index}.value`}
+                        name={`licenses.${index}.valueOther`}
                       />
-                    )}
+                    ) : null}
                   </FieldGroup>
                 )
               })}

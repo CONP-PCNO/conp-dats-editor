@@ -39,7 +39,7 @@ class FormToDats {
       privacy: this.data.privacy,
       licenses: this.data.licenses.map((license) => {
         return {
-          name: license.value
+          name: license.value !== 'other' ? license.value : license.valueOther
         }
       }),
       distributions: [
