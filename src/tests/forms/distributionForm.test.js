@@ -121,22 +121,6 @@ describe('Distribution Form: field values and errors', () => {
       expect(input.value).toBe('public')
     })
   })
-  it('Privacy handles correct values', async () => {
-    const testId = 'privacy'
-    const input = await waitFor(() => screen.findByTestId(testId))
-
-    await waitFor(() => {
-      fireEvent.change(input, {
-        target: {
-          value: 'public'
-        }
-      })
-    })
-
-    await waitFor(() => {
-      expect(input.value).toBe('public')
-    })
-  })
   it('Files handles correct values', async () => {
     const testId = 'files'
     const input = await waitFor(() => screen.findByTestId(testId))

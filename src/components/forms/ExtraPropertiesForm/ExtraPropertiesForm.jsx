@@ -58,9 +58,19 @@ export default function ExtraPropertiesForm(props) {
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
+                    <SectionTitle
+                      subsection
+                      name='Title'
+                      tooltip='The name of the publication, usually one sentence or short description of the publication.'
+                    />
                     <CustomTextField
                       label='Title'
                       name={`primaryPublications.${index}.title`}
+                    />
+                    <SectionTitle
+                      subsection
+                      name='Publication Venue'
+                      tooltip='The name of the publication venue where the document is published if applicable.'
                     />
                     <CustomTextField
                       label='Publication Venue'
@@ -234,21 +244,29 @@ export default function ExtraPropertiesForm(props) {
                         )}
                       </FieldArray>
                     </Section>
-                    <Section subsection>
-                      <SectionTitle
-                        subsection
-                        name='Identifier'
-                        tooltip='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
-                      />
-                      <CustomTextField
-                        label='Identifier'
-                        name={`primaryPublications.${index}.identifier.identifier`}
-                      />
-                      <CustomTextField
-                        label='Source'
-                        name={`primaryPublications.${index}.identifier.identifierSource`}
-                      />
-                    </Section>
+                    <SectionTitle
+                      subsection
+                      name='Identifier'
+                      tooltip='Primary identifier for the publication. Provide a Document Object Identifier (DOI) if you have one'
+                    />
+                    <SectionTitle
+                      subsection
+                      name='Identifier'
+                      tooltip='A code uniquely identifying an entity locally to a system or globally.'
+                    />
+                    <CustomTextField
+                      label='Identifier'
+                      name={`primaryPublications.${index}.identifier.identifier`}
+                    />
+                    <SectionTitle
+                      subsection
+                      name='Identifier Source'
+                      tooltip='The identifier source represents information about the organisation/namespace responsible for minting the identifiers. It must be provided if the identifier is provided.'
+                    />
+                    <CustomTextField
+                      label='Identifier Source'
+                      name={`primaryPublications.${index}.identifier.identifierSource`}
+                    />
                   </FieldGroup>
                 )
               })}
@@ -332,7 +350,17 @@ export default function ExtraPropertiesForm(props) {
           name='Identifier'
           tooltip='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
         />
+        <SectionTitle
+          subsection
+          name='Identifier'
+          tooltip='A code uniquely identifying an entity locally to a system or globally.'
+        />
         <CustomTextField label='Identifier' name='identifier.identifier' />
+        <SectionTitle
+          subsection
+          name='Identifier Source'
+          tooltip='The identifier source represents information about the organisation/namespace responsible for minting the identifiers. It must be provided if the identifier is provided.'
+        />
         <CustomTextField label='Source' name='identifier.identifierSource' />
       </Section>
       <Divider variant='middle' />

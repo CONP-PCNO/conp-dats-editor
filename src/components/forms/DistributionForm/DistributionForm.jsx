@@ -14,7 +14,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Formats'
-          tooltip='The formats included in the dataset'
+          tooltip='The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite)'
         />
         <FieldArray name='formats'>
           {(arrayHelpers) => (
@@ -53,7 +53,7 @@ export default function GeneralForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Size' tooltip='Size of the Dataset' />
+        <SectionTitle name='Size' tooltip='The size of the dataset.' />
         <CustomTextField label='Size' name='size.value' />
         <CustomSelectField name='size.units' label='Units'>
           <MenuItem value='MB'>MB</MenuItem>
@@ -64,18 +64,22 @@ export default function GeneralForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Access' tooltip='How to access the dataset' />
+        <SectionTitle
+          name='Access'
+          tooltip='The information about access modality for the dataset distribution.'
+        />
+        <SectionTitle
+          subsection
+          name='Landing Page'
+          tooltip='A web page that contains information about the associated dataset or other research object and a direct link to the object itself.'
+        />
         <CustomTextField label='Landing Page' name='access.landingPage' />
+        <SectionTitle
+          subsection
+          name='Authorizations'
+          tooltip='Types of verification that accessing the resource is allowed. Authorization occurs before successful authentication and refers to the process of obtaining approval to use a data set. Ideally specified from a controlled vocabulary or ontology.'
+        />
         <CustomSelectField label='Authorization' name='access.authorization'>
-          <MenuItem value='public'>Public</MenuItem>
-          <MenuItem value='registered'>Registered</MenuItem>
-          <MenuItem value='private'>Private</MenuItem>
-        </CustomSelectField>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle name='Privacy' tooltip='Dataset Privacy' />
-        <CustomSelectField name='privacy' label='Privacy'>
           <MenuItem value='public'>Public</MenuItem>
           <MenuItem value='registered'>Registered</MenuItem>
           <MenuItem value='private'>Private</MenuItem>
