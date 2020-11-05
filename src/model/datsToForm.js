@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 class DatsToForm {
   constructor(data) {
     this.data = data
@@ -134,13 +132,13 @@ class DatsToForm {
     }
 
     json.dates = json.dates.map((date) => {
-      return Object.assign(date, { date: moment(date.date) })
+      return Object.assign(date, { date: new Date(date.date) })
     })
 
     json.primaryPublications = json.primaryPublications.map((pp) => {
       return Object.assign(pp, {
         dates: (pp?.dates || []).map((date) => {
-          return Object.assign(date, { date: moment(date.date) })
+          return Object.assign(date, { date: new Date(date.date) })
         })
       })
     })

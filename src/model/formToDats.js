@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { format } from 'date-fns'
 
 class FormToDats {
   constructor(data) {
@@ -12,7 +12,7 @@ class FormToDats {
       identifier: this.data.identifier,
       dates: this.data.dates.map((date) => {
         return {
-          date: moment(date.date).format('YYYY-MM-DD'),
+          date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
           type: date.type
         }
       }),
@@ -63,7 +63,7 @@ class FormToDats {
         return Object.assign(pp, {
           dates: pp.dates.map((date) => {
             return Object.assign(date, {
-              date: moment(date.date).format('YYYY-MM-DD')
+              date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00'
             })
           })
         })

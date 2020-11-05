@@ -16,8 +16,6 @@ import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
 
-import moment from 'moment'
-
 export default function ExtraPropertiesForm(props) {
   const { values } = props
   return (
@@ -231,7 +229,9 @@ export default function ExtraPropertiesForm(props) {
                                 onClick={() => {
                                   arrayHelpers.push({
                                     description: '',
-                                    date: moment().format()
+                                    date: new Date(
+                                      new Date().setHours(0, 0, 0, 0)
+                                    )
                                   })
                                 }}
                               >
@@ -427,7 +427,7 @@ export default function ExtraPropertiesForm(props) {
                   onClick={() => {
                     arrayHelpers.push({
                       type: { value: '' },
-                      date: new Date().toISOString()
+                      date: new Date(new Date().setHours(0, 0, 0, 0))
                     })
                   }}
                 >
