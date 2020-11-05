@@ -45,7 +45,7 @@ class FormToDats {
       distributions: [
         {
           formats: this.data.formats,
-          size: this.data.size.value,
+          size: parseFloat(this.data.size.value),
           unit: {
             value: this.data.size.units
           },
