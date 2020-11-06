@@ -175,7 +175,9 @@ export default function GeneralForm(props) {
                     })
                   }}
                 >
-                  Add another Creator
+                  {values.creators.length > 0
+                    ? 'Add another Creator'
+                    : 'Add a Creator'}
                 </Button>
               </Box>
             </Box>
@@ -230,7 +232,7 @@ export default function GeneralForm(props) {
                     arrayHelpers.push('')
                   }}
                 >
-                  Add another Type
+                  {values.types.length > 0 ? 'Add another Type' : 'Add a Type'}
                 </Button>
               </Box>
             </Box>
@@ -302,7 +304,9 @@ export default function GeneralForm(props) {
                     })
                   }}
                 >
-                  Add another License
+                  {values.licenses.length > 0
+                    ? 'Add another License'
+                    : 'Add a License'}
                 </Button>
               </Box>
             </Box>
@@ -342,7 +346,9 @@ export default function GeneralForm(props) {
                     arrayHelpers.push('')
                   }}
                 >
-                  Add another Keyword
+                  {values.keywords.length > 0
+                    ? 'Add another Keyword'
+                    : 'Add a Keyword'}
                 </Button>
               </Box>
             </Box>
