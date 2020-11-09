@@ -18,6 +18,9 @@ describe('Distribution Form: field values and errors', () => {
     cleanup()
   })
   it('formats handles correct values', async () => {
+    const addButton = await waitFor(() => screen.findByText('Add a Format'))
+
+    fireEvent.click(addButton)
     const testId = 'formats.0'
     const input = await waitFor(() => screen.findByTestId(testId))
 
