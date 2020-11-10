@@ -143,6 +143,25 @@ describe('General Form: field values and errors', () => {
       expect(input.value).toBe('Test Description')
     })
   })
+  it('types handles correct values', async () => {
+    const addButton = await waitFor(() => screen.findByText('Add a Type'))
+
+    fireEvent.click(addButton)
+    const testId = 'types.0'
+    const input = await waitFor(() => screen.findByTestId(testId))
+
+    await waitFor(() => {
+      fireEvent.change(input, {
+        target: {
+          value: 'Test Type'
+        }
+      })
+    })
+
+    await waitFor(() => {
+      expect(input.value).toBe('Test Type')
+    })
+  })
   it('version handles correct values', async () => {
     const testId = 'version'
     const input = await waitFor(() => screen.findByTestId(testId))
@@ -176,6 +195,9 @@ describe('General Form: field values and errors', () => {
     })
   })
   it('keywords handles correct values', async () => {
+    const addButton = await waitFor(() => screen.findByText('Add a Keyword'))
+
+    fireEvent.click(addButton)
     const testId = 'keywords.0'
     const input = await waitFor(() => screen.findByTestId(testId))
 

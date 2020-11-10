@@ -7,7 +7,7 @@ import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 
-export default function GeneralForm(props) {
+export default function DistributionForm(props) {
   const { values } = props
   return (
     <React.Fragment>
@@ -44,7 +44,9 @@ export default function GeneralForm(props) {
                     arrayHelpers.push('')
                   }}
                 >
-                  Add another Format
+                  {values.formats.length > 0
+                    ? 'Add another Format'
+                    : 'Add a Format'}
                 </Button>
               </Grid>
             </Box>

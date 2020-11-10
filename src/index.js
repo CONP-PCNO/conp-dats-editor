@@ -147,7 +147,7 @@ const defaultValues = {
     email: ''
   },
   description: '',
-  types: [''],
+  types: [],
   version: '',
   licenses: [
     {
@@ -155,8 +155,8 @@ const defaultValues = {
       valueOther: ''
     }
   ],
-  keywords: [''],
-  formats: [''],
+  keywords: [],
+  formats: [],
   size: {
     value: '',
     units: 'MB'

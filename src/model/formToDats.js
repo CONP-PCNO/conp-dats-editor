@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { format } from 'date-fns'
 
 class FormToDats {
   constructor(data) {
@@ -12,7 +12,7 @@ class FormToDats {
       identifier: this.data.identifier,
       dates: this.data.dates.map((date) => {
         return {
-          date: moment(date.date).format('YYYY-MM-DD'),
+          date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
           type: date.type
         }
       }),
@@ -45,7 +45,7 @@ class FormToDats {
       distributions: [
         {
           formats: this.data.formats,
-          size: this.data.size.value,
+          size: parseFloat(this.data.size.value),
           unit: {
             value: this.data.size.units
           },
@@ -63,7 +63,7 @@ class FormToDats {
         return Object.assign(pp, {
           dates: pp.dates.map((date) => {
             return Object.assign(date, {
-              date: moment(date.date).format('YYYY-MM-DD')
+              date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00'
             })
           })
         })
@@ -96,92 +96,100 @@ class FormToDats {
         }
       }),
 
-      extraProperties: [
-        {
-          category: 'subjects',
-          values: [
-            {
-              value: this.data.subjects
-            }
-          ]
-        },
-        {
-          category: 'files',
-          values: [
-            {
-              value: this.data.files
-            }
-          ]
-        },
-        {
-          category: 'CONP_status',
-          values: [
-            {
-              value: this.data.conpStatus
-            }
-          ]
-        },
-        {
-          category: 'origin_city',
-          values: [
-            {
-              value: this.data.origin.city
-            }
-          ]
-        },
-        {
-          category: 'origin_province',
-          values: [
-            {
-              value: this.data.origin.province
-            }
-          ]
-        },
-        {
-          category: 'origin_country',
-          values: [
-            {
-              value: this.data.origin.country
-            }
-          ]
-        },
-        {
-          category: 'logo',
-          values: [
-            {
-              value:
-                this.data.logo.type === 'url'
-                  ? this.data.logo.url
-                  : this.data.logo.fileName
-            }
-          ]
-        },
-        {
-          category: 'contact',
-          values: [
-            {
-              value: `${this.data.contact.name}, ${this.data.contact.email}`
-            }
-          ]
-        },
-        {
-          category: 'derivedFrom',
-          values: [
-            {
-              value: this.data.derivedFrom
-            }
-          ]
-        },
-        {
-          category: 'parent_dataset_id',
-          values: [
-            {
-              value: this.data.parentDatasetId
-            }
-          ]
-        }
-      ]
+      extraProperties: []
     }
+
+    const extraProperties = [
+      {
+        category: 'subjects',
+        values: [
+          {
+            value: this.data.subjects
+          }
+        ]
+      },
+      {
+        category: 'files',
+        values: [
+          {
+            value: this.data.files
+          }
+        ]
+      },
+      {
+        category: 'CONP_status',
+        values: [
+          {
+            value: this.data.conpStatus
+          }
+        ]
+      },
+      {
+        category: 'origin_city',
+        values: [
+          {
+            value: this.data.origin.city
+          }
+        ]
+      },
+      {
+        category: 'origin_province',
+        values: [
+          {
+            value: this.data.origin.province
+          }
+        ]
+      },
+      {
+        category: 'origin_country',
+        values: [
+          {
+            value: this.data.origin.country
+          }
+        ]
+      },
+      {
+        category: 'logo',
+        values: [
+          {
+            value:
+              this.data.logo.type === 'url'
+                ? this.data.logo.url
+                : this.data.logo.fileName
+          }
+        ]
+      },
+      {
+        category: 'contact',
+        values: [
+          {
+            value: `${this.data.contact.name}, ${this.data.contact.email}`
+          }
+        ]
+      },
+      {
+        category: 'derivedFrom',
+        values: [
+          {
+            value: this.data.derivedFrom
+          }
+        ]
+      },
+      {
+        category: 'parent_dataset_id',
+        values: [
+          {
+            value: this.data.parentDatasetId
+          }
+        ]
+      }
+    ]
+
+    extraProperties.forEach((p) => {
+      if (p.values[0].value) {
+        json.extraProperties.push(p)
+      }
+    })
 
     if (this.data.origin.institution)
       json.extraProperties.splice(
@@ -210,7 +218,28 @@ class FormToDats {
         }
       )
 
-    return Object.assign({}, json)
+    if (json.isAbout.length === 0) {
+      delete json.isAbout
+    }
+    if (json.spatialCoverage.length === 0) {
+      delete json.spatialCoverage
+    }
+    if (json.aggregation === '') {
+      delete json.aggregation
+    }
+    if (json.dimensions.length === 0) {
+      delete json.dimensions
+    }
+    if (json.acknowledges[0].funders.length === 0) {
+      delete json.acknowledges
+    }
+    if (json.keywords.length === 0) {
+      delete json.keywords
+    }
+
+    Object.keys(json).forEach((key) => json[key] == null && delete json[key])
+
+    return json
   }
 }
 
