@@ -231,7 +231,7 @@ class FormToDats {
       delete json.dimensions
     }
     if (json.acknowledges[0].funders.length === 0) {
-      delete json.isAbout
+      delete json.acknowledges
     }
     if (json.keywords.length === 0) {
       delete json.keywords
