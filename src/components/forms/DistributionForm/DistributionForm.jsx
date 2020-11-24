@@ -14,7 +14,7 @@ export default function DistributionForm(props) {
       <Section>
         <SectionTitle
           name='Formats'
-          tooltip='The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite)'
+          tooltip='The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).'
         />
         <FieldArray name='formats'>
           {(arrayHelpers) => (
@@ -55,8 +55,16 @@ export default function DistributionForm(props) {
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Size' tooltip='The size of the dataset.' />
+        <SectionTitle
+          name='Size'
+          tooltip='The quantity of space required on disk (or other medium) for this dataset.'
+        />
         <CustomTextField label='Size' name='size.value' />
+        <SectionTitle
+          subsection
+          name='Units'
+          tooltip='Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).'
+        />
         <CustomSelectField name='size.units' label='Units'>
           <MenuItem value='MB'>MB</MenuItem>
           <MenuItem value='GB'>GB</MenuItem>
@@ -73,13 +81,13 @@ export default function DistributionForm(props) {
         <SectionTitle
           subsection
           name='Landing Page'
-          tooltip='A web page that contains information about the associated dataset or other research object and a direct link to the object itself.'
+          tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself.'
         />
         <CustomTextField label='Landing Page' name='access.landingPage' />
         <SectionTitle
           subsection
           name='Authorizations'
-          tooltip='Types of verification that accessing the resource is allowed. Authorization occurs before successful authentication and refers to the process of obtaining approval to use a data set. Ideally specified from a controlled vocabulary or ontology.'
+          tooltip='This must be one of "Public", "Registered" or "Private". When this field is absent the value will be treated as "Public". "Public" = available to anyone; "Registered" = available to user authorized by the creator; "Private" = available only to the creator.'
         />
         <CustomSelectField label='Authorization' name='access.authorization'>
           <MenuItem value='public'>Public</MenuItem>
@@ -91,7 +99,7 @@ export default function DistributionForm(props) {
       <Section>
         <SectionTitle
           name='Number of Files'
-          tooltip='The number of files in the dataset'
+          tooltip='Total number of files in the dataset.'
         />
         <CustomTextField label='Files' name='files' />
       </Section>
@@ -99,13 +107,16 @@ export default function DistributionForm(props) {
       <Section>
         <SectionTitle
           name='Number of Subjects'
-          tooltip='The number of subjects in the dataset'
+          tooltip='Total number of subjects constituting the dataset.'
         />
         <CustomTextField label='Subjects' name='subjects' />
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='CONP Status' tooltip='CONP Status' />
+        <SectionTitle
+          name='CONP Status'
+          tooltip='The CONP status is used to add the CONP logo or Canadian flag on the left of the dataset and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.'
+        />
         <CustomSelectField name='conpStatus' label='CONP Status'>
           <MenuItem value='CONP'>CONP</MenuItem>
           <MenuItem value='Canadian'>Canadian</MenuItem>
