@@ -27,20 +27,15 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Title'
-          tooltip='The name of the dataset, usually one sentence or short description of the dataset.'
+          tooltip='Name of the dataset. The title needs to be short and easily recognizable and searchable. If there is an acronym, please also provide the long name.'
         />
-        <CustomTextField
-          required
-          fullWidth
-          name='title'
-          label='Dataset Title'
-        />
+        <CustomTextField required fullWidth name='title' label='Title' />
       </Section>
       <Divider variant='middle' />
       <Section>
         <SectionTitle
           name='Creators'
-          tooltip='The person(s) or organization(s) which contributed to the creation of the dataset.'
+          tooltip='The person(s) or organization(s) that contributed to the creation of the dataset. This can be the principal investigator, hospital, university, centre, clinic, etc. The first contact provided will be associated as the main contact for this dataset.'
         />
         <FieldArray name='creators'>
           {(arrayHelpers) => (
@@ -188,7 +183,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Description'
-          tooltip='A textual narrative comprised of one or more statements describing the dataset.'
+          tooltip='A short paragraph providing a rapid overview of the dataset and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the dataset, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data.'
         />
         <CustomTextField
           required
@@ -203,7 +198,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Data Types'
-          tooltip='A term, ideally from a controlled terminology, identifying the dataset type or nature of the data, placing it in a typology'
+          tooltip='Terms to describe the nature of the data. Data type can be single or multiple. Add a term with the <a href="https://neuinfo.org/interlex/dashboard" rel="noreferrer" target="_blank">interlex URI</a> if possible.'
         />
         <FieldArray name='types'>
           {(arrayHelpers) => (
@@ -243,7 +238,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Version'
-          tooltip='A release point for the dataset when applicable.'
+          tooltip='Provide the version number, or the release point of your dataset. Need to be a positive number. i.e.: 1, 1.2'
         />
         <CustomTextField label='Version' name='version' />
       </Section>
@@ -251,7 +246,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Licenses'
-          tooltip='The terms of use of the dataset.'
+          tooltip='The licences under which this dataset is shared.'
         />
         <FieldArray name='licenses'>
           {(arrayHelpers) => (
@@ -317,7 +312,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Keywords'
-          tooltip='Tags associated with the dataset, which will help in its discovery.'
+          tooltip='Tags associated with the dataset, which will help in its discovery. These should be well known terms by the research community.'
         />
         <FieldArray name='keywords'>
           {(arrayHelpers) => (

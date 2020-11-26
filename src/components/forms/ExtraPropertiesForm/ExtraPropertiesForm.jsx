@@ -21,27 +21,60 @@ export default function ExtraPropertiesForm(props) {
   return (
     <React.Fragment>
       <Section>
-        <SectionTitle name='Origin' tooltip='The origin of this dataset' />
+        <SectionTitle
+          name='Origin'
+          tooltip='Name of the institution or consortium that generated the dataset. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.'
+        />
+        <SectionTitle
+          name='Institution'
+          tooltip='Name of the institution where this dataset was created (if applicable).'
+        />
         <CustomTextField label='Institution' name='origin.institution' />
+        <SectionTitle
+          name='Consortium'
+          tooltip='Name of the consortium where this dataset was created (if applicable).'
+        />
         <CustomTextField label='Consortium' name='origin.consortium' />
+        <SectionTitle
+          name='City'
+          tooltip='(Principal) city where this dataset was created.'
+        />
         <CustomTextField label='City' name='origin.city' />
+        <SectionTitle
+          name='Province'
+          tooltip='(Principal) province where this dataset was created.'
+        />
         <CustomTextField label='Province' name='origin.province' />
+        <SectionTitle
+          name='Country'
+          tooltip='(Principal) country where this dataset was created.'
+        />
         <CustomTextField label='Country' name='origin.country' />
       </Section>
       <Divider variant='middle' />
       <Section>
         <SectionTitle
           name='Derived From'
-          tooltip='The sources this dataset is derived from'
+          tooltip='The sources this dataset is derived from.'
+        />
+        <SectionTitle
+          subtitle
+          name='Derived From'
+          tooltip='Name of the source dataset used to generate this dataset.'
         />
         <CustomTextField label='Derived From' name='derivedFrom' />
-        <CustomTextField label='Parent dataset id' name='parentDatasetId' />
+        <SectionTitle
+          subtitle
+          name='Parent dataset ID'
+          tooltip='Identifier (DOI) of the source dataset used to generate this dataset.'
+        />
+        <CustomTextField label='Parent dataset ID' name='parentDatasetId' />
       </Section>
       <Divider variant='middle' />
       <Section>
         <SectionTitle
           name='Primary Publications'
-          tooltip='The primary publication(s) associated with the dataset, usually describing how the dataset was produced'
+          tooltip='The primary publication(s) associated with the dataset, usually describing how the dataset was produced.'
         />
         <FieldArray name='primaryPublications'>
           {(arrayHelpers) => (
@@ -59,7 +92,7 @@ export default function ExtraPropertiesForm(props) {
                     <SectionTitle
                       subsection
                       name='Title'
-                      tooltip='The name of the publication, usually one sentence or short description of the publication.'
+                      tooltip='The name of the publication.'
                     />
                     <CustomTextField
                       label='Title'
@@ -68,7 +101,7 @@ export default function ExtraPropertiesForm(props) {
                     <SectionTitle
                       subsection
                       name='Publication Venue'
-                      tooltip='The name of the publication venue where the document is published if applicable.'
+                      tooltip='The name of the publication venue where the document is published (if applicable).'
                     />
                     <CustomTextField
                       label='Publication Venue'
@@ -80,7 +113,7 @@ export default function ExtraPropertiesForm(props) {
                           <SectionTitle
                             subsection
                             name='Authors'
-                            tooltip='Authors of the publication'
+                            tooltip='Authors of the publication.'
                           />
                           {(
                             values.primaryPublications[index]?.authors || []
@@ -118,7 +151,7 @@ export default function ExtraPropertiesForm(props) {
                                       <SectionTitle
                                         subsection
                                         name='Affiliations'
-                                        tooltip='Author affiliations'
+                                        tooltip='Author affiliations.'
                                       />
                                       {(
                                         values.primaryPublications[index]
@@ -190,7 +223,7 @@ export default function ExtraPropertiesForm(props) {
                       <SectionTitle
                         subsection
                         name='Dates'
-                        tooltip='Relevant dates for the publication. If you provide a date, it must come with a description of the date'
+                        tooltip='Relevant dates for the publication. If you provide a date, it must come with a description of the date (i.e.: first submission, final approval, date of publication, ...).'
                       />
                       <FieldArray name={`primaryPublications.${index}.dates`}>
                         {(arrayHelpers) => (
@@ -245,23 +278,16 @@ export default function ExtraPropertiesForm(props) {
                       </FieldArray>
                     </Section>
                     <SectionTitle
-                      subsection
                       name='Identifier'
-                      tooltip='Primary identifier for the publication. Provide a Document Object Identifier (DOI) if you have one'
-                    />
-                    <SectionTitle
-                      subsection
-                      name='Identifier'
-                      tooltip='A code uniquely identifying an entity locally to a system or globally.'
+                      tooltip='A code uniquely identifying the publication locally to a system or globally. Provide a Document Object Identifier (DOI) if you have one.'
                     />
                     <CustomTextField
                       label='Identifier'
                       name={`primaryPublications.${index}.identifier.identifier`}
                     />
                     <SectionTitle
-                      subsection
                       name='Identifier Source'
-                      tooltip='The identifier source represents information about the organisation/namespace responsible for minting the identifiers. It must be provided if the identifier is provided.'
+                      tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
                     />
                     <CustomTextField
                       label='Identifier Source'
@@ -300,7 +326,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Dimensions'
-          tooltip='The different dimensions (granular components) making up a dataset. Providing dimensions give more details about the data types'
+          tooltip='The different dimensions (granular components) making up a dataset. Providing dimensions give more details about the data types.'
         />
         <FieldArray name='dimensions'>
           {(arrayHelpers) => (
@@ -348,18 +374,12 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Identifier'
-          tooltip='Primary identifier for the dataset. Provide a Document Object Identifier (DOI) if you have one'
-        />
-        <SectionTitle
-          subsection
-          name='Identifier'
-          tooltip='A code uniquely identifying an entity locally to a system or globally.'
+          tooltip='A code uniquely identifying the dataset locally to a system or globally.'
         />
         <CustomTextField label='Identifier' name='identifier.identifier' />
         <SectionTitle
-          subsection
           name='Identifier Source'
-          tooltip='The identifier source represents information about the organisation/namespace responsible for minting the identifiers. It must be provided if the identifier is provided.'
+          tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
         />
         <CustomTextField label='Source' name='identifier.identifierSource' />
       </Section>
@@ -367,14 +387,17 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Contact'
-          tooltip='Contact information for this dataset'
+          tooltip='Provide contact information (name and email address) of the person responsible for the dataset.'
         />
         <CustomTextField label='Name' name='contact.name' />
         <CustomTextField label='Email' name='contact.email' />
       </Section>
       <Divider variant='middle' />
       <Section>
-        <SectionTitle name='Logo' tooltip='The Logo for this dataset' />
+        <SectionTitle
+          name='Logo'
+          tooltip='Link to a URL for the logo or local filename containing the logo.'
+        />
         <CustomRadioGroup name='logo.type' label='Type'>
           <FormControlLabel value='url' control={<Radio />} label='URL' />
           <FormControlLabel
@@ -392,7 +415,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Dates'
-          tooltip='Relevant dates for the dataset. If you provide a date, it must come with a description of the date'
+          tooltip='Relevant dates for the dataset. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...).'
         />
         <FieldArray name='dates'>
           {(arrayHelpers) => (
@@ -442,7 +465,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Produced By'
-          tooltip='Process which generated a given dataset'
+          tooltip='Process which generated a given dataset.'
         />
         <CustomTextField label='Produced By' name='producedBy' />
       </Section>
@@ -450,7 +473,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Is About'
-          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset'
+          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset.'
         />
         <FieldArray name='isAbout'>
           {(arrayHelpers) => (
@@ -488,7 +511,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Acknowledges'
-          tooltip='The grant(s) which funded and supported the work reported by the dataset'
+          tooltip='Grant(s) which funded and supported the work reported by the dataset.'
         />
         <FieldArray name='acknowledges'>
           {(arrayHelpers) => (
@@ -536,7 +559,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Spatial Coverage'
-          tooltip='The geographical extension and span covered by the dataset and its measured dimensions/variables'
+          tooltip='The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the dataset.'
         />
         <FieldArray name='spatialCoverage'>
           {(arrayHelpers) => (

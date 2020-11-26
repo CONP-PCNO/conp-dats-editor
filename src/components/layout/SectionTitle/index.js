@@ -7,7 +7,9 @@ const SectionTitle = (props) => {
       <Typography variant={props.subsection ? 'subtitle1' : 'h6'} gutterBottom>
         {props.name}
       </Typography>
-      <Typography variant='caption'>{props.tooltip}</Typography>
+      <Typography variant='caption'>
+        <div dangerouslySetInnerHTML={{ __html: props.tooltip }} />
+      </Typography>
     </Box>
   )
 }
