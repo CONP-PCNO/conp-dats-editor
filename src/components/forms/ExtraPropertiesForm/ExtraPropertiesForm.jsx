@@ -55,7 +55,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Derived From'
-          tooltip='The sources this dataset is derived from'
+          tooltip='The sources this dataset is derived from.'
         />
         <SectionTitle
           subtitle
