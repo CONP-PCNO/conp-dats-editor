@@ -183,7 +183,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Description'
-          tooltip='A short paragraph providing a rapid overview of the dataset and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the dataset, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data.'
+          tooltip='A short paragraph providing a rapid overview of the dataset and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the dataset, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the dataset.'
         />
         <CustomTextField
           required
@@ -238,7 +238,7 @@ export default function GeneralForm(props) {
       <Section>
         <SectionTitle
           name='Version'
-          tooltip='Provide the version number, or the release point of your dataset. Need to be a positive number. i.e.: 1, 1.2'
+          tooltip='Provide the version number, or the release point of your dataset. If you do not have an existing versioning convention, we recommend the use of the following versoning convention: 1.0=original dataset; 1.1=minor revisions made to the dataset; 1.2=further minor revisions; 2.0=major/substantive changes to the dataset. For example: minor changes could include corrupted file or link fixes, more description/documentation of the dataset and so on; Major changes would include additional data released (more subjects, more modalities and so on)'
         />
         <CustomTextField label='Version' name='version' />
       </Section>
