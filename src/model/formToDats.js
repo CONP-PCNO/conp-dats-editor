@@ -11,11 +11,9 @@ class FormToDats {
       description: this.data.description,
       identifier: this.data.identifier,
       dates: this.data.dates.map((date) => {
-        var date_type = date.type.toString()
-        alert(date_type.toLowerCase())
         return {
           date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
-          type: date_type.toLowerCase()
+          type: date.type
         }
       }),
       creators: this.data.creators.map((creator) => {
