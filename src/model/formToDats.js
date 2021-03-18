@@ -47,16 +47,15 @@ class FormToDats {
           formats: this.data.formats.map((format) => {
             const nifti = ['NIFTI', 'NII', 'NIIGZ']
             const gifti = ['GIFTI', 'GII']
-            var f = format.toUpperCase()
-            f = f.replace(/\./g, '')
+            const f = format.toUpperCase().replace(/\./g, '')
             if (nifti.includes(f)) {
-              f = 'NIfTI'
+              return 'NIfTI'
             } else if (gifti.includes(f)) {
-              f = 'GIfTI'
-            } else if (f == 'BIGWIG') {
-              f = 'bigWig'
-            } else if (f == 'RNA-SEQ') {
-              f = 'RNA-Seq'
+              return 'GIfTI'
+            } else if (f === 'BIGWIG') {
+              return 'bigWig'
+            } else if (f === 'RNA-SEQ') {
+              return 'RNA-Seq'
             }
             return f
           }),
