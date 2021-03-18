@@ -11,9 +11,11 @@ class FormToDats {
       description: this.data.description,
       identifier: this.data.identifier,
       dates: this.data.dates.map((date) => {
+        var date_type = date.type.toString()
+        alert(date_type.toLowerCase())
         return {
           date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
-          type: date.type
+          type: date_type.toLowerCase()
         }
       }),
       creators: this.data.creators.map((creator) => {
@@ -44,7 +46,22 @@ class FormToDats {
       }),
       distributions: [
         {
-          formats: this.data.formats,
+          formats: this.data.formats.map((format) => {
+            const nifti = ['NIFTI', 'NII', 'NIIGZ']
+            const gifti = ['GIFTI', 'GII']
+            var f = format.toUpperCase()
+            f = f.replace(/\./g, '')
+            if (nifti.includes(f)) {
+              f = 'NIfTI'
+            } else if (gifti.includes(f)) {
+              f = 'GIfTI'
+            } else if (f == 'BIGWIG') {
+              f = 'bigWig'
+            } else if (f == 'RNA-SEQ') {
+              f = 'RNA-Seq'
+            }
+            return f
+          }),
           size: parseFloat(this.data.size.value),
           unit: {
             value: this.data.size.units
