@@ -13,7 +13,9 @@ class FormToDats {
       dates: this.data.dates.map((date) => {
         return {
           date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
-          type: date.type
+          type: {
+            value: date.type.value.toLowerCase()
+          }
         }
       }),
       creators: this.data.creators.map((creator) => {
