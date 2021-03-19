@@ -66,7 +66,9 @@ class FormToDats {
           dates: pp.dates.map((date) => {
             return Object.assign(date, {
               date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00'
-              type: 'publication date'
+              type: {
+                value: 'publication date'
+              }
             })
           })
         })
