@@ -53,7 +53,7 @@ const defaultValidationSchema = yup.object({
       authorization: yup.string().required()
     })
     .required(),
-  privacy: yup.string().required(),
+  privacy: yup.string(),
   files: yup.number().integer().positive().required(),
   subjects: yup.number().integer().positive().required(),
   conpStatus: yup.string().required(),
@@ -165,7 +165,7 @@ const defaultValues = {
     landingPage: '',
     authorization: 'public'
   },
-  privacy: 'public',
+  privacy: '',
   files: '',
   subjects: '',
   conpStatus: '',

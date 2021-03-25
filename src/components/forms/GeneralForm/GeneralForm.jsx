@@ -245,6 +245,25 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
+          name='Privacy'
+          tooltip='A qualifier to describe the data protection applied to the dataset. This is relevant for clinical data.
+                     <ul>
+                       <li><i><strong>open</strong>: freely and publicly available</i></li>
+                       <li><i><strong>registered</strong>: available to bona fide researchers/clinical care professionals only</i></li>
+                       <li><i><strong>controlled</strong>: available to qualified researchers approved by a committee after review of their research proposal; also known as managed or restricted access</i></li>
+                       <li><i><strong>private</strong>: available only to researchers of the project; also known as closed</i></li>
+                     </ul>'
+        />
+        <CustomSelectField label='Privacy' name='privacy'>
+              <MenuItem value='open'>open</MenuItem>
+              <MenuItem value='registered'>registered</MenuItem>
+              <MenuItem value='controlled'>controlled</MenuItem>
+              <MenuItem value='private'>private</MenuItem>
+        </CustomSelectField>
+      </Section>
+      <Divider variant='middle' />
+      <Section>
+        <SectionTitle
           name='Licenses'
           tooltip='The licences under which this dataset is shared.'
         />
