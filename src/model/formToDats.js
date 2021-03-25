@@ -44,7 +44,21 @@ class FormToDats {
       }),
       distributions: [
         {
-          formats: this.data.formats,
+          formats: this.data.formats.map((format) => {
+            const nifti = ['NIFTI', 'NII', 'NIIGZ']
+            const gifti = ['GIFTI', 'GII']
+            const f = format.toUpperCase().replace(/\./g, '')
+            if (nifti.includes(f)) {
+              return 'NIfTI'
+            } else if (gifti.includes(f)) {
+              return 'GIfTI'
+            } else if (f === 'BIGWIG') {
+              return 'bigWig'
+            } else if (f === 'RNA-SEQ') {
+              return 'RNA-Seq'
+            }
+            return f
+          }),
           size: parseFloat(this.data.size.value),
           unit: {
             value: this.data.size.units
