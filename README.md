@@ -68,13 +68,13 @@ The project currently does not have versioned releases. In order to use the conp
   ...
 ```
 
-You can alternatively refernec specific commits in this fashion, which could serve as a means of updating to the latest version (update the commit hash)
+You can alternatively reference specific commits in this fashion, which could serve as a means of updating to the latest version (update the commit hash)
 
 ```javascript
 "conp-dats-editor": "CONP-PCNO/conp-dats-editor#<commit>"
 ```
 
-**TODO: Publish conp-dats-editor on npm, using versioned releases.**
+**TODO: Publish conp-dats-editor on npm, using versioned releases. This is the _correct_ way.**
 
 ## Unit tests
 
