@@ -67,7 +67,7 @@ class FormToDats {
             return Object.assign(date, {
               date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
               type: {
-                value: 'publication date'
+                value: date.type.value.toLowerCase()
               }
             })
           })
