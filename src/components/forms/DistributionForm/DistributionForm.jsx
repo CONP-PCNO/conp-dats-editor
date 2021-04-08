@@ -62,7 +62,7 @@ export default function DistributionForm(props) {
         <CustomTextField required label='Size' name='size.value' />
         <SectionTitle
           subsection
-          name='Units'
+          name='Units *'
           tooltip='Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).'
         />
         <CustomSelectField required name='size.units' label='Units'>
