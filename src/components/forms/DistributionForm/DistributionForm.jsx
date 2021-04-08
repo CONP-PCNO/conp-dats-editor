@@ -81,7 +81,7 @@ export default function DistributionForm(props) {
         <SectionTitle
           subsection
           name='Landing Page *'
-          tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself.'
+          tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself. When none exists yet, please provide the link to the README.md file of the dataset.'
         />
         <CustomTextField required label='Landing Page' name='access.landingPage' />
         <SectionTitle
