@@ -26,7 +26,7 @@ export default function GeneralForm(props) {
       </Typography>
       <Section>
         <SectionTitle
-          name='Title'
+          name='Title *'
           tooltip='Name of the dataset. The title needs to be short and easily recognizable and searchable. If there is an acronym, please also provide the long name.'
         />
         <CustomTextField required fullWidth name='title' label='Title' />
@@ -34,7 +34,7 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Creators'
+          name='Creators *'
           tooltip='The person(s) or organization(s) that contributed to the creation of the dataset. This can be the principal investigator, hospital, university, centre, clinic, etc. The first contact provided will be associated as the main contact for this dataset.'
         />
         <FieldArray name='creators'>
@@ -182,7 +182,7 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Description'
+          name='Description *'
           tooltip='A short paragraph providing a rapid overview of the dataset and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the dataset, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the dataset.'
         />
         <CustomTextField
@@ -197,7 +197,7 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Data Types'
+          name='Data Types *'
           tooltip='Terms to describe the nature of the data. Data type can be single or multiple. Add a term with the <a href="https://neuinfo.org/interlex/dashboard" rel="noreferrer" target="_blank">interlex URI</a> if possible.'
         />
         <FieldArray name='types'>
@@ -237,10 +237,10 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Version'
+          name='Version *'
           tooltip='Provide the version number, or the release point of your dataset. If you do not have an existing versioning convention, we recommend the use of the following versoning convention: 1.0=original dataset; 1.1=minor revisions made to the dataset; 1.2=further minor revisions; 2.0=major/substantive changes to the dataset. For example: minor changes could include corrupted file or link fixes, more description/documentation of the dataset and so on; Major changes would include additional data released (more subjects, more modalities and so on)'
         />
-        <CustomTextField label='Version' name='version' />
+        <CustomTextField required label='Version' name='version' />
       </Section>
       <Divider variant='middle' />
       <Section>
@@ -264,7 +264,7 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Licenses'
+          name='Licenses *'
           tooltip='The licences under which this dataset is shared.'
         />
         <FieldArray name='licenses'>
@@ -280,7 +280,7 @@ export default function GeneralForm(props) {
                   >
                     <CustomSelectField
                       required
-                      label='License'
+                      label='License *'
                       name={`licenses.${index}.value`}
                     >
                       <ListSubheader>Creative Commons</ListSubheader>
@@ -330,7 +330,7 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Keywords'
+          name='Keywords *'
           tooltip='Tags associated with the dataset, which will help in its discovery. These should be well known terms by the research community.'
         />
         <FieldArray name='keywords'>
