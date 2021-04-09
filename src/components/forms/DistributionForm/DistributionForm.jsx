@@ -13,7 +13,7 @@ export default function DistributionForm(props) {
     <React.Fragment>
       <Section>
         <SectionTitle
-          name='Formats'
+          name='Formats *'
           tooltip='The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).'
         />
         <FieldArray name='formats'>
@@ -56,16 +56,16 @@ export default function DistributionForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Size'
+          name='Size *'
           tooltip='The quantity of space required on disk (or other medium) for this dataset.'
         />
-        <CustomTextField label='Size' name='size.value' />
+        <CustomTextField required label='Size' name='size.value' />
         <SectionTitle
           subsection
-          name='Units'
+          name='Units *'
           tooltip='Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).'
         />
-        <CustomSelectField name='size.units' label='Units'>
+        <CustomSelectField required name='size.units' label='Units'>
           <MenuItem value='MB'>MB</MenuItem>
           <MenuItem value='GB'>GB</MenuItem>
           <MenuItem value='TB'>TB</MenuItem>
@@ -75,21 +75,21 @@ export default function DistributionForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Access'
+          name='Access *'
           tooltip='The information about access modality for the dataset distribution.'
         />
         <SectionTitle
           subsection
-          name='Landing Page'
+          name='Landing Page *'
           tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself. When none exists yet, please provide the link to the README.md file of the dataset.'
         />
-        <CustomTextField label='Landing Page' name='access.landingPage' />
+        <CustomTextField required label='Landing Page' name='access.landingPage' />
         <SectionTitle
           subsection
-          name='Authorizations'
+          name='Authorizations *'
           tooltip='This must be one of "Public", "Registered" or "Private". When this field is absent the value will be treated as "Public". "Public" = available to anyone; "Registered" = available to user authorized by the creator; "Private" = available only to the creator.'
         />
-        <CustomSelectField label='Authorization' name='access.authorization'>
+        <CustomSelectField required label='Authorization' name='access.authorization'>
           <MenuItem value='public'>Public</MenuItem>
           <MenuItem value='registered'>Registered</MenuItem>
           <MenuItem value='private'>Private</MenuItem>
@@ -98,26 +98,26 @@ export default function DistributionForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Number of Files'
+          name='Number of Files *'
           tooltip='Total number of files in the dataset.'
         />
-        <CustomTextField label='Files' name='files' />
+        <CustomTextField required label='Files' name='files' />
       </Section>
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Number of Subjects'
+          name='Number of Subjects *'
           tooltip='Total number of subjects constituting the dataset.'
         />
-        <CustomTextField label='Subjects' name='subjects' />
+        <CustomTextField required label='Subjects' name='subjects' />
       </Section>
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='CONP Status'
+          name='CONP Status *'
           tooltip='The CONP status is used to add the CONP logo or Canadian flag on the left of the dataset and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.'
         />
-        <CustomSelectField name='conpStatus' label='CONP Status'>
+        <CustomSelectField required name='conpStatus' label='CONP Status'>
           <MenuItem value='CONP'>CONP</MenuItem>
           <MenuItem value='Canadian'>Canadian</MenuItem>
           <MenuItem value='external'>External</MenuItem>

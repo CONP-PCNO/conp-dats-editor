@@ -22,30 +22,35 @@ export default function ExtraPropertiesForm(props) {
     <React.Fragment>
       <Section>
         <SectionTitle
-          name='Origin'
+          name='Origin *'
           tooltip='Name of the institution or consortium that generated the dataset. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.'
         />
         <SectionTitle
+          subsection
           name='Institution'
           tooltip='Name of the institution where this dataset was created (if applicable).'
         />
         <CustomTextField label='Institution' name='origin.institution' />
         <SectionTitle
+          subsection
           name='Consortium'
           tooltip='Name of the consortium where this dataset was created (if applicable).'
         />
         <CustomTextField label='Consortium' name='origin.consortium' />
         <SectionTitle
+          subsection
           name='City'
           tooltip='(Principal) city where this dataset was created.'
         />
         <CustomTextField label='City' name='origin.city' />
         <SectionTitle
+          subsection
           name='Province'
           tooltip='(Principal) province where this dataset was created.'
         />
         <CustomTextField label='Province' name='origin.province' />
         <SectionTitle
+          subsection
           name='Country'
           tooltip='(Principal) country where this dataset was created.'
         />
@@ -58,13 +63,13 @@ export default function ExtraPropertiesForm(props) {
           tooltip='The sources this dataset is derived from.'
         />
         <SectionTitle
-          subtitle
+          subsection
           name='Derived From'
           tooltip='Name of the source dataset used to generate this dataset.'
         />
         <CustomTextField label='Derived From' name='derivedFrom' />
         <SectionTitle
-          subtitle
+          subsection
           name='Parent dataset ID'
           tooltip='Identifier (DOI) of the source dataset used to generate this dataset.'
         />
@@ -378,6 +383,7 @@ export default function ExtraPropertiesForm(props) {
         />
         <CustomTextField label='Identifier' name='identifier.identifier' />
         <SectionTitle
+          subsection
           name='Identifier Source'
           tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
         />
