@@ -266,7 +266,6 @@ export default function ExtraPropertiesForm(props) {
                                 color='secondary'
                                 onClick={() => {
                                   arrayHelpers.push({
-                                    description: '',
                                     date: new Date(
                                       new Date().setHours(0, 0, 0, 0)
                                     )
