@@ -20,6 +20,16 @@ class FormToDats {
       }),
       creators: this.data.creators.map((creator) => {
         const c = creator
+        if (c.type === 'Person' && Object.keys(c).includes('name')) {
+          c.fullName = c.name
+          delete c.name
+        } else if (
+          c.type === 'Organization' &&
+          Object.keys(c).includes('fullName')
+        ) {
+          c.name = c.fullName
+          delete c.fullName
+        }
         delete c.type
         delete c.role
         if (creator.role)
