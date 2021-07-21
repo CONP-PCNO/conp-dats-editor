@@ -23,7 +23,10 @@ class FormToDats {
         if (c.type === 'Person' && Object.keys(c).includes('name')) {
           c.fullName = c.name
           delete c.name
-        } else if (c.type === 'Organization' && Object.keys(c).includes('fullName')) {
+        } else if (
+          c.type === 'Organization' &&
+          Object.keys(c).includes('fullName')
+        ) {
           c.name = c.fullName
           delete c.fullName
         }
