@@ -78,10 +78,12 @@ export default function GeneralForm(props) {
                     ) : (
                       <Section>
                         <CustomTextField
+                          required
                           label='Full Name'
                           name={`creators.${index}.fullName`}
                         />
                         <CustomTextField
+                          required
                           label='First Name'
                           name={`creators.${index}.firstName`}
                         />
@@ -91,12 +93,18 @@ export default function GeneralForm(props) {
                         />
                         <CustomTextField
                           fullWidth
+                          required
                           label='Last Name'
                           name={`creators.${index}.lastName`}
                         />
                         <CustomTextField
                           label='Email'
                           name={`creators.${index}.email`}
+                        />
+                        <CustomTextField
+                          required
+                          label='ORCID'
+                          name={`creators.${index}.orcid`}
                         />
                         <FieldArray name={`creators.${index}.affiliations`}>
                           {(arrayHelpers) => (
