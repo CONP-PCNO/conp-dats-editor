@@ -53,10 +53,20 @@ const defaultValidationSchema = yup.object({
       authorization: yup.string().required()
     })
     .required(),
-  privacy: yup.string(),
+  privacy: yup
+    .string()
+    .matches(/(open|registered|controlled|private)/, {
+      excludeEmptyString: true
+    })
+    .required(),
   files: yup.number().integer().positive().required(),
   subjects: yup.number().integer().positive().required(),
-  conpStatus: yup.string().required(),
+  conpStatus: yup
+    .string()
+    .matches(/(CONP|Canadian|External)/, {
+      excludeEmptyString: true
+    })
+    .required(),
   derivedFrom: yup.string(),
   parentDatasetId: yup.string(),
   primaryPublications: yup.array().of(yup.string()),
