@@ -28,12 +28,21 @@ const defaultValidationSchema = yup.object({
   creators: yup.array().of(
     yup.object({
       name: yup.string(),
-      email: yup.string().email()
+      email: yup.string().email(),
+      orcid: yup.string().when('type', {
+        // eslint-disable-next-line eqeqeq
+        is: (type) => type === 'Person',
+        then: yup
+          .string()
+          .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
+          .required(),
+        otherwise: yup.string()
+      })
     })
   ),
   contact: yup.object().shape({
-    name: yup.string(),
-    email: yup.string().email()
+    name: yup.string().required(),
+    email: yup.string().email().required()
   }),
   description: yup.string().required(),
   types: yup.array().of(yup.string()).min(1).required(),
@@ -63,7 +72,7 @@ const defaultValidationSchema = yup.object({
   subjects: yup.number().integer().positive().required(),
   conpStatus: yup
     .string()
-    .matches(/(CONP|Canadian|External)/, {
+    .matches(/(CONP|Canadian|external)/, {
       excludeEmptyString: true
     })
     .required(),
@@ -370,8 +379,8 @@ export const DatsEditorForm = (props) => {
                   {Object.keys(errors).length > 0 ? (
                     <div className={classes.section}>
                       <Typography variant='h6' gutterBottom>
-                        To succesfully create the DATS.json file, you must first
-                        resolve issues with the following fields:
+                        To successfully create the DATS.json file, you must
+                        first resolve issues with the following fields:
                       </Typography>
                       {Object.keys(errors).map((key) =>
                         Object.keys(touched).includes(key) ? (
