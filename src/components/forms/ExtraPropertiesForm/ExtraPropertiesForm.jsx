@@ -391,11 +391,11 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Contact'
+          name='Contact *'
           tooltip='Provide contact information (name and email address) of the person responsible for the dataset.'
         />
-        <CustomTextField label='Name' name='contact.name' />
-        <CustomTextField label='Email' name='contact.email' />
+        <CustomTextField required label='Name' name='contact.name' />
+        <CustomTextField required label='Email' name='contact.email' />
       </Section>
       <Divider variant='middle' />
       <Section>
