@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Typography } from '@material-ui/core'
-import { format } from 'date-fns'
 
 const downloadDats = (dats) => {
   var element = document.createElement('a')
@@ -11,7 +10,7 @@ const downloadDats = (dats) => {
   )
   element.setAttribute(
     'download',
-    `DATS_${format(new Date(), 'yyMMddHHmmss')}.json`
+    `DATS.json`
   )
 
   element.style.display = 'none'
