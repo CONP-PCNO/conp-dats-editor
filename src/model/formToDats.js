@@ -38,6 +38,20 @@ class FormToDats {
               value: creator.role
             }
           ]
+        if (creator.orcid) {
+          c.extraProperties = [
+            {
+              category: 'ORCID',
+              values: [
+                {
+                  value: creator.orcid
+                }
+              ]
+            }
+          ]
+          delete c.orcid
+        }
+
         return c
       }),
       types: this.data.types.map((type) => {
