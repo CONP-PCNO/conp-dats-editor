@@ -615,7 +615,7 @@ export default function ExtraPropertiesForm(props) {
           name='REB Information *'
           tooltip='In submitting this dataset for inclusion, I certify that *'
         />
-        <CustomSelectField label='Select a statement *' name='ethics' style={{minWidth: 200}}>
+        <CustomSelectField label='Select a statement *' name='reb_info' style={{minWidth: 200}}>
           <MenuItem value='option_1'>
             I have obtained participant consent to the de-identification and
             open sharing of data.
@@ -630,7 +630,7 @@ export default function ExtraPropertiesForm(props) {
         </CustomSelectField>
         <CustomTextField
           label='REB Number (required for human research data)'
-          name='reb_nb'
+          name='reb_number'
         />
       </Section>
     </React.Fragment>

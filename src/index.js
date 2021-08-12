@@ -35,7 +35,7 @@ const defaultValidationSchema = yup.object({
         then: yup
           .string()
           .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
-          .required(),
+          .required('An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'),
         otherwise: yup.string()
       })
     })
@@ -102,7 +102,16 @@ const defaultValidationSchema = yup.object({
   acknowledges: yup.string(),
   refinement: yup.string(),
   aggregation: yup.string(),
-  spatialCoverage: yup.array().of(yup.string())
+  spatialCoverage: yup.array().of(yup.string()),
+  reb_info: yup.string().required(),
+  reb_number: yup.string().when('reb_info', {
+        // eslint-disable-next-line eqeqeq
+        is: (reb_info) => reb_info === 'option_1' || reb_info === 'option_2',
+        then: yup
+          .string()
+          .required('An REB number is required for human research data'),
+        otherwise: yup.string()
+      })
 })
 
 const useStyles = makeStyles((theme) => ({
