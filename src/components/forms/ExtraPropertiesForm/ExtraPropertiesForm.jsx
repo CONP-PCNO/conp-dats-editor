@@ -4,7 +4,7 @@ import {
   Divider,
   FormControlLabel,
   Radio,
-  Box
+  Box, MenuItem
 } from '@material-ui/core'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -15,6 +15,7 @@ import SectionTitle from '../../layout/SectionTitle'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
+import CustomSelectField from "../../fields/CustomSelectField";
 
 export default function ExtraPropertiesForm(props) {
   const { values } = props
@@ -607,6 +608,30 @@ export default function ExtraPropertiesForm(props) {
             </Box>
           )}
         </FieldArray>
+      </Section>
+      <Divider variant='middle' />
+      <Section>
+        <SectionTitle
+          name='REB Information *'
+          tooltip='In submitting this dataset for inclusion, I certify that *'
+        />
+        <CustomSelectField label='Select a statement *' name='ethics' style={{minWidth: 200}}>
+          <MenuItem value='option_1'>
+            I have obtained participant consent to the de-identification and
+            open sharing of data.
+          </MenuItem>
+          <MenuItem value='option_2'>
+            I have obtained a waiver or other express permission from my
+            research ethics board.
+          </MenuItem>
+          <MenuItem value='option_3'>
+            my data does not concern human research participants.
+          </MenuItem>
+        </CustomSelectField>
+        <CustomTextField
+          label='REB Number (required for human research data)'
+          name='reb_nb'
+        />
       </Section>
     </React.Fragment>
   )
