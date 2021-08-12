@@ -612,7 +612,7 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='REB Information *'
+          name='Ethical Information *'
           tooltip='In submitting this dataset for inclusion, I certify that *'
         />
         <CustomSelectField label='Select a statement *' name='reb_info' style={{minWidth: 200}}>
@@ -629,7 +629,7 @@ export default function ExtraPropertiesForm(props) {
           </MenuItem>
         </CustomSelectField>
         <CustomTextField
-          label='REB Number (required for human research data)'
+          label='Ethics approval identifier (required for human research data)'
           name='reb_number'
         />
       </Section>

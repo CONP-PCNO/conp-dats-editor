@@ -225,6 +225,22 @@ class FormToDats {
             value: this.data.parentDatasetId
           }
         ]
+      },
+      {
+        category: 'REB_statement',
+        values: [
+          {
+            value: this.data.reb_info
+          }
+        ]
+      },
+      {
+        category: 'REB_number',
+        values: [
+          {
+            value: this.data.reb_number
+          }
+        ]
       }
     ]
 
