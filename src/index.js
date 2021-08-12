@@ -110,7 +110,7 @@ const defaultValidationSchema = yup.object({
   // reb_number: yup.string()
   reb_number: yup.string().when('reb_info', {
     // eslint-disable-next-line eqeqeq
-    is: (reb_info) => reb_info === 'option_1' || reb_info === 'option_2',
+    is: (RebInfo) => RebInfo === 'option_1' || RebInfo === 'option_2',
     then: yup
       .string()
       .required('An REB number is required for human research data'),
