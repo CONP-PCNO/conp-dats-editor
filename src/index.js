@@ -38,7 +38,9 @@ const defaultValidationSchema = yup.object({
         then: yup
           .string()
           .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
-          .required('An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'),
+          .required(
+            'An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'
+          ),
         otherwise: yup.string()
       })
     })
