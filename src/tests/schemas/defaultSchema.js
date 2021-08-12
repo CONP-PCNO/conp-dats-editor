@@ -5,7 +5,8 @@ export const defaultValidationSchema = yup.object({
   creators: yup.array().of(
     yup.object({
       name: yup.string().required(),
-      email: yup.string().email()
+      email: yup.string().email(),
+      orcid: yup.string()
     })
   ),
   contact: yup.object().shape({
@@ -60,5 +61,7 @@ export const defaultValidationSchema = yup.object({
   acknowledges: yup.string(),
   refinement: yup.string(),
   aggregation: yup.string(),
-  spatialCoverage: yup.array().of(yup.string())
+  spatialCoverage: yup.array().of(yup.string()),
+  reb_info: yup.string().required(),
+  reb_number: yup.string()
 })

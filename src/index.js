@@ -29,15 +29,16 @@ const defaultValidationSchema = yup.object({
     yup.object({
       name: yup.string(),
       email: yup.string().email(),
-      orcid: yup.string().when('type', {
-        // eslint-disable-next-line eqeqeq
-        is: (type) => type === 'Person',
-        then: yup
-          .string()
-          .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
-          .required('An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'),
-        otherwise: yup.string()
-      })
+      orcid: yup.string().matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
+      // orcid: yup.string().when('type', {
+      //   // eslint-disable-next-line eqeqeq
+      //   is: (type) => type === 'Person',
+      //   then: yup
+      //     .string()
+      //     .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
+      //     .required('An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'),
+      //   otherwise: yup.string()
+      // })
     })
   ),
   contact: yup.object().shape({
@@ -104,14 +105,15 @@ const defaultValidationSchema = yup.object({
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
   reb_info: yup.string().required(),
-  reb_number: yup.string().when('reb_info', {
-        // eslint-disable-next-line eqeqeq
-        is: (reb_info) => reb_info === 'option_1' || reb_info === 'option_2',
-        then: yup
-          .string()
-          .required('An REB number is required for human research data'),
-        otherwise: yup.string()
-      })
+  reb_number: yup.string()
+  // reb_number: yup.string().when('reb_info', {
+  //       // eslint-disable-next-line eqeqeq
+  //       is: (reb_info) => reb_info === 'option_1' || reb_info === 'option_2',
+  //       then: yup
+  //         .string()
+  //         .required('An REB number is required for human research data'),
+  //       otherwise: yup.string()
+  //     })
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -167,7 +169,8 @@ const defaultValues = {
   creators: [
     {
       type: 'Organization',
-      role: 'Principal Investigator'
+      role: 'Principal Investigator',
+      orcid: ''
     }
   ],
   contact: {
@@ -225,7 +228,9 @@ const defaultValues = {
   refinement: '',
   aggregation: '',
   spatialCoverage: [],
-  attachments: []
+  attachments: [],
+  reb_info: '',
+  reb_number: ''
 }
 
 const steps = [
