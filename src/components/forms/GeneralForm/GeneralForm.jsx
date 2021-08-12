@@ -103,7 +103,7 @@ export default function GeneralForm(props) {
                         />
                         <CustomTextField
                           required
-                          label='ORCID'
+                          label='ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX)'
                           name={`creators.${index}.orcid`}
                         />
                         <FieldArray name={`creators.${index}.affiliations`}>
