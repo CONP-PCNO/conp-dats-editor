@@ -418,6 +418,7 @@ export default function ExtraPropertiesForm(props) {
           <CustomTextField label='Path to File' name='logo.fileName' />
         )}
       </Section>
+      <Divider variant='middle' />
       <Section>
         <SectionTitle
           name='Dates'

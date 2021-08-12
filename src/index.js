@@ -107,15 +107,15 @@ const defaultValidationSchema = yup.object({
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
   reb_info: yup.string().oneOf(['option_1', 'option_2', 'option_3']).required(),
-  reb_number: yup.string()
-  // reb_number: yup.string().when('reb_info', {
-  //       // eslint-disable-next-line eqeqeq
-  //       is: (reb_info) => reb_info === 'option_1' || reb_info === 'option_2',
-  //       then: yup
-  //         .string()
-  //         .required('An REB number is required for human research data'),
-  //       otherwise: yup.string()
-  //     })
+  // reb_number: yup.string()
+  reb_number: yup.string().when('reb_info', {
+        // eslint-disable-next-line eqeqeq
+        is: (reb_info) => reb_info === 'option_1' || reb_info === 'option_2',
+        then: yup
+          .string()
+          .required('An REB number is required for human research data'),
+        otherwise: yup.string()
+      })
 })
 
 const useStyles = makeStyles((theme) => ({
