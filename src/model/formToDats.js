@@ -230,7 +230,26 @@ class FormToDats {
         category: 'REB_statement',
         values: [
           {
-            value: this.data.reb_info
+            value: this.data.reb_info.map((option) => {
+              const base =
+                'In submitting this dataset for inclusion, I certify that '
+              if (option === 'option_1') {
+                return (
+                  base +
+                  'participants have consented to the de-identification' +
+                  ' and deposit of the data in an open-access portal.'
+                )
+              } else if (option === 'option_2') {
+                return (
+                  base +
+                  'I have obtained a waiver or other authorization to deposit' +
+                  ' de-identified data in an open-access portal from my ethics committee' +
+                  ' (REB, IRB, REC, etc.).'
+                )
+              } else if (option === 'option_3') {
+                return base + 'my data is not derived from human participants.'
+              }
+            })
           }
         ]
       },

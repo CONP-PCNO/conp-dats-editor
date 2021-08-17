@@ -616,21 +616,26 @@ export default function ExtraPropertiesForm(props) {
           name='Ethical Information *'
           tooltip='In submitting this dataset for inclusion, I certify that *'
         />
-        <CustomSelectField label='Select a statement *' name='reb_info' style={{minWidth: 200}}>
+        <CustomSelectField
+          label='Select a statement *'
+          name='reb_info'
+          style={{ minWidth: 200 }}
+        >
           <MenuItem value='option_1'>
-            I have obtained participant consent to the de-identification and
-            open sharing of data.
+            Participants have consented to the de-identification and deposit of
+            the data in an open-access portal.
           </MenuItem>
           <MenuItem value='option_2'>
-            I have obtained a waiver or other express permission from my
-            research ethics board.
+            I have obtained a waiver or other authorization to deposit
+            de-identified data in an open-access portal from my ethics committee
+            (REB, IRB, REC, etc.).
           </MenuItem>
           <MenuItem value='option_3'>
-            my data does not concern human research participants.
+            My data is not derived from human participants.
           </MenuItem>
         </CustomSelectField>
         <CustomTextField
-          label='Ethics approval identifier (required for human research data)'
+          label='Ethics committee approval number (required for human research data)'
           name='reb_number'
         />
       </Section>

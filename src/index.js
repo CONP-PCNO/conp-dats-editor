@@ -29,9 +29,6 @@ const defaultValidationSchema = yup.object({
     yup.object({
       name: yup.string(),
       email: yup.string().email(),
-      // orcid: yup
-      //   .string()
-      //   .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
       orcid: yup.string().when('type', {
         // eslint-disable-next-line eqeqeq
         is: (type) => type === 'Person',
