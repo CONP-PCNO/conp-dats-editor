@@ -30,9 +30,6 @@ class FormToDats {
           c.name = c.fullName
           delete c.fullName
         }
-        delete c.type
-        delete c.role
-        delete c.orcid
         if (creator.role)
           c.roles = [
             {
@@ -51,6 +48,9 @@ class FormToDats {
             }
           ]
         }
+        delete c.type
+        delete c.role
+        delete c.orcid
         return c
       }),
       types: this.data.types.map((type) => {
