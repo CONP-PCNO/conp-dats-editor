@@ -4,7 +4,8 @@ import {
   Divider,
   FormControlLabel,
   Radio,
-  Box, MenuItem
+  Box,
+  MenuItem
 } from '@material-ui/core'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -15,7 +16,7 @@ import SectionTitle from '../../layout/SectionTitle'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
-import CustomSelectField from "../../fields/CustomSelectField";
+import CustomSelectField from '../../fields/CustomSelectField'
 
 export default function ExtraPropertiesForm(props) {
   const { values } = props
@@ -619,18 +620,42 @@ export default function ExtraPropertiesForm(props) {
         <CustomSelectField
           label='Select a statement *'
           name='reb_info'
-          style={{ minWidth: 200 }}
+          style={{
+            minWidth: 200,
+            maxWidth: 700
+          }}
         >
-          <MenuItem value='option_1'>
+          <MenuItem
+            value='option_1'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
             Participants have consented to the de-identification and deposit of
             the data in an open-access portal.
           </MenuItem>
-          <MenuItem value='option_2'>
+          <MenuItem
+            value='option_2'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
             I have obtained a waiver or other authorization to deposit
             de-identified data in an open-access portal from my ethics committee
             (REB, IRB, REC, etc.).
           </MenuItem>
-          <MenuItem value='option_3'>
+          <MenuItem
+            value='option_3'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
             My data is not derived from human participants.
           </MenuItem>
         </CustomSelectField>
