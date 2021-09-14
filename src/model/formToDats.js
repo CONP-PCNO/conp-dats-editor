@@ -111,9 +111,24 @@ class FormToDats {
         })
       }),
       isAbout: this.data.isAbout.map((item) => {
-        return {
-          name: item
+        const i = item
+        const species = {
+          'Homo sapiens': '9606',
+          'Mus musculus': '10090',
+          'Callithrix jacchus': '9483',
+          'Ondatra zibethicus': '10060',
+          'Macaca mulatta': '9544'
         }
+        console.log(i)
+        console.log(i.name)
+        if (i.type === 'Species' && Object.keys(species).includes(i.name)) {
+          i.identifier = {
+            'identifier': species[i.name],
+            'identifierSource': 'https://www.ncbi.nlm.nih.gov/taxonomy/' + species[i.name]
+          }
+        }
+        delete i.type
+        return i
       }),
       spatialCoverage: this.data.spatialCoverage,
       aggregation: this.data.aggregation,
