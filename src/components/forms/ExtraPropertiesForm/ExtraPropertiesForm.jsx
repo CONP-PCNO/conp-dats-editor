@@ -481,7 +481,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Is About'
-          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset.'
+          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset. At least a species needs to be provided in isAbout.'
         />
         <FieldArray name='isAbout'>
           {(arrayHelpers) => (
@@ -548,9 +548,11 @@ export default function ExtraPropertiesForm(props) {
                     arrayHelpers.push({type: 'Species'})
                   }}
                 >
-                  {values.isAbout.length > 0
+                  {
+                    values.isAbout.length > 0
                     ? 'Add another Entity'
-                    : 'Add an Entity'}
+                    : 'Add an Entity'
+                  }
                 </Button>
               </Box>
             </Box>

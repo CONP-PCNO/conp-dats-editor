@@ -113,7 +113,8 @@ class DatsToForm {
         this.data.isAbout?.map((a) => {
           return {
             ...a,
-            type: Object.keys(a).includes('identifier') && a['identifier']['identifierSource'].match(/taxonomy/)
+            type: Object.keys(a).includes('identifier')
+                  && a.identifier.identifierSource.match(/taxonomy/)
               ? 'Species'
               : 'Other Entity',
             name: a.name
