@@ -486,7 +486,7 @@ export default function ExtraPropertiesForm(props) {
         <FieldArray name='isAbout'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
-              {values.isAbout.map((s, index) => {
+              {values.isAbout.map((isAbout, index) => {
                 return (
                   <FieldGroup
                     key={'isAbout_' + index}
@@ -494,7 +494,49 @@ export default function ExtraPropertiesForm(props) {
                     index={index}
                     arrayHelpers={arrayHelpers}
                   >
-                    <CustomTextField label='Name' name={`isAbout.${index}`} />
+                    <CustomRadioGroup
+                      name={`isAbout.${index}.type`}
+                      label='Type'
+                    >
+                      <FormControlLabel
+                        value='Species'
+                        control={<Radio />}
+                        label='Species'
+                      />
+                      <FormControlLabel
+                        value='Other Entity'
+                        control={<Radio />}
+                        label='Other Entity'
+                      />
+                    </CustomRadioGroup>
+                    {isAbout.type === 'Species' ? (
+                      <Section>
+                        <CustomSelectField
+                          name={`isAbout.${index}.name`}
+                          label='Species Name'
+                          required
+                        >
+                          <MenuItem value='Homo sapiens'>Homo Sapiens</MenuItem>
+                          <MenuItem value='Mus musculus'>Mus musculus</MenuItem>
+                          <MenuItem value='Callithrix jacchus'>
+                            Callithrix jacchus
+                          </MenuItem>
+                          <MenuItem value='Ondatra zibethicus'>
+                            Ondatra zibethicus
+                          </MenuItem>
+                          <MenuItem value='Macaca mulatta'>
+                            Macaca mulatta
+                          </MenuItem>
+                        </CustomSelectField>
+                      </Section>
+                    ) : (
+                      <Section>
+                        <CustomTextField
+                          label='Name'
+                          name={`isAbout.${index}.name`}
+                        />
+                      </Section>
+                    )}
                   </FieldGroup>
                 )
               })}
@@ -503,7 +545,7 @@ export default function ExtraPropertiesForm(props) {
                   variant='outlined'
                   color='secondary'
                   onClick={() => {
-                    arrayHelpers.push('')
+                    arrayHelpers.push({type: 'Species'})
                   }}
                 >
                   {values.isAbout.length > 0
