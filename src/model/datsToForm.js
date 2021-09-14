@@ -114,7 +114,9 @@ class DatsToForm {
       acknowledges: this.data.acknowledges?.[0].funders || [],
       refinement: '',
       aggregation: this.data.aggregation || '',
-      spatialCoverage: this.data.spatialCoverage || []
+      spatialCoverage: this.data.spatialCoverage || [],
+      reb_info: this.data.reb_info || '',
+      reb_number: this.data.reb_number || ''
     }
 
     if (json.logo.includes('www')) {

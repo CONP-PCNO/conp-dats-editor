@@ -117,7 +117,7 @@ export default function DistributionForm(props) {
           name='CONP Status *'
           tooltip='The CONP status is used to add the CONP logo or Canadian flag on the left of the dataset and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.'
         />
-        <CustomSelectField required name='conpStatus' label='CONP Status'>
+        <CustomSelectField required name='conpStatus' label='CONP Status *'>
           <MenuItem value='CONP'>CONP</MenuItem>
           <MenuItem value='Canadian'>Canadian</MenuItem>
           <MenuItem value='external'>External</MenuItem>

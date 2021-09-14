@@ -4,7 +4,8 @@ import {
   Divider,
   FormControlLabel,
   Radio,
-  Box
+  Box,
+  MenuItem
 } from '@material-ui/core'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -15,6 +16,7 @@ import SectionTitle from '../../layout/SectionTitle'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
+import CustomSelectField from '../../fields/CustomSelectField'
 
 export default function ExtraPropertiesForm(props) {
   const { values } = props
@@ -391,11 +393,11 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Contact'
+          name='Contact *'
           tooltip='Provide contact information (name and email address) of the person responsible for the dataset.'
         />
-        <CustomTextField label='Name' name='contact.name' />
-        <CustomTextField label='Email' name='contact.email' />
+        <CustomTextField required label='Name' name='contact.name' />
+        <CustomTextField required label='Email' name='contact.email' />
       </Section>
       <Divider variant='middle' />
       <Section>
@@ -417,6 +419,7 @@ export default function ExtraPropertiesForm(props) {
           <CustomTextField label='Path to File' name='logo.fileName' />
         )}
       </Section>
+      <Divider variant='middle' />
       <Section>
         <SectionTitle
           name='Dates'
@@ -607,6 +610,59 @@ export default function ExtraPropertiesForm(props) {
             </Box>
           )}
         </FieldArray>
+      </Section>
+      <Divider variant='middle' />
+      <Section>
+        <SectionTitle
+          name='Ethical Information *'
+          tooltip='In submitting this dataset for inclusion, I certify that *'
+        />
+        <CustomSelectField
+          label='Select a statement *'
+          name='reb_info'
+          style={{
+            minWidth: 200,
+            maxWidth: 700
+          }}
+        >
+          <MenuItem
+            value='option_1'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
+            Participants have consented to the de-identification and deposit of
+            the data in an open-access portal.
+          </MenuItem>
+          <MenuItem
+            value='option_2'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
+            I have obtained a waiver or other authorization to deposit
+            de-identified data in an open-access portal from my ethics committee
+            (REB, IRB, REC, etc.).
+          </MenuItem>
+          <MenuItem
+            value='option_3'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
+            My data is not derived from human participants.
+          </MenuItem>
+        </CustomSelectField>
+        <CustomTextField
+          label='Ethics committee approval number (required for human research data)'
+          name='reb_number'
+        />
       </Section>
     </React.Fragment>
   )

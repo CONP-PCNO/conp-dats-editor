@@ -30,14 +30,27 @@ class FormToDats {
           c.name = c.fullName
           delete c.fullName
         }
-        delete c.type
-        delete c.role
         if (creator.role)
           c.roles = [
             {
               value: creator.role
             }
           ]
+        if (c.type === 'Person' && creator.orcid) {
+          c.extraProperties = [
+            {
+              category: 'ORCID',
+              values: [
+                {
+                  value: creator.orcid
+                }
+              ]
+            }
+          ]
+        }
+        delete c.type
+        delete c.role
+        delete c.orcid
         return c
       }),
       types: this.data.types.map((type) => {
@@ -213,6 +226,64 @@ class FormToDats {
         ]
       }
     ]
+
+    const rebNumber = {
+      category: 'REB_number',
+      values: [
+        {
+          value: this.data.reb_number
+        }
+      ]
+    }
+
+    const ethicsStatement =
+      'In submitting this dataset for inclusion, I certify that '
+    if (this.data.reb_info === 'option_1') {
+      extraProperties.push(
+        {
+          category: 'REB_statement',
+          values: [
+            {
+              value:
+                ethicsStatement +
+                'participants have consented to the de-identification' +
+                ' and deposit of the data in an open-access portal.'
+            }
+          ]
+        },
+        rebNumber
+      )
+    } else if (this.data.reb_info === 'option_2') {
+      extraProperties.push(
+        {
+          category: 'REB_statement',
+          values: [
+            {
+              value:
+                ethicsStatement +
+                'I have obtained a waiver or other authorization to deposit' +
+                ' de-identified data in an open-access portal from my ethics committee' +
+                ' (REB, IRB, REC, etc.).'
+            }
+          ]
+        },
+        rebNumber
+      )
+    } else if (this.data.reb_info === 'option_3') {
+      extraProperties.push(
+        {
+          category: 'REB_statement',
+          values: [
+            {
+              value:
+                ethicsStatement +
+                'my data is not derived from human participants.'
+            }
+          ]
+        },
+        rebNumber
+      )
+    }
 
     extraProperties.forEach((p) => {
       if (p.values[0].value) {

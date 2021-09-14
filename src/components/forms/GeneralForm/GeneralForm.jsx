@@ -78,10 +78,12 @@ export default function GeneralForm(props) {
                     ) : (
                       <Section>
                         <CustomTextField
+                          required
                           label='Full Name'
                           name={`creators.${index}.fullName`}
                         />
                         <CustomTextField
+                          required
                           label='First Name'
                           name={`creators.${index}.firstName`}
                         />
@@ -91,12 +93,18 @@ export default function GeneralForm(props) {
                         />
                         <CustomTextField
                           fullWidth
+                          required
                           label='Last Name'
                           name={`creators.${index}.lastName`}
                         />
                         <CustomTextField
                           label='Email'
                           name={`creators.${index}.email`}
+                        />
+                        <CustomTextField
+                          required
+                          label='ORCID iD (https://orcid.org/XXXX-XXXX-XXXX-XXXX)'
+                          name={`creators.${index}.orcid`}
                         />
                         <FieldArray name={`creators.${index}.affiliations`}>
                           {(arrayHelpers) => (
@@ -245,7 +253,7 @@ export default function GeneralForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Privacy'
+          name='Privacy *'
           tooltip='A qualifier to describe the data protection applied to the dataset. This is relevant for clinical data.
                      <ul>
                        <li><i><strong>open</strong>: freely and publicly available</i></li>
@@ -254,7 +262,7 @@ export default function GeneralForm(props) {
                        <li><i><strong>private</strong>: available only to researchers of the project; also known as closed</i></li>
                      </ul>'
         />
-        <CustomSelectField label='Privacy' name='privacy'>
+        <CustomSelectField label='Privacy *' name='privacy'>
               <MenuItem value='open'>open</MenuItem>
               <MenuItem value='registered'>registered</MenuItem>
               <MenuItem value='controlled'>controlled</MenuItem>

@@ -28,12 +28,23 @@ const defaultValidationSchema = yup.object({
   creators: yup.array().of(
     yup.object({
       name: yup.string(),
-      email: yup.string().email()
+      email: yup.string().email(),
+      orcid: yup.string().when('type', {
+        // eslint-disable-next-line eqeqeq
+        is: (type) => type === 'Person',
+        then: yup
+          .string()
+          .matches(/^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/)
+          .required(
+            'An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'
+          ),
+        otherwise: yup.string()
+      })
     })
   ),
   contact: yup.object().shape({
-    name: yup.string(),
-    email: yup.string().email()
+    name: yup.string().required(),
+    email: yup.string().email().required()
   }),
   description: yup.string().required(),
   types: yup.array().of(yup.string()).min(1).required(),
@@ -53,10 +64,20 @@ const defaultValidationSchema = yup.object({
       authorization: yup.string().required()
     })
     .required(),
-  privacy: yup.string(),
+  privacy: yup
+    .string()
+    .matches(/(open|registered|controlled|private)/, {
+      excludeEmptyString: true
+    })
+    .required(),
   files: yup.number().integer().positive().required(),
   subjects: yup.number().integer().positive().required(),
-  conpStatus: yup.string().required(),
+  conpStatus: yup
+    .string()
+    .matches(/(CONP|Canadian|external)/, {
+      excludeEmptyString: true
+    })
+    .required(),
   derivedFrom: yup.string(),
   parentDatasetId: yup.string(),
   primaryPublications: yup.array().of(yup.string()),
@@ -83,7 +104,16 @@ const defaultValidationSchema = yup.object({
   acknowledges: yup.string(),
   refinement: yup.string(),
   aggregation: yup.string(),
-  spatialCoverage: yup.array().of(yup.string())
+  spatialCoverage: yup.array().of(yup.string()),
+  reb_info: yup.string().oneOf(['option_1', 'option_2', 'option_3']).required(),
+  reb_number: yup.string().when('reb_info', {
+    // eslint-disable-next-line eqeqeq
+    is: (RebInfo) => RebInfo === 'option_1' || RebInfo === 'option_2',
+    then: yup
+      .string()
+      .required('An REB number is required for human research data'),
+    otherwise: yup.string()
+  })
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -139,7 +169,8 @@ const defaultValues = {
   creators: [
     {
       type: 'Organization',
-      role: 'Principal Investigator'
+      role: 'Principal Investigator',
+      orcid: ''
     }
   ],
   contact: {
@@ -197,7 +228,9 @@ const defaultValues = {
   refinement: '',
   aggregation: '',
   spatialCoverage: [],
-  attachments: []
+  attachments: [],
+  reb_info: '',
+  reb_number: ''
 }
 
 const steps = [
@@ -360,8 +393,8 @@ export const DatsEditorForm = (props) => {
                   {Object.keys(errors).length > 0 ? (
                     <div className={classes.section}>
                       <Typography variant='h6' gutterBottom>
-                        To succesfully create the DATS.json file, you must first
-                        resolve issues with the following fields:
+                        To successfully create the DATS.json file, you must
+                        first resolve issues with the following fields:
                       </Typography>
                       {Object.keys(errors).map((key) =>
                         Object.keys(touched).includes(key) ? (
