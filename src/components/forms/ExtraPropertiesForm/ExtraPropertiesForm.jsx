@@ -61,8 +61,8 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Derived From'
-          tooltip='The sources this dataset is derived from.'
+          name='Derived From (For Derived Datasets Only)'
+          tooltip='Required for derived datasets only. Provide information about the source dataset this dataset has been derived from.'
         />
         <SectionTitle
           subsection
