@@ -136,7 +136,7 @@ describe('Extra Properties Form: field values and errors', () => {
     const addButton = await waitFor(() => screen.findByText('Add an Entity'))
 
     fireEvent.click(addButton)
-    const testId = 'isAbout.0'
+    const testId = 'isAbout.0.name'
     const input = await waitFor(() => screen.findByTestId(testId))
 
     await waitFor(() => {
