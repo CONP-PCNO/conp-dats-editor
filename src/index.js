@@ -222,7 +222,11 @@ const defaultValues = {
   dates: [],
   citations: [],
   producedBy: '',
-  isAbout: [],
+  isAbout: [
+    {
+      type: 'Species'
+    }
+  ],
   hasPart: '',
   acknowledges: [],
   refinement: '',

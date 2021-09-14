@@ -109,7 +109,16 @@ class DatsToForm {
       dates: this.data.dates || [],
       citations: [],
       producedBy: '',
-      isAbout: this.data.isAbout?.map((a) => a.name) || [],
+      isAbout:
+        this.data.isAbout?.map((a) => {
+          return {
+            ...a,
+            type: Object.keys(a).includes('identifier') && a['identifier']['identifierSource'].match(/taxonomy/)
+              ? 'Species'
+              : 'Other Entity',
+            name: a.name
+          }
+        }) || [],
       hasPart: '',
       acknowledges: this.data.acknowledges?.[0].funders || [],
       refinement: '',
