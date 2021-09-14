@@ -133,7 +133,9 @@ describe('Extra Properties Form: field values and errors', () => {
     })
   })
   it('Is About handles correct values', async () => {
-    const addButton = await waitFor(() => screen.findByText('Add another Entity'))
+    const addButton = await waitFor(() =>
+      screen.findByText('Add another Entity')
+    )
 
     fireEvent.click(addButton)
     const testId = 'isAbout.0.name'
