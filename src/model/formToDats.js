@@ -362,8 +362,6 @@ class FormToDats {
       delete json.primaryPublications
     }
     
-
-
     Object.keys(json).forEach((key) => json[key] == null && delete json[key])
 
     return json
