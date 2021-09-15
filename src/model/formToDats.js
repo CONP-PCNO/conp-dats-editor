@@ -119,8 +119,6 @@ class FormToDats {
           'Ondatra zibethicus': '10060',
           'Macaca mulatta': '9544'
         }
-        console.log(i)
-        console.log(i.name)
         if (i.type === 'Species' && Object.keys(species).includes(i.name)) {
           i.identifier = {
             identifier: species[i.name],
