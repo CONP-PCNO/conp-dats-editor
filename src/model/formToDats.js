@@ -352,6 +352,15 @@ class FormToDats {
     if (json.keywords.length === 0) {
       delete json.keywords
     }
+    if (json.dates.length === 0) {
+      delete json.dates
+    }
+    if (json.identifier.identifier === '') {
+      delete json.identifier
+    }
+    if (json.primaryPublications.length === 0) {
+      delete json.primaryPublications
+    }
 
     Object.keys(json).forEach((key) => json[key] == null && delete json[key])
 
