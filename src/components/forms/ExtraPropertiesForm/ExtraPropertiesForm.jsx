@@ -480,8 +480,8 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
       <Section>
         <SectionTitle
-          name='Is About'
-          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset. At least a species needs to be provided in isAbout.'
+          name='Is About *'
+          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset. You must provide a species, and other entities are optional.'
         />
         <FieldArray name='isAbout'>
           {(arrayHelpers) => (
