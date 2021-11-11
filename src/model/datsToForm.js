@@ -115,7 +115,7 @@ class DatsToForm {
             ...a,
             type:
               Object.keys(a).includes('identifier') &&
-              a.identifier.identifierSource.match(/taxonomy/)
+              a.identifier.identifier.match(/taxonomy/)
                 ? 'Species'
                 : 'Other Entity',
             name: a.name

@@ -121,8 +121,7 @@ class FormToDats {
         }
         if (i.type === 'Species' && Object.keys(species).includes(i.name)) {
           i.identifier = {
-            identifier: species[i.name],
-            identifierSource:
+            identifier:
               'https://www.ncbi.nlm.nih.gov/taxonomy/' + species[i.name]
           }
         }
