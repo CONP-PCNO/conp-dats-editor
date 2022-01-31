@@ -545,14 +545,12 @@ export default function ExtraPropertiesForm(props) {
                   variant='outlined'
                   color='secondary'
                   onClick={() => {
-                    arrayHelpers.push({type: 'Species'})
+                    arrayHelpers.push({ type: 'Species' })
                   }}
                 >
-                  {
-                    values.isAbout.length > 0
+                  {values.isAbout.length > 0
                     ? 'Add another Entity'
-                    : 'Add an Entity'
-                  }
+                    : 'Add an Entity'}
                 </Button>
               </Box>
             </Box>
@@ -659,7 +657,7 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <SectionTitle
           name='Ethical Information *'
-          tooltip='In submitting this dataset for inclusion, I certify that *'
+          tooltip='In submitting this dataset for inclusion, I declare that *'
         />
         <CustomSelectField
           label='Select a statement *'
@@ -677,8 +675,9 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
           >
-            Participants have consented to the de-identification and deposit of
-            the data in an open-access portal.
+            Participants have provided a valid informed consent to the
+            de-identification and deposit of their data in an open-access
+            portal.
           </MenuItem>
           <MenuItem
             value='option_2'
@@ -688,8 +687,8 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
           >
-            I have obtained a waiver or other authorization to deposit
-            de-identified data in an open-access portal from my ethics committee
+            A waiver or other authorization to deposit these de-identified data
+            in an open-access portal was obtained from a research ethics body
             (REB, IRB, REC, etc.).
           </MenuItem>
           <MenuItem
@@ -700,11 +699,22 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
           >
-            My data is not derived from human participants.
+            Local law or a relevant institutional authorization otherwise
+            enables the deposit of these data in an open-access portal.
+          </MenuItem>
+          <MenuItem
+            value='option_4'
+            style={{
+              wordBreak: 'break-word',
+              whiteSpace: 'unset',
+              maxWidth: 700
+            }}
+          >
+            These data are not derived from human participants.
           </MenuItem>
         </CustomSelectField>
         <CustomTextField
-          label='Ethics committee approval number (required for human research data)'
+          label='Ethics committee approval number'
           name='reb_number'
         />
       </Section>

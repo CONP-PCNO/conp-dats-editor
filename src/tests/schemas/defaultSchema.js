@@ -62,6 +62,9 @@ export const defaultValidationSchema = yup.object({
   refinement: yup.string(),
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
-  reb_info: yup.string().oneOf(['option_1', 'option_2', 'option_3']).required(),
+  reb_info: yup
+    .string()
+    .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
+    .required(),
   reb_number: yup.string()
 })
