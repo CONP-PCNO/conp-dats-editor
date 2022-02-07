@@ -13,7 +13,8 @@ class DatsToForm {
             type: Object.keys(a).includes('fullName')
               ? 'Person'
               : 'Organization',
-            role: a.roles?.[0].value || ''
+            role: a.roles?.[0].value || '',
+            orcid: a.extraProperties?.[0].values?.[0].value
           }
         }) || [],
       contact:
