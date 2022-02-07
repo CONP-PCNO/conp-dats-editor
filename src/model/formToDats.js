@@ -251,7 +251,7 @@ class FormToDats {
     }
 
     const ethicsStatement =
-      'In submitting this dataset for inclusion, I certify that '
+      'In submitting this dataset for inclusion, I declare that '
     if (this.data.reb_info === 'option_1') {
       extraProperties.push(
         {
@@ -260,8 +260,9 @@ class FormToDats {
             {
               value:
                 ethicsStatement +
-                'participants have consented to the de-identification' +
-                ' and deposit of the data in an open-access portal.'
+                'participants have provided a valid informed consent to' +
+                ' the de-identification and deposit of their data' +
+                ' in an open-access portal.'
             }
           ]
         },
@@ -275,8 +276,9 @@ class FormToDats {
             {
               value:
                 ethicsStatement +
-                'I have obtained a waiver or other authorization to deposit' +
-                ' de-identified data in an open-access portal from my ethics committee' +
+                'a waiver or other authorization to deposit these' +
+                ' de-identified data in an open-access portal was' +
+                ' obtained from a research ethics body' +
                 ' (REB, IRB, REC, etc.).'
             }
           ]
@@ -291,7 +293,23 @@ class FormToDats {
             {
               value:
                 ethicsStatement +
-                'my data is not derived from human participants.'
+                'local law or a relevant institutional authorization' +
+                ' otherwise enables the deposit of these data in an' +
+                ' open-access portal.'
+            }
+          ]
+        },
+        rebNumber
+      )
+    } else if (this.data.reb_info === 'option_4') {
+      extraProperties.push(
+        {
+          category: 'REB_statement',
+          values: [
+            {
+              value:
+                ethicsStatement +
+                'these data are not derived from human participants.'
             }
           ]
         },
