@@ -83,13 +83,21 @@ export default function DistributionForm(props) {
           name='Landing Page *'
           tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself. When none exists yet, please provide the link to the README.md file of the dataset.'
         />
-        <CustomTextField required label='Landing Page' name='access.landingPage' />
+        <CustomTextField
+          required
+          label='Landing Page'
+          name='access.landingPage'
+        />
         <SectionTitle
           subsection
           name='Authorizations *'
           tooltip='This must be one of "Public", "Registered" or "Private". When this field is absent the value will be treated as "Public". "Public" = available to anyone; "Registered" = available to user authorized by the creator; "Private" = available only to the creator.'
         />
-        <CustomSelectField required label='Authorization' name='access.authorization'>
+        <CustomSelectField
+          required
+          label='Authorization'
+          name='access.authorization'
+        >
           <MenuItem value='public'>Public</MenuItem>
           <MenuItem value='registered'>Registered</MenuItem>
           <MenuItem value='private'>Private</MenuItem>

@@ -8,10 +8,7 @@ const downloadDats = (dats) => {
     'data:text/plain;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(dats, null, 2))
   )
-  element.setAttribute(
-    'download',
-    `DATS.json`
-  )
+  element.setAttribute('download', `DATS.json`)
 
   element.style.display = 'none'
   document.body.appendChild(element)

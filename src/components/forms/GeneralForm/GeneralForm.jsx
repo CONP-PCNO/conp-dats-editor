@@ -263,10 +263,10 @@ export default function GeneralForm(props) {
                      </ul>'
         />
         <CustomSelectField label='Privacy *' name='privacy'>
-              <MenuItem value='open'>open</MenuItem>
-              <MenuItem value='registered'>registered</MenuItem>
-              <MenuItem value='controlled'>controlled</MenuItem>
-              <MenuItem value='private'>private</MenuItem>
+          <MenuItem value='open'>open</MenuItem>
+          <MenuItem value='registered'>registered</MenuItem>
+          <MenuItem value='controlled'>controlled</MenuItem>
+          <MenuItem value='private'>private</MenuItem>
         </CustomSelectField>
       </Section>
       <Divider variant='middle' />
