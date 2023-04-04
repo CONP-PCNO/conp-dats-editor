@@ -18,6 +18,7 @@ import * as yup from 'yup'
 import DatsUploader from './components/DatsUploader/DatsUploader'
 import GeneralForm from './components/forms/GeneralForm/GeneralForm'
 import DistributionForm from './components/forms/DistributionForm/DistributionForm'
+import ExperimentsForm from './components/forms/ExperimentsForm/ExperimentsForm'
 import ExtraPropertiesForm from './components/forms/ExtraPropertiesForm/ExtraPropertiesForm'
 import CreateDatsSuccess from './components/CreateDatsSuccess/CreateDatsSuccess'
 import FormToDats from './model/formToDats'
@@ -237,6 +238,7 @@ const steps = [
   'General Info',
   'Distribution',
   'Extra Properties',
+  'Experiment Properties',
   'Review & Download'
 ]
 
@@ -249,6 +251,8 @@ function renderStep(step, classes, values, dats) {
     case 2:
       return <ExtraPropertiesForm classes={classes} values={values} />
     case 3:
+      return <ExperimentsForm classes={classes} values={values} />
+    case 4:
       return <CreateDatsSuccess classes={classes} values={values} dats={dats} />
     default:
       throw new Error('Unknown step')
