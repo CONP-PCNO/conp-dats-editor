@@ -110,7 +110,17 @@ const defaultValidationSchema = yup.object({
     .string()
     .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
     .required(),
-  reb_number: yup.string()
+  reb_number: yup.string(),
+  experimentsFunctionAssessed: yup.string(),
+  experimentsLanguages: yup.array().of(yup.string()),
+  experimentsValidation: yup.array().of(yup.string()),
+  experimentsAccessibility: yup.array().of(yup.string()),
+  experimentsRequirements: yup.string(),
+  experimentsPlatforms: yup.array().of(yup.string()),
+  experimentsDevices: yup.array().of(yup.string()),
+  experimentsSoftware: yup.array().of(yup.string()),
+  experimentsRepeatability: yup.bool(),
+  experimentsMultilingual: yup.bool()
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -231,7 +241,17 @@ const defaultValues = {
   spatialCoverage: [],
   attachments: [],
   reb_info: '',
-  reb_number: ''
+  reb_number: '',
+  experimentsFunctionAssessed: '',
+  experimentsLanguages: [],
+  experimentsValidation: [],
+  experimentsAccessibility: [],
+  experimentsRequirements: '',
+  experimentsPlatforms: [],
+  experimentsDevices: [],
+  experimentsSoftware: [],
+  experimentsRepeatability: false,
+  experimentsMultilingual: false
 }
 
 const steps = [
