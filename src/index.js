@@ -112,15 +112,15 @@ const defaultValidationSchema = yup.object({
     .required(),
   reb_number: yup.string(),
   experimentsFunctionAssessed: yup.string(),
+  experimentsRepeatability: yup.bool(),
   experimentsLanguages: yup.array().of(yup.string()),
   experimentsValidation: yup.array().of(yup.string()),
   experimentsAccessibility: yup.array().of(yup.string()),
-  experimentsRequirements: yup.string(),
-  experimentsPlatforms: yup.array().of(yup.string()),
-  experimentsDevices: yup.array().of(yup.string()),
-  experimentsSoftware: yup.array().of(yup.string()),
-  experimentsRepeatability: yup.bool(),
-  experimentsMultilingual: yup.bool()
+  experimentsSpecies: yup.array().of(yup.string()),
+  experimentsRequiredPlatforms: yup.array().of(yup.string()),
+  experimentsRequiredDevices: yup.array().of(yup.string()),
+  experimentsRequiredSoftware: yup.array().of(yup.string()),
+  experimentsAdditionalRequirements: yup.string()
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -243,15 +243,15 @@ const defaultValues = {
   reb_info: '',
   reb_number: '',
   experimentsFunctionAssessed: '',
+  experimentsRepeatability: false,
   experimentsLanguages: [],
   experimentsValidation: [],
   experimentsAccessibility: [],
-  experimentsRequirements: '',
-  experimentsPlatforms: [],
-  experimentsDevices: [],
-  experimentsSoftware: [],
-  experimentsRepeatability: false,
-  experimentsMultilingual: false
+  experimentsSpecies: [],
+  experimentsRequiredPlatforms: [],
+  experimentsRequiredDevices: [],
+  experimentsRequiredSoftware: [],
+  experimentsAdditionalRequirements: ''
 }
 
 const steps = [
