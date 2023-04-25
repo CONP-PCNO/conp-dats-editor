@@ -128,7 +128,44 @@ class DatsToForm {
       aggregation: this.data.aggregation || '',
       spatialCoverage: this.data.spatialCoverage || [],
       reb_info: this.data.reb_info || '',
-      reb_number: this.data.reb_number || ''
+      reb_number: this.data.reb_number || '',
+      experimentsFunctionAssessed:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentFunctionAssessed')[0]
+          ?.values.map((a) => a.value)[0] || '',
+      experimentsRepeatability: false,
+      experimentsLanguages:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentLanguages')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsValidation:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentValidation')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsAccessibility:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentAccessibility')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsSpecies:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentSpecies')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsRequiredPlatforms:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentRequiredPlatforms')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsRequiredDevices:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentRequiredDevices')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsRequiredSoftware:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentRequiredSoftware')[0]
+          ?.values.map((a) => a.value) || [],
+      experimentsAdditionalRequirements:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'experimentFunctionAssessed')[0]
+          ?.values.map((a) => a.value)[0] || ''
     }
 
     if (json.logo.includes('www')) {

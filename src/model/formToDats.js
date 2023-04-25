@@ -238,6 +238,62 @@ class FormToDats {
             value: this.data.parentDatasetId
           }
         ]
+      },
+      {
+        category: 'experimentFunctionAssessed',
+        values: [{ value: this.data.experimentsFunctionAssessed }]
+      },
+      {
+        category: 'experimentLanguages',
+        values: this.data.experimentsLanguages.map((language) => {
+          return {
+            value: language
+          }
+        })
+      },
+      {
+        category: 'experimentValidation',
+        values: this.data.experimentsValidation.map((validation) => {
+          return {
+            value: validation
+          }
+        })
+      },
+      {
+        category: 'experimentAccessibility',
+        values: this.data.experimentsAccessibility.map((accessibility) => {
+          return {
+            value: accessibility
+          }
+        })
+      },
+      {
+        category: 'experimentRequiredPlatforms',
+        values: this.data.experimentsRequiredPlatforms.map((platform) => {
+          return {
+            value: platform
+          }
+        })
+      },
+      {
+        category: 'experimentRequiredDevices',
+        values: this.data.experimentsRequiredDevices.map((device) => {
+          return {
+            value: device
+          }
+        })
+      },
+      {
+        category: 'experimentRequiredSoftware',
+        values: this.data.experimentsRequiredSoftware.map((software) => {
+          return {
+            value: software
+          }
+        })
+      },
+      {
+        category: 'experimentAdditionalRequirements',
+        values: [{ value: this.data.experimentsAdditionalRequirements }]
       }
     ]
 
