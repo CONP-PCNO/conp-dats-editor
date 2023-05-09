@@ -374,7 +374,7 @@ class FormToDats {
     }
 
     extraProperties.forEach((p) => {
-      if (p.values[0].value) {
+      if (p.values.length > 0 && p.values[0].value) {
         json.extraProperties.push(p)
       }
     })

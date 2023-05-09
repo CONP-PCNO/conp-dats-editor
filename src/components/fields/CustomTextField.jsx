@@ -2,7 +2,7 @@ import React from 'react'
 import { FastField } from 'formik'
 import { TextField } from 'formik-material-ui'
 
-const CustomTextField = ({ ...props }) => {
+function CustomTextField({ ...props }) {
   return (
     <FastField
       component={TextField}
