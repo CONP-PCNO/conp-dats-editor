@@ -61,25 +61,25 @@ ${values.description}
 `
 }
 
-function downloadReadme(readme) {
-  const element = document.createElement('a')
-  const file = new Blob([readme], { type: 'text/plain' })
-  element.href = URL.createObjectURL(file)
-  element.download = 'README.md'
-
-  element.style.display = 'none'
-  document.body.appendChild(element)
-
-  element.click()
-
-  document.body.removeChild(element)
-}
-
 /* eslint react/forbid-component-props: "off" */
 
 export function ReadmeEditor(props) {
   const { readmeStart, wrapperClass, buttonClass } = props
   const [readme, setReadme] = React.useState(readmeStart)
+
+  function downloadReadme() {
+    const element = document.createElement('a')
+    const file = new Blob([readme], { type: 'text/plain' })
+    element.href = URL.createObjectURL(file)
+    element.download = 'README.md'
+
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+
+  const onClick = React.useCallback(downloadReadme, [readme])
+
   return (
     <React.Fragment>
       <MDEditor
@@ -92,7 +92,7 @@ export function ReadmeEditor(props) {
         <Button
           className={buttonClass}
           color='primary'
-          onClick={downloadReadme(readme)}
+          onClick={onClick}
           variant='contained'
         >
           Download
