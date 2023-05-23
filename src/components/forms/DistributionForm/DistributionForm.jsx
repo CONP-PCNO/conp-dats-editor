@@ -8,41 +8,44 @@ import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 
 export default function DistributionForm(props) {
-  const { values } = props
+  const { values, isExperiment } = props
+  const selfString = isExperiment ? 'experiment' : 'dataset'
   return (
     <React.Fragment>
       <Section>
         <SectionTitle
           name='Formats *'
-          tooltip='The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).'
+          tooltip={`The technical format of the ${selfString} distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).`}
         />
+
         <FieldArray name='formats'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.formats.map((format, index) => {
                 return (
                   <FieldGroup
-                    key={'format_' + index}
-                    name={'format_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`format_${index}`}
+                    name={`format_${index}`}
                   >
                     <CustomTextField
-                      required
                       fullWidth
                       label='Format'
                       name={`formats.${index}`}
+                      required
                     />
                   </FieldGroup>
                 )
               })}
+
               <Grid item xs={6}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push('')
                   }}
+                  variant='outlined'
                 >
                   {values.formats.length > 0
                     ? 'Add another Format'
@@ -53,81 +56,108 @@ export default function DistributionForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Size *'
-          tooltip='The quantity of space required on disk (or other medium) for this dataset.'
+          tooltip={`The quantity of space required on disk (or other medium) for this ${selfString}.`}
         />
-        <CustomTextField required label='Size' name='size.value' />
+
+        <CustomTextField label='Size' name='size.value' required />
+
         <SectionTitle
-          subsection
           name='Units *'
+          subsection
           tooltip='Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).'
         />
-        <CustomSelectField required name='size.units' label='Units'>
+
+        <CustomSelectField label='Units' name='size.units' required>
           <MenuItem value='MB'>MB</MenuItem>
+
           <MenuItem value='GB'>GB</MenuItem>
+
           <MenuItem value='TB'>TB</MenuItem>
+
           <MenuItem value='PB'>PB</MenuItem>
         </CustomSelectField>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Access *'
-          tooltip='The information about access modality for the dataset distribution.'
+          tooltip={`The information about access modality for the ${selfString} distribution.`}
         />
+
         <SectionTitle
-          subsection
           name='Landing Page *'
-          tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself. When none exists yet, please provide the link to the README.md file of the dataset.'
+          subsection
+          tooltip={`A URL (Web page) that contains information about the associated ${selfString} (with a link to the ${selfString}) or a direct link to the ${selfString} itself. When none exists yet, please provide the link to the README.md file of the ${selfString}.`}
         />
+
         <CustomTextField
-          required
           label='Landing Page'
           name='access.landingPage'
+          required
         />
+
         <SectionTitle
-          subsection
           name='Authorizations *'
+          subsection
           tooltip='This must be one of "Public", "Registered" or "Private". When this field is absent the value will be treated as "Public". "Public" = available to anyone; "Registered" = available to user authorized by the creator; "Private" = available only to the creator.'
         />
+
         <CustomSelectField
-          required
           label='Authorization'
           name='access.authorization'
+          required
         >
           <MenuItem value='public'>Public</MenuItem>
+
           <MenuItem value='registered'>Registered</MenuItem>
+
           <MenuItem value='private'>Private</MenuItem>
         </CustomSelectField>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Number of Files *'
-          tooltip='Total number of files in the dataset.'
+          tooltip={`Total number of files in the ${selfString}.`}
         />
-        <CustomTextField required label='Files' name='files' />
+
+        <CustomTextField label='Files' name='files' required />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Number of Subjects *'
-          tooltip='Total number of subjects constituting the dataset.'
+          tooltip={`Total number of subjects constituting the ${selfString}.`}
         />
-        <CustomTextField required label='Subjects' name='subjects' />
+
+        <CustomTextField label='Subjects' name='subjects' required />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='CONP Status *'
-          tooltip='The CONP status is used to add the CONP logo or Canadian flag on the left of the dataset and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.'
+          tooltip={`The CONP status is used to add the CONP logo or Canadian flag on the left of the ${selfString} and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.`}
         />
-        <CustomSelectField required name='conpStatus' label='CONP Status *'>
+
+        <CustomSelectField label='CONP Status *' name='conpStatus' required>
           <MenuItem value='CONP'>CONP</MenuItem>
+
           <MenuItem value='Canadian'>Canadian</MenuItem>
+
           <MenuItem value='external'>External</MenuItem>
         </CustomSelectField>
       </Section>

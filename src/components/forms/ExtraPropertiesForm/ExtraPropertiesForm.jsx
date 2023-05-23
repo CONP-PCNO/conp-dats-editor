@@ -19,159 +19,192 @@ import CustomRadioGroup from '../../fields/CustomRadioGroup'
 import CustomSelectField from '../../fields/CustomSelectField'
 
 export default function ExtraPropertiesForm(props) {
-  const { values } = props
+  const { values, isExperiment } = props
+  const selfString = isExperiment ? 'experiment' : 'dataset'
   return (
     <React.Fragment>
       <Section>
         <SectionTitle
           name='Origin *'
-          tooltip='Name of the institution or consortium that generated the dataset. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.'
+          tooltip={`Name of the institution or consortium that generated the ${selfString}. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.`}
         />
+
         <SectionTitle
-          subsection
           name='Institution'
-          tooltip='Name of the institution where this dataset was created (if applicable).'
+          subsection
+          tooltip={`Name of the institution where this ${selfString} was created (if applicable).`}
         />
+
         <CustomTextField label='Institution' name='origin.institution' />
+
         <SectionTitle
-          subsection
           name='Consortium'
-          tooltip='Name of the consortium where this dataset was created (if applicable).'
+          subsection
+          tooltip={`Name of the consortium where this ${selfString} was created (if applicable).`}
         />
+
         <CustomTextField label='Consortium' name='origin.consortium' />
+
         <SectionTitle
-          subsection
           name='City'
-          tooltip='(Principal) city where this dataset was created.'
+          subsection
+          tooltip={`(Principal) city where this ${selfString} was created.`}
         />
+
         <CustomTextField label='City' name='origin.city' />
+
         <SectionTitle
-          subsection
           name='Province'
-          tooltip='(Principal) province where this dataset was created.'
-        />
-        <CustomTextField label='Province' name='origin.province' />
-        <SectionTitle
           subsection
-          name='Country'
-          tooltip='(Principal) country where this dataset was created.'
+          tooltip={`(Principal) province where this ${selfString} was created.`}
         />
+
+        <CustomTextField label='Province' name='origin.province' />
+
+        <SectionTitle
+          name='Country'
+          subsection
+          tooltip={`(Principal) country where this ${selfString} was created.`}
+        />
+
         <CustomTextField label='Country' name='origin.country' />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Derived From (For Derived Datasets Only)'
-          tooltip='Required for derived datasets only. Provide information about the source dataset this dataset has been derived from.'
+          tooltip={`Required for derived ${selfString}s only. Provide information about the source ${selfString} this ${selfString} has been derived from.`}
         />
+
         <SectionTitle
-          subsection
           name='Derived From'
-          tooltip='Name of the source dataset used to generate this dataset.'
-        />
-        <CustomTextField label='Derived From' name='derivedFrom' />
-        <SectionTitle
           subsection
-          name='Parent dataset ID'
-          tooltip='Identifier (DOI) of the source dataset used to generate this dataset.'
+          tooltip={`Name of the source ${selfString} used to generate this ${selfString}.`}
         />
-        <CustomTextField label='Parent dataset ID' name='parentDatasetId' />
+
+        <CustomTextField label='Derived From' name='derivedFrom' />
+
+        <SectionTitle
+          name={`Parent ${selfString} ID`}
+          subsection
+          tooltip={`Identifier (DOI) of the source ${selfString} used to generate this ${selfString}.`}
+        />
+
+        <CustomTextField
+          label={`Parent ${selfString} ID`}
+          name='parentDatasetId'
+        />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Primary Publications'
-          tooltip='The primary publication(s) associated with the dataset, usually describing how the dataset was produced.'
+          tooltip={`The primary publication(s) associated with the ${selfString}, usually describing how the ${selfString} was produced.`}
         />
+
         <FieldArray name='primaryPublications'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.primaryPublications.map((primaryPublication, index) => {
                 return (
                   <FieldGroup
-                    column
-                    indexed
-                    key={'primaryPublication_' + index}
-                    name={'primaryPublication_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    column
+                    index={index}
+                    indexed
+                    key={`primaryPublication_${index}`}
+                    name={`primaryPublication_${index}`}
                   >
                     <SectionTitle
-                      subsection
                       name='Title'
+                      subsection
                       tooltip='The name of the publication.'
                     />
+
                     <CustomTextField
                       label='Title'
                       name={`primaryPublications.${index}.title`}
                     />
+
                     <SectionTitle
-                      subsection
                       name='Publication Venue'
+                      subsection
                       tooltip='The name of the publication venue where the document is published (if applicable).'
                     />
+
                     <CustomTextField
                       label='Publication Venue'
                       name={`primaryPublications.${index}.publicationVenue`}
                     />
+
                     <FieldArray name={`primaryPublications.${index}.authors`}>
                       {(arrayHelpers) => (
                         <Section subsection>
                           <SectionTitle
-                            subsection
                             name='Authors'
+                            subsection
                             tooltip='Authors of the publication.'
                           />
+
                           {(
                             values.primaryPublications[index]?.authors || []
                           ).map((author, idx) => {
                             return (
                               <FieldGroup
-                                column
-                                indexed
-                                key={'author_' + idx}
-                                name={'author_' + idx}
-                                index={idx}
                                 arrayHelpers={arrayHelpers}
+                                column
+                                index={idx}
+                                indexed
+                                key={`author_${idx}`}
+                                name={`author_${idx}`}
                               >
                                 <CustomTextField
                                   label='Full Name'
                                   name={`primaryPublications.${index}.authors.${idx}.fullName`}
                                 />
+
                                 <CustomTextField
                                   label='First Name'
                                   name={`primaryPublications.${index}.authors.${idx}.firstName`}
                                 />
+
                                 <CustomTextField
                                   label='Middle Initial'
                                   name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
                                 />
+
                                 <CustomTextField
                                   label='Last Name'
                                   name={`primaryPublications.${index}.authors.${idx}.lastName`}
                                 />
+
                                 <FieldArray
                                   name={`primaryPublications.${index}.authors.${idx}.affiliations`}
                                 >
                                   {(arrayHelpers) => (
                                     <Section subsection>
                                       <SectionTitle
-                                        subsection
                                         name='Affiliations'
+                                        subsection
                                         tooltip='Author affiliations.'
                                       />
+
                                       {(
                                         values.primaryPublications[index]
                                           ?.authors[idx]?.affiliations || []
                                       ).map((affiliation, i) => {
                                         return (
                                           <FieldGroup
-                                            column
-                                            indexed
-                                            key={'affiliation_' + i}
-                                            name={'affiliation_' + i}
-                                            index={i}
                                             arrayHelpers={arrayHelpers}
+                                            column
+                                            index={i}
+                                            indexed
+                                            key={`affiliation_${i}`}
+                                            name={`affiliation_${i}`}
                                           >
                                             <CustomTextField
                                               label='Affiliation'
@@ -180,13 +213,14 @@ export default function ExtraPropertiesForm(props) {
                                           </FieldGroup>
                                         )
                                       })}
+
                                       <Box py={1}>
                                         <Button
-                                          variant='outlined'
                                           color='secondary'
                                           onClick={() => {
                                             arrayHelpers.push('')
                                           }}
+                                          variant='outlined'
                                         >
                                           {(
                                             values.primaryPublications[index]
@@ -202,9 +236,9 @@ export default function ExtraPropertiesForm(props) {
                               </FieldGroup>
                             )
                           })}
+
                           <Box py={1}>
                             <Button
-                              variant='outlined'
                               color='secondary'
                               onClick={() => {
                                 arrayHelpers.push({
@@ -215,6 +249,7 @@ export default function ExtraPropertiesForm(props) {
                                   affiliations: []
                                 })
                               }}
+                              variant='outlined'
                             >
                               {(
                                 values.primaryPublications[index]?.authors || []
@@ -226,12 +261,14 @@ export default function ExtraPropertiesForm(props) {
                         </Section>
                       )}
                     </FieldArray>
+
                     <Section subsection>
                       <SectionTitle
-                        subsection
                         name='Dates'
+                        subsection
                         tooltip='Relevant dates for the publication. If you provide a date, it must come with a description of the date (i.e.: first submission, final approval, date of publication, ...).'
                       />
+
                       <FieldArray name={`primaryPublications.${index}.dates`}>
                         {(arrayHelpers) => (
                           <Box display='flex flex-column'>
@@ -239,21 +276,22 @@ export default function ExtraPropertiesForm(props) {
                               (date, idx) => {
                                 return (
                                   <FieldGroup
-                                    key={'date_' + index}
-                                    name={'date_' + index}
-                                    index={index}
                                     arrayHelpers={arrayHelpers}
+                                    index={index}
+                                    key={`date_${index}`}
+                                    name={`date_${index}`}
                                   >
                                     <MuiPickersUtilsProvider
                                       utils={DateFnsUtils}
                                     >
                                       <Field
                                         component={DatePicker}
-                                        name={`primaryPublications.${index}.dates.${idx}.date`}
-                                        label='Date'
                                         format='MM/dd/yyyy'
+                                        label='Date'
+                                        name={`primaryPublications.${index}.dates.${idx}.date`}
                                       />
                                     </MuiPickersUtilsProvider>
+
                                     <CustomTextField
                                       label='Description'
                                       name={`primaryPublications.${index}.dates.${idx}.type.value`}
@@ -262,9 +300,9 @@ export default function ExtraPropertiesForm(props) {
                                 )
                               }
                             )}
+
                             <Box py={1}>
                               <Button
-                                variant='outlined'
                                 color='secondary'
                                 onClick={() => {
                                   arrayHelpers.push({
@@ -273,6 +311,7 @@ export default function ExtraPropertiesForm(props) {
                                     )
                                   })
                                 }}
+                                variant='outlined'
                               >
                                 {values.dates.length > 0
                                   ? 'Add another Date'
@@ -283,18 +322,22 @@ export default function ExtraPropertiesForm(props) {
                         )}
                       </FieldArray>
                     </Section>
+
                     <SectionTitle
                       name='Identifier'
                       tooltip='A code uniquely identifying the publication locally to a system or globally. Provide a Document Object Identifier (DOI) if you have one.'
                     />
+
                     <CustomTextField
                       label='Identifier'
                       name={`primaryPublications.${index}.identifier.identifier`}
                     />
+
                     <SectionTitle
                       name='Identifier Source'
                       tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
                     />
+
                     <CustomTextField
                       label='Identifier Source'
                       name={`primaryPublications.${index}.identifier.identifierSource`}
@@ -302,9 +345,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -318,6 +361,7 @@ export default function ExtraPropertiesForm(props) {
                       }
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.primaryPublications.length > 0
                     ? 'Add another Primary Publication'
@@ -328,27 +372,31 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Dimensions'
-          tooltip='The different dimensions (granular components) making up a dataset. Providing dimensions give more details about the data types.'
+          tooltip={`The different dimensions (granular components) making up a ${selfString}. Providing dimensions give more details about the data types.`}
         />
+
         <FieldArray name='dimensions'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.dimensions.map((dimension, index) => {
                 return (
                   <FieldGroup
-                    key={'dimension_' + index}
-                    name={'dimension_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`dimension_${index}`}
+                    name={`dimension_${index}`}
                   >
                     <CustomTextField
                       label='Name'
                       name={`dimensions.${index}.name`}
                     />
+
                     <CustomTextField
                       label='Description'
                       name={`dimensions.${index}.description`}
@@ -356,9 +404,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -366,6 +414,7 @@ export default function ExtraPropertiesForm(props) {
                       description: ''
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.dimensions.length > 0
                     ? 'Add another Dimension'
@@ -376,74 +425,92 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Identifier'
-          tooltip='A code uniquely identifying the dataset locally to a system or globally.'
+          tooltip={`A code uniquely identifying the ${selfString} locally to a system or globally.`}
         />
+
         <CustomTextField label='Identifier' name='identifier.identifier' />
+
         <SectionTitle
-          subsection
           name='Identifier Source'
+          subsection
           tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
         />
+
         <CustomTextField label='Source' name='identifier.identifierSource' />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Contact *'
-          tooltip='Provide contact information (name and email address) of the person responsible for the dataset.'
+          tooltip={`Provide contact information (name and email address) of the person responsible for the ${selfString}.`}
         />
-        <CustomTextField required label='Name' name='contact.name' />
-        <CustomTextField required label='Email' name='contact.email' />
+
+        <CustomTextField label='Name' name='contact.name' required />
+
+        <CustomTextField label='Email' name='contact.email' required />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Logo'
           tooltip='Link to a URL for the logo or local filename containing the logo.'
         />
-        <CustomRadioGroup name='logo.type' label='Type'>
-          <FormControlLabel value='url' control={<Radio />} label='URL' />
+
+        <CustomRadioGroup label='Type' name='logo.type'>
+          <FormControlLabel control={<Radio />} label='URL' value='url' />
+
           <FormControlLabel
-            value='fileName'
             control={<Radio />}
             label='Filename'
+            value='fileName'
           />
         </CustomRadioGroup>
+
         {values.logo.type === 'url' ? (
           <CustomTextField label='URL' name='logo.url' />
         ) : (
           <CustomTextField label='Path to File' name='logo.fileName' />
         )}
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Dates'
-          tooltip='Relevant dates for the dataset. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...).'
+          tooltip={`Relevant dates for the ${selfString}. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...).`}
         />
+
         <FieldArray name='dates'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.dates.map((date, index) => {
                 return (
                   <FieldGroup
-                    key={'date_' + index}
-                    name={'date_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`date_${index}`}
+                    name={`date_${index}`}
                   >
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Field
                         component={DatePicker}
-                        name={`dates.${index}.date`}
-                        label='Date'
                         format='MM/dd/yyyy'
+                        label='Date'
+                        name={`dates.${index}.date`}
                       />
                     </MuiPickersUtilsProvider>
+
                     <CustomTextField
                       label='Description'
                       name={`dates.${index}.type.value`}
@@ -451,9 +518,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box item xs={6}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -461,6 +528,7 @@ export default function ExtraPropertiesForm(props) {
                       date: new Date(new Date().setHours(0, 0, 0, 0))
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.dates.length > 0 ? 'Add another Date' : 'Add a Date'}
                 </Button>
@@ -469,61 +537,73 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Produced By'
-          tooltip='Process which generated a given dataset.'
+          tooltip={`Process which generated a given ${selfString}.`}
         />
+
         <CustomTextField label='Produced By' name='producedBy' />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Is About *'
-          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset. You must provide a species, and other entities are optional.'
+          tooltip={`Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this ${selfString}. You must provide a species, and other entities are optional.`}
         />
+
         <FieldArray name='isAbout'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.isAbout.map((isAbout, index) => {
                 return (
                   <FieldGroup
-                    key={'isAbout_' + index}
-                    name={'isAbout_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`isAbout_${index}`}
+                    name={`isAbout_${index}`}
                   >
                     <CustomRadioGroup
-                      name={`isAbout.${index}.type`}
                       label='Type'
+                      name={`isAbout.${index}.type`}
                     >
                       <FormControlLabel
-                        value='Species'
                         control={<Radio />}
                         label='Species'
+                        value='Species'
                       />
+
                       <FormControlLabel
-                        value='Other Entity'
                         control={<Radio />}
                         label='Other Entity'
+                        value='Other Entity'
                       />
                     </CustomRadioGroup>
+
                     {isAbout.type === 'Species' ? (
                       <Section>
                         <CustomSelectField
-                          name={`isAbout.${index}.name`}
                           label='Species Name'
+                          name={`isAbout.${index}.name`}
                           required
                         >
                           <MenuItem value='Homo sapiens'>Homo Sapiens</MenuItem>
+
                           <MenuItem value='Mus musculus'>Mus musculus</MenuItem>
+
                           <MenuItem value='Callithrix jacchus'>
                             Callithrix jacchus
                           </MenuItem>
+
                           <MenuItem value='Ondatra zibethicus'>
                             Ondatra zibethicus
                           </MenuItem>
+
                           <MenuItem value='Macaca mulatta'>
                             Macaca mulatta
                           </MenuItem>
@@ -540,13 +620,14 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({ type: 'Species' })
                   }}
+                  variant='outlined'
                 >
                   {values.isAbout.length > 0
                     ? 'Add another Entity'
@@ -557,27 +638,31 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Acknowledges'
-          tooltip='Grant(s) which funded and supported the work reported by the dataset.'
+          tooltip={`Grant(s) which funded and supported the work reported by the ${selfString}.`}
         />
+
         <FieldArray name='acknowledges'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.acknowledges.map((s, index) => {
                 return (
                   <FieldGroup
-                    key={'acknowledges_' + index}
-                    name={'acknowledges_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`acknowledges_${index}`}
+                    name={`acknowledges_${index}`}
                   >
                     <CustomTextField
                       label='Name'
                       name={`acknowledges.${index}.name`}
                     />
+
                     <CustomTextField
                       label='Abbreviation'
                       name={`acknowledges.${index}.abbreviation`}
@@ -585,9 +670,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -595,6 +680,7 @@ export default function ExtraPropertiesForm(props) {
                       abbreviation: ''
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.acknowledges.length > 0
                     ? 'Add another Acknowledgement'
@@ -605,27 +691,31 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Spatial Coverage'
-          tooltip='The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the dataset.'
+          tooltip={`The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the ${selfString}.`}
         />
+
         <FieldArray name='spatialCoverage'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.spatialCoverage.map((s, index) => {
                 return (
                   <FieldGroup
-                    key={'spatialCoverage_' + index}
-                    name={'spatialCoverage_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`spatialCoverage_${index}`}
+                    name={`spatialCoverage_${index}`}
                   >
                     <CustomTextField
                       label='Name'
                       name={`spatialCoverage.${index}.name`}
                     />
+
                     <CustomTextField
                       label='Description'
                       name={`spatialCoverage.${index}.description`}
@@ -633,9 +723,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -643,6 +733,7 @@ export default function ExtraPropertiesForm(props) {
                       description: ''
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.spatialCoverage.length > 0
                     ? 'Add another Spatial Coverage'
@@ -653,12 +744,15 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
         <SectionTitle
           name='Ethical Information *'
-          tooltip='In submitting this dataset for inclusion, I declare that *'
+          tooltip={`In submitting this ${selfString} for inclusion, I declare that *`}
         />
+
         <CustomSelectField
           label='Select a statement *'
           name='reb_info'
@@ -668,51 +762,55 @@ export default function ExtraPropertiesForm(props) {
           }}
         >
           <MenuItem
-            value='option_1'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_1'
           >
             Participants have provided a valid informed consent to the
             de-identification and deposit of their data in an open-access
             portal.
           </MenuItem>
+
           <MenuItem
-            value='option_2'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_2'
           >
             A waiver or other authorization to deposit these de-identified data
             in an open-access portal was obtained from a research ethics body
             (REB, IRB, REC, etc.).
           </MenuItem>
+
           <MenuItem
-            value='option_3'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_3'
           >
             Local law or a relevant institutional authorization otherwise
             enables the deposit of these data in an open-access portal.
           </MenuItem>
+
           <MenuItem
-            value='option_4'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_4'
           >
             These data are not derived from human participants.
           </MenuItem>
         </CustomSelectField>
+
         <CustomTextField
           label='Ethics committee approval number'
           name='reb_number'

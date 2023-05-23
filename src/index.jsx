@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
@@ -81,28 +83,64 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const steps = [
+const datasetSteps = [
   'General Info',
   'Distribution',
   'Extra Properties',
+  'Review & Download'
+]
+
+const experimentSteps = [
+  ...datasetSteps.slice(0, 3),
   'Experiment Properties',
-  'Review & Download',
+  datasetSteps[3],
   'Readme Editor'
 ]
 
-function renderStep(step, classes, values, dats) {
+function renderStep(step, classes, values, dats, isExperiment) {
   switch (step) {
-    case 0:
-      return <GeneralForm classes={classes} values={values} />
-    case 1:
-      return <DistributionForm classes={classes} values={values} />
-    case 2:
-      return <ExtraPropertiesForm classes={classes} values={values} />
-    case 3:
-      return <ExperimentsForm classes={classes} values={values} />
-    case 4:
-      return <CreateDatsSuccess classes={classes} dats={dats} values={values} />
-    case 5:
+    case experimentSteps[0]:
+      return (
+        <GeneralForm
+          classes={classes}
+          isExperiment={isExperiment}
+          values={values}
+        />
+      )
+    case experimentSteps[1]:
+      return (
+        <DistributionForm
+          classes={classes}
+          isExperiment={isExperiment}
+          values={values}
+        />
+      )
+    case experimentSteps[2]:
+      return (
+        <ExtraPropertiesForm
+          classes={classes}
+          isExperiment={isExperiment}
+          values={values}
+        />
+      )
+    case experimentSteps[3]:
+      return (
+        <ExperimentsForm
+          classes={classes}
+          isExperiment={isExperiment}
+          values={values}
+        />
+      )
+    case experimentSteps[4]:
+      return (
+        <CreateDatsSuccess
+          classes={classes}
+          dats={dats}
+          isExperiment={isExperiment}
+          values={values}
+        />
+      )
+    case experimentSteps[5]:
       return (
         <ReadmeEditor
           buttonClass={classes.button}
@@ -115,11 +153,7 @@ function renderStep(step, classes, values, dats) {
   }
 }
 
-const isLastStep = (activeStep) => activeStep === steps.length - 3
-const shouldShowClearButton = (activeStep) => activeStep <= steps.length - 3
-const shouldShowNextButton = (activeStep) => activeStep <= steps.length - 2
-const shouldShowUploader = (activeStep) => activeStep <= steps.length - 3
-
+/* eslint max-statements: "off" */
 export function DatsEditorForm(props) {
   const { validationSchema, initialActiveStep } = props
   const classes = useStyles()
@@ -127,10 +161,28 @@ export function DatsEditorForm(props) {
   const [activeStep, setActiveStep] = React.useState(initialActiveStep || 0)
   const [dats, setDats] = React.useState()
   const [valuesState, setValuesState] = React.useState(defaultDatsValues)
+  const [isExperiment, setIsExperiment] = React.useState(false)
+
+  const steps = isExperiment ? experimentSteps : datasetSteps
+  const postDatsSteps = isExperiment ? 2 : 1
+
+  const isLastStep = (activeStep) =>
+    activeStep === steps.length - (postDatsSteps + 1)
+  const shouldShowClearButton = (activeStep) =>
+    activeStep <= steps.length - (postDatsSteps + 1)
+  const shouldShowNextButton = (activeStep) =>
+    activeStep <= steps.length - postDatsSteps
+  const shouldShowUploader = (activeStep) =>
+    activeStep <= steps.length - (postDatsSteps + 1)
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
     setValuesState(formData)
+  }
+
+  const toggleIsExperiment = () => {
+    setIsExperiment(!isExperiment)
+    setActiveStep(0)
   }
 
   const handleNext = () => {
@@ -194,7 +246,24 @@ export function DatsEditorForm(props) {
                   </div>
                 ) : null}
 
-                {renderStep(activeStep, classes, values, dats)}
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={isExperiment}
+                      name='isExperimentSwitch'
+                      onChange={toggleIsExperiment}
+                    />
+                  }
+                  label='Experiment'
+                />
+
+                {renderStep(
+                  steps[activeStep],
+                  classes,
+                  values,
+                  dats,
+                  isExperiment
+                )}
 
                 <div className={classes.buttons}>
                   {shouldShowClearButton(activeStep) ? (
