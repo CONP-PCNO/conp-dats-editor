@@ -241,21 +241,22 @@ export function DatsEditorForm(props) {
             {({ values, errors, touched, isSubmitting, handleReset }) => (
               <Form>
                 {shouldShowUploader(activeStep) ? (
-                  <div className={classes.section}>
-                    <DatsUploader onDatsReceived={onDatsReceived} />
-                  </div>
-                ) : null}
-
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={isExperiment}
-                      name='isExperimentSwitch'
-                      onChange={toggleIsExperiment}
+                  <React.Fragment>
+                    <div className={classes.section}>
+                      <DatsUploader onDatsReceived={onDatsReceived} />
+                    </div>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={isExperiment}
+                          name='isExperimentSwitch'
+                          onChange={toggleIsExperiment}
+                        />
+                      }
+                      label='Experiment'
                     />
-                  }
-                  label='Experiment'
-                />
+                  </React.Fragment>
+                ) : null}
 
                 {renderStep(
                   steps[activeStep],
