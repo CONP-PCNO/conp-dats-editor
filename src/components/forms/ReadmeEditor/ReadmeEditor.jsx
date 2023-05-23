@@ -5,8 +5,13 @@ import rehypeSanitize from 'rehype-sanitize'
 
 export function genDefaultReadme(values) {
   const publications = values.primaryPublications.join(', ')
-  const identifier = values.identifier.source
+  const identifier = values.identifier.source || ''
   const languages = values.experimentsLanguages.join(', ')
+  const licenses = values.licenses
+    .map((license) =>
+      license.value === 'other' ? license.valueOther : license.value
+    )
+    .join(', ')
   return `# ${values.title}
 
 ${values.description}
@@ -29,7 +34,7 @@ ${values.description}
 
 **Devices:** ${values.experimentsRequiredDevices.join(', ')}
 
-**Species:** ${values.isAbout.join(', ')}
+**Species:** ${values.isAbout.map((isAbout) => isAbout.name).join(', ')}
 
 ## Development
 
@@ -55,7 +60,7 @@ ${values.description}
 
 ## License and Attribution
 
-**License:** ${values.licenses.join(', ')}
+**License:** ${licenses}
 
 ## Additional Reading
 `
