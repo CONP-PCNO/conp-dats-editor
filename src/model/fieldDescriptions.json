@@ -9,55 +9,61 @@
   "creators": {
     "name": "Creators",
     "description": {
-      "experiment": "The person(s) or organization(s) that contributed to the creation of the experiment. This can be the principal investigator, hospital, university, centre  , clinic, etc. The first contact provided will be associated as the main contact for this experiment."
+      "experiment": "The person(s) or organization(s) that contributed to the creation of the experiment. This can be the principal investigator, hospital, university, centre, clinic, etc. The first contact provided will be associated as the main contact for this experiment."
     }
   },
   "description": {
     "name": "Description",
     "description": {
-      "experiment": "A short paragraph providing a rapid overview of the experiment and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the experiment, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the experiment."
+      "dataset": "A short paragraph providing a rapid overview of the dataset and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the dataset, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the dataset.",
+      "experiment": "A short paragraph providing a rapid overview of the experiment and the context of data collection. Suggestion of items to include in the description (if applicable): main procedure of the experiment, population studied, experimental design, data collected, methods, techniques, apparatus used to generate the outputs. Ideally, the first sentence of the description should give a good overall description of the experiment."
     }
   },
   "types": {
     "name": "Data Types",
     "description": {
-      "experiment": "Terms to describe the nature of the data. Data type can be single or multiple. Add a term with the <a href=\"https://neuinfo.org/interlex/dashboard\" rel=\"noreferrer\" target=\"_blank\">interlex URI</a> if possible."
-    }
+      "dataset": "Terms to describe the nature of the data. Data type can be single or multiple. Add a term with the interlex URI if possible.",
+      "experiment": "Terms to describe the nature of the data produced by the experiment (e.g., csv, audio recording, video recording). Data type can be single or multiple. Add a term with the <a href=\"https://neuinfo.org/interlex/dashboard\" rel=\"noreferrer\" target=\"_blank\">interlex URI</a> if possible."
+    },
+    "fieldName": "Type"
   },
   "version": {
     "name": "Version",
     "description": {
-      "experiment": "Provide the version number, or the release point of your experiment. If you do not have an existing versioning convention, we recommend the use of the following versoning convention: 1.0=original experiment; 1.1=minor revisions made to the experiment; 1.2=further minor revisions; 2.0=major/substantive changes to the experiment. For example: minor changes could include corrupted file or link fixes, more description/documentation of the experiment and so on; Major changes would include additional data released (more subjects, more modalities and so on)"
+      "dataset": "Provide the version number, or the release point of your dataset. If you do not have an existing versioning convention, we recommend the use of the following versoning convention: 1.0=original dataset; 1.1=minor revisions made to the dataset; 1.2=further minor revisions; 2.0=major/substantive changes to the dataset. For example: minor changes could include corrupted file or link fixes, more description/documentation of the dataset and so on; Major changes would include additional data released (more subjects, more modalities and so on)",
+      "experiment": "Provide the version number, or the release point of your experiment. If you do not have an existing versioning convention, we recommend the use of the following versoning convention: 1.0=original experiment; 1.1=minor revisions made to the experiment; 1.2=further minor revisions; 2.0=major/substantive changes to the experiment. For example: minor changes could include bug fixes, more description/documentation of the experiment and so on; Major changes would include additional experimental features (more stimuli or trials, more modalities and so on)"
     }
   },
   "privacy": {
     "name": "Privacy",
     "description": {
-      "experiment": "A qualifier to describe the data protection applied to the experiment. This is relevant for clinical data.\n<ul>\n<li><i><strong>open</strong>: freely and publicly available</i></li>\n<li><i><strong>registered</strong>: available to bona fide researchers/clinical care professionals only</i></li>\n<li><i><strong>controlled</strong>: available to qualified researchers approved by a committee after review of their research proposal; also known as managed or restricted access</i></li>\n<li><i><strong>private</strong>: available only to researchers of the project; also known as closed</i></li>\n</ul>"
+      "experiment": "A qualifier to describe the data protection applied to the experiment. This is relevant for experimental stimuli taken from external sources.\n<ul>\n<li><i><strong>open</strong>: freely and publicly available</i></li>\n<li><i><strong>registered</strong>: available to bona fide researchers/clinical care professionals only</i></li>\n<li><i><strong>controlled</strong>: available to qualified researchers approved by a committee after review of their research proposal; also known as managed or restricted access</i></li>\n<li><i><strong>private</strong>: available only to researchers of the project; also known as closed</i></li>\n</ul>"
     }
   },
   "licenses": {
     "name": "Licenses",
     "description": {
-      "experiment": "The licences under which this experiment is shared."
+      "experiment": "The licences under which this experiment is shared. Note, this applies to the experimental files themselves and not the data that would be generated from the experiment. Visit <a href=\"https://choosealicense.com\" rel=\"noreferrer\" target=\"_blank\">Choose a License</a> for more information on open-source licenses."
     }
   },
   "keywords": {
     "name": "Keywords",
     "description": {
+      "dataset": "Tags associated with the dataset, which will help in its discovery. These should be well known terms by the research community.",
       "experiment": "Tags associated with the experiment, which will help in its discovery. These should be well known terms by the research community."
-    }
+    },
+    "fieldName": "keyword"
   },
   "formats": {
     "name": "Formats",
     "description": {
-      "experiment": "The technical format of the ${selfString} distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite)."
+      "experiment": "The technical format of the data generated from the experiment. Use the file extension or MIME type when possible. (Definition adapted from DataCite)."
     }
   },
   "size": {
     "name": "Size",
     "description": {
-      "experiment": "The quantity of space required on disk (or other medium) for this ${selfString}."
+      "experiment": "The quantity of space required on disk (or other medium) for this experiment."
     }
   },
   "units": {
@@ -69,106 +75,108 @@
   "access": {
     "name": "Access",
     "description": {
-      "experiment": "The information about access modality for the ${selfString} distribution."
+      "experiment": "The information about access modality for the experiment distribution."
     }
   },
   "landingPage": {
     "name": "Landing Page",
     "description": {
-      "experiment": "A URL (Web page) that contains information about the associated ${selfString} (with a link to the ${selfString}) or a direct link to the ${selfString} itself. When none exists yet, please provide the link to the README.md file of the ${selfString}."
+      "experiment": "A URL (Web page) that contains information about the associated experiment (with a link to the experiment) or a direct link to the experiment itself. This could be a link to the GitHub, OSF, or Zenodo repository containing the experiment files, a lab website, or faculty page. When none exists yet, please enter \"README.md.\""
     }
   },
   "authorizations": {
     "name": "Authorizations",
     "description": {
-      "experiment": "This must be one of \"Public\", \"Registered\" or \"Private\". When this field is absent the value will be treated as \"Public\". \"Public\" = available to anyone; \"Registered\" = available to user authorized by the creator; \"Private\" = available only to the creator."
+      "experiment": "Describe who can access the landing page. This must be one of \"Public\", \"Registered\" or \"Private\". When this field is absent the value will be treated as \"Public\". \"Public\" = available to anyone; \"Registered\" = available to user authorized by the creator; \"Private\" = available only to the creator."
     }
   },
   "files": {
     "name": "Number of Files",
     "description": {
-      "experiment": "Total number of files in the ${selfString}."
+      "dataset": "Total number of files in the dataset.",
+      "experiment": "Total number of files in the experiment."
     }
   },
   "subjects": {
     "name": "Number of Subjects",
     "description": {
-      "experiment": "Total number of subjects constituting the ${selfString}."
+      "dataset": "Total number of subjects constituting the dataset.",
+      "experiment": "Total number of subjects constituting the experiment. If not applicable, please put N/A."
     }
   },
   "conpStatus": {
     "name": "CONP Status",
     "description": {
-      "experiment": "The CONP status is used to add the CONP logo or Canadian flag on the left of the ${selfString} and sorting in the data search. Valid values are \"CONP\" = created using funding from the CONP; \"Canadian\" = created in Canada without CONP funding; \"external\" = created outside of Canada."
+      "experiment": "The CONP status is used to add the CONP logo or Canadian flag on the left of the experiment and sorting in the data search. Valid values are \"CONP\" = created using funding from the CONP; \"Canadian\" = created in Canada without CONP funding; \"external\" = created outside of Canada."
     }
   },
   "origin": {
     "name": "Origin",
     "description": {
-      "experiment": "Name of the institution or consortium that generated the ${selfString}. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different la  bs at the same institution."
+      "experiment": "Name of the institution or consortium that generated the experiment. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution."
     }
   },
   "origin.institution": {
     "name": "Institution",
     "description": {
-      "experiment": "Name of the institution where this ${selfString} was created (if applicable)."
+      "experiment": "Name of the institution where this experiment was created (if applicable)."
     }
   },
   "origin.consortium": {
     "name": "Consortium",
     "description": {
-      "experiment": "Name of the consortium where this ${selfString} was created (if applicable)."
+      "experiment": "Name of the consortium where this experiment was created (if applicable)."
     }
   },
   "origin.city": {
     "name": "City",
     "description": {
-      "experiment": "(Principal) city where this ${selfString} was created."
+      "experiment": "(Principal) city where this experiment was created."
     }
   },
   "origin.province": {
     "name": "Province",
     "description": {
-      "experiment": "(Principal) province where this ${selfString} was created."
+      "experiment": "(Principal) province where this experiment was created (if applicable)."
     }
   },
   "origin.country": {
     "name": "Country",
     "description": {
-      "experiment": "(Principal) country where this ${selfString} was created."
+      "experiment": "(Principal) country where this experiment was created."
     }
   },
   "derivedFromTitle": {
     "name": { "experiment": "Derived From (For Derived Experiments Only)" },
     "description": {
-      "experiment": "Required for derived ${selfString}s only. Provide information about the source ${selfString} this ${selfString} has been derived from."
+      "experiment": "Required for derived experiments only. Provide information about the source experiment this experiment has been derived from."
     }
   },
   "derivedFrom": {
     "name": "Derived From",
     "description": {
-      "experiment": "Name of the source ${selfString} used to generate this ${selfString}."
+      "experiment": "Name of the source experiment used to generate this experiment."
     }
   },
   "parentId": {
     "name": { "experiment": "Parent Experiment ID" },
     "description": {
-      "experiment": "Identifier (DOI) of the source ${selfString} used to generate this ${selfString}."
+      "experiment": "Persistent identifier (e.g., DOI) of the source experiment used to generate this experiment."
     }
   },
   "primaryPublications": {
     "name": "Primary Publications",
     "description": {
-      "experiment": "The primary publication(s) associated with the ${selfString}, usually describing how the ${selfString} was produced."
+      "experiment": "The primary publication(s) associated with the experiment, usually describing how the experiment was produced."
     }
   },
   "primaryPublications.title": {
     "name": "Title",
-    "description": "The name of the publication"
+    "description": "The title of the publication"
   },
   "primaryPublications.publicationVenue": {
     "name": "Publication Venue",
-    "description": "The name of the publication venue where the document is published (if applicable)."
+    "description": "The name of the publication venue (e.g., journal) where the document is published (if applicable)."
   },
   "primaryPublications.authors": {
     "name": "Authors",
@@ -184,7 +192,7 @@
   },
   "primaryPublications.identifier": {
     "name": "Identifier",
-    "description": "A code uniquely identifying the publication locally to a system or globally. Provide a Document Object Identifier (DOI) if you have one."
+    "description": "A code uniquely identifying the publication locally to a system or globally. Provide a Digital Object Identifier (DOI) if you have one."
   },
   "primaryPublications.identifier.identifier": { "name": "Identifier" },
   "primaryPublications.identifier.identifierSource": {
@@ -194,13 +202,13 @@
   "dimensions": {
     "name": "Dimensions",
     "description": {
-      "experiment": "The different dimensions (granular components) making up a ${selfString}. Providing dimensions give more details about the data types."
+      "experiment": "The different dimensions (granular components) making up a experiment. Providing dimensions give more details about the data types."
     }
   },
   "identifier.identifier": {
     "name": "Identifier",
     "description": {
-      "experiment": "A code uniquely identifying the ${selfString} locally to a system or globally."
+      "experiment": "A code (e.g., digital object identifier, DOI) uniquely identifying the experiment locally to a system or globally."
     }
   },
   "identifier.identifierSource": {
@@ -209,18 +217,18 @@
   },
   "logo": {
     "name": "Logo",
-    "description": "Link to a URL for the logo or local filename containing the logo."
+    "description": "Relative path and filename (e.g., logo.png, info/logo.jpg) containing the logo within the experimental files (recommended) or link to a URL for the logo."
   },
   "dates": {
     "name": "Dates",
     "description": {
-      "experiment": "Relevant dates for the ${selfString}. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...)."
+      "experiment": "Relevant dates for the experiment. If you provide a date, it must come with a description of the date (i.e.: version date, development start date, development end date, date of first publication, ...)."
     }
   },
   "contact": {
     "name": "Contact",
     "description": {
-      "experiment": "Provide contact information (name and email address) of the person responsible for the ${selfString}."
+      "experiment": "Provide contact information (name and email address) of the person responsible for the experiment."
     }
   },
   "producedBy": {
@@ -230,38 +238,74 @@
   "isAbout": {
     "name": "Is About",
     "description": {
-      "experiment": "Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this ${selfString}. You must provide a species, and other entities are optional."
+      "experiment": "Entities (biological entity, taxonomic information, disease, disease state, molecular entity, anatomical part, treatment) associated with this experiment. You must provide a species; other entities are optional."
     }
   },
   "acknowledges": {
     "name": "Acknowledges",
     "description": {
-      "experiment": "Grant(s) which funded and supported the work reported by the ${selfString}."
+      "experiment": "Grant(s) which funded and supported the work reported by the experiment. Contributors to the experiment not listed as creators."
     }
   },
   "spatialCoverage": {
     "name": "Spatial Coverage",
     "description": {
-      "experiment": "The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the ${selfString}."
+      "experiment": "The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the experiment."
     }
   },
   "reb_info": {
     "name": "Ethical Information",
     "description": {
-      "experiment": "In submitting this ${selfString} for inclusion, I declare that"
+      "experiment": "In submitting this experiment for inclusion, I declare that I am not uploading any participant data and the only files included are those necessary to run the experiment."
     }
   },
   "experimentsFunctionAssessed": {
-    "name": "Functions assessed",
-    "description": { "experiment": "" }
+    "name": "Function(s) assessed",
+    "description": {
+      "experiment": "One or more functions primarily assessed by the experiment. More detailed functions can be included as keywords in the General Info section."
+    }
   },
-  "experimentsRepeatability": {
-    "name": "Repeatability",
-    "description": { "experiment": "" }
+  "experimentsModalities": {
+    "name": "Modalities",
+    "description": {
+      "experiment": "One or more modalities (e.g. fMRI, EEG, MEG, behavioural) in which the experiment is performed."
+    }
+  },
+  "experimentsRequiredSoftware": {
+    "name": "Software",
+    "description": {
+      "experiment": "Software required to run the experiment."
+    }
+  },
+  "experimentsRequiredSoftwareVersion": {
+    "name": "Software Version",
+    "description": {
+      "experiment": "Software version required to run the experiment."
+    }
+  },
+  "experimentsRequiredDevices": {
+    "name": "Device(s)",
+    "description": {
+      "experiment": "Device(s) the experiment can be run on (e.g. PC, tablet, smartphone, internet browser)."
+    }
+  },
+  "experimentsRequiredOS": {
+    "name": "Operating System",
+    "description": {
+      "experiment": "Operating system(s) the experiment can be run on (e.g. Windows, iOS, Linux)."
+    }
+  },
+  "experimentsStimuli": {
+    "name": "Stimuli",
+    "description": {
+      "experiment": "Types of stimuli used for the experiment (e.g., audio, video, image)."
+    }
   },
   "experimentsLanguages": {
-    "name": "Languages",
-    "description": { "experiment": "" }
+    "name": "Language(s)",
+    "description": {
+      "experiment": "Language(s) in which the experiment can be performed."
+    }
   },
   "experimentsValidation": {
     "name": "Validation",
@@ -270,29 +314,13 @@
   "experimentsAccessibility": {
     "name": "Accessibility",
     "description": {
-      "experiment": "Accessibility considerations (e.g. colourblind friendly)"
-    }
-  },
-  "experimentsRequiredPlatforms": {
-    "name": "Platforms",
-    "description": {
-      "experiment": "Platforms (e.g. online, offline, fMRI, EEG, MEG)"
-    }
-  },
-  "experimentsRequiredDevices": {
-    "name": "Devices",
-    "description": {
-      "experiment": "Devices required to run the experiment (e.g. PC, smartphone)"
-    }
-  },
-  "experimentsRequiredSoftware": {
-    "name": "Software",
-    "description": {
-      "experiment": "Software and version to run the experiment"
+      "experiment": "Accessibility considerations addressed during experimental development (e.g. colourblind friendly)."
     }
   },
   "experimentsAdditionalRequirements": {
     "name": "Requirements",
-    "description": { "experiment": "Any additional requirements" }
+    "description": {
+      "experiment": "Any additional requirements for the experiment."
+    }
   }
 }

@@ -3,9 +3,11 @@ import { Grid, Button, MenuItem, Divider, Box } from '@material-ui/core'
 import { FieldArray } from 'formik'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import TextSection from '../../fields/TextSection'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
+import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function DistributionForm(props) {
   const { values, isExperiment } = props
@@ -125,25 +127,21 @@ export default function DistributionForm(props) {
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Number of Files *'
-          tooltip={`Total number of files in the ${selfString}.`}
-        />
-
-        <CustomTextField label='Files' name='files' required />
-      </Section>
+      <TextSection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='files'
+        values={fieldDescriptions.files}
+      />
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Number of Subjects *'
-          tooltip={`Total number of subjects constituting the ${selfString}.`}
-        />
-
-        <CustomTextField label='Subjects' name='subjects' required />
-      </Section>
+      <TextSection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='subjects'
+        values={fieldDescriptions.subjects}
+      />
 
       <Divider variant='middle' />
 

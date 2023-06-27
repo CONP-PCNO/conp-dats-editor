@@ -12,10 +12,13 @@ import {
 import { FieldArray } from 'formik'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import TextSection from '../../fields/TextSection'
+import TextArraySection from '../../layout/TextArraySection'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
+import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function GeneralForm(props) {
   const { values, isExperiment } = props
@@ -26,14 +29,12 @@ export default function GeneralForm(props) {
         General Information
       </Typography>
 
-      <Section>
-        <SectionTitle
-          name='Title *'
-          tooltip={`Name of the ${selfString}. The title needs to be short and easily recognizable and searchable. If there is an acronym, please also provide the long name.`}
-        />
-
-        <CustomTextField fullWidth label='Title' name='title' required />
-      </Section>
+      <TextSection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='title'
+        values={fieldDescriptions.title}
+      />
 
       <Divider variant='middle' />
 
@@ -211,76 +212,32 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Description *'
-          tooltip={`A short paragraph providing a rapid overview of the ${selfString} and the context of data collection. Suggestion of items to include in the description (if applicable): main use of the ${selfString}, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the ${selfString}.`}
-        />
-
-        <CustomTextField
-          fullWidth
-          label='Description'
-          multiline
-          name='description'
-          required
-          rows={4}
-        />
-      </Section>
+      <TextSection
+        isExperiment={isExperiment}
+        isRequired
+        multiline
+        nameAttr='description'
+        rows={4}
+        values={fieldDescriptions.description}
+      />
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Data Types *'
-          tooltip='Terms to describe the nature of the data. Data type can be single or multiple. Add a term with the <a href="https://neuinfo.org/interlex/dashboard" rel="noreferrer" target="_blank">interlex URI</a> if possible.'
-        />
-
-        <FieldArray name='types'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.types.map((type, index) => {
-                return (
-                  <FieldGroup
-                    arrayHelpers={arrayHelpers}
-                    index={index}
-                    key={`type${index}`}
-                    name={`type${index}`}
-                  >
-                    <CustomTextField
-                      label='Type'
-                      name={`types.${index}`}
-                      required
-                    />
-                  </FieldGroup>
-                )
-              })}
-
-              <Box py={1}>
-                <Button
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push('')
-                  }}
-                  variant='outlined'
-                >
-                  {values.types.length > 0 ? 'Add another Type' : 'Add a Type'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
+      <TextArraySection
+        isExperiment={isExperiment}
+        nameAttr='types'
+        setupProps={fieldDescriptions.types}
+        values={values.types}
+      />
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Version *'
-          tooltip={`Provide the version number, or the release point of your ${selfString}. If you do not have an existing versioning convention, we recommend the use of the following versoning convention: 1.0=original ${selfString}; 1.1=minor revisions made to the ${selfString}; 1.2=further minor revisions; 2.0=major/substantive changes to the ${selfString}. For example: minor changes could include corrupted file or link fixes, more description/documentation of the ${selfString} and so on; Major changes would include additional data released (more subjects, more modalities and so on)`}
-        />
-
-        <CustomTextField label='Version' name='version' required />
-      </Section>
+      <TextSection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='version'
+        values={fieldDescriptions.version}
+      />
 
       <Divider variant='middle' />
 
@@ -393,49 +350,12 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Keywords *'
-          tooltip={`Tags associated with the ${selfString}, which will help in its discovery. These should be well known terms by the research community.`}
-        />
-
-        <FieldArray name='keywords'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.keywords.map((keyword, index) => {
-                return (
-                  <FieldGroup
-                    arrayHelpers={arrayHelpers}
-                    index={index}
-                    key={`keyword_${index}`}
-                    name={`keyword_${index}`}
-                  >
-                    <CustomTextField
-                      label='Keyword'
-                      name={`keywords.${index}`}
-                      required
-                    />
-                  </FieldGroup>
-                )
-              })}
-
-              <Box py={1}>
-                <Button
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push('')
-                  }}
-                  variant='outlined'
-                >
-                  {values.keywords.length > 0
-                    ? 'Add another Keyword'
-                    : 'Add a Keyword'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
+      <TextArraySection
+        isExperiment={isExperiment}
+        nameAttr='keywords'
+        setupProps={fieldDescriptions.keywords}
+        values={values.keywords}
+      />
     </React.Fragment>
   )
 }
