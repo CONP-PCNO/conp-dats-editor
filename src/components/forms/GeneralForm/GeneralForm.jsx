@@ -10,14 +10,12 @@ import {
   Box
 } from '@material-ui/core'
 import { FieldArray } from 'formik'
-import FieldArraySection from '../../layout/MultiFieldSection'
+import FieldArraySection from '../../layout/FieldArraySection'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
-import SelectSection from '../../fields/SelectSection'
+import JsonSelectField from '../../fields/JsonSelectField'
 import JsonTextField from '../../fields/JsonTextField'
-import TextSection from '../../fields/TextSection'
 import SingleFieldSection from '../../layout/SingleFieldSection'
-import TextArraySection from '../../layout/TextArraySection'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
@@ -218,9 +216,11 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <TextSection
+      <SingleFieldSection
+        fullWidth
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonTextField}
         multiline
         nameAttr='description'
         rows={4}
@@ -240,18 +240,21 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <TextSection
+      <SingleFieldSection
+        fullWidth
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonTextField}
         nameAttr='version'
         values={fieldDescriptions.version}
       />
 
       <Divider variant='middle' />
 
-      <SelectSection
+      <SingleFieldSection
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonSelectField}
         nameAttr='privacy'
         values={fieldDescriptions.privacy}
       />
@@ -342,8 +345,10 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <TextArraySection
+      <FieldArraySection
         isExperiment={isExperiment}
+        isRequired
+        jsonField={JsonTextField}
         nameAttr='keywords'
         setupProps={fieldDescriptions.keywords}
         values={values.keywords}

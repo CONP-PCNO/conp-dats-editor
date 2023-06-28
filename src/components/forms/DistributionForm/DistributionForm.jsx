@@ -2,9 +2,11 @@ import React from 'react'
 import { MenuItem, Divider } from '@material-ui/core'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import FieldArraySection from '../../layout/FieldArraySection'
+import SingleFieldSection from '../../layout/SingleFieldSection'
 import SelectSection from '../../fields/SelectSection'
-import TextSection from '../../fields/TextSection'
-import TextArraySection from '../../layout/TextArraySection'
+import JsonSelectField from '../../fields/JsonSelectField'
+import JsonTextField from '../../fields/JsonTextField'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 import fieldDescriptions from '../../../model/fieldDescriptions.json'
@@ -14,9 +16,10 @@ export default function DistributionForm(props) {
   const selfString = isExperiment ? 'experiment' : 'dataset'
   return (
     <React.Fragment>
-      <TextArraySection
+      <FieldArraySection
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonTextField}
         nameAttr='formats'
         setupProps={fieldDescriptions.formats}
         values={values.formats}
@@ -90,27 +93,32 @@ export default function DistributionForm(props) {
 
       <Divider variant='middle' />
 
-      <TextSection
+      <SingleFieldSection
+        fullWidth
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonTextField}
         nameAttr='files'
         values={fieldDescriptions.files}
       />
 
       <Divider variant='middle' />
 
-      <TextSection
+      <SingleFieldSection
+        fullWidth
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonTextField}
         nameAttr='subjects'
         values={fieldDescriptions.subjects}
       />
 
       <Divider variant='middle' />
 
-      <SelectSection
+      <SingleFieldSection
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonSelectField}
         nameAttr='conpStatus'
         values={fieldDescriptions.conpStatus}
       />
