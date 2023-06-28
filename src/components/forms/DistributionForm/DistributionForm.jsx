@@ -1,19 +1,15 @@
 import React from 'react'
-import { MenuItem, Divider } from '@material-ui/core'
+import { Divider } from '@material-ui/core'
 import Section from '../../layout/Section'
-import SectionTitle from '../../layout/SectionTitle'
 import FieldArraySection from '../../layout/FieldArraySection'
 import SingleFieldSection from '../../layout/SingleFieldSection'
-import SelectSection from '../../fields/SelectSection'
+import JsonSectionTitle from '../../layout/JsonSectionTitle'
 import JsonSelectField from '../../fields/JsonSelectField'
 import JsonTextField from '../../fields/JsonTextField'
-import CustomTextField from '../../fields/CustomTextField'
-import CustomSelectField from '../../fields/CustomSelectField'
 import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function DistributionForm(props) {
   const { values, isExperiment } = props
-  const selfString = isExperiment ? 'experiment' : 'dataset'
   return (
     <React.Fragment>
       <FieldArraySection
@@ -28,67 +24,74 @@ export default function DistributionForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Size *'
-          tooltip={`The quantity of space required on disk (or other medium) for this ${selfString}.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.size}
         />
 
-        <CustomTextField label='Size' name='size.value' required />
+        <JsonTextField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='size.value'
+          setupProps={fieldDescriptions.size}
+          value={values.size.value}
+        />
 
-        <SectionTitle
-          name='Units *'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.units}
           subsection
-          tooltip='Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).'
         />
 
-        <CustomSelectField label='Units' name='size.units' required>
-          <MenuItem value='MB'>MB</MenuItem>
-
-          <MenuItem value='GB'>GB</MenuItem>
-
-          <MenuItem value='TB'>TB</MenuItem>
-
-          <MenuItem value='PB'>PB</MenuItem>
-        </CustomSelectField>
+        <JsonSelectField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='size.units'
+          setupProps={fieldDescriptions.units}
+          value={values.size.units}
+        />
       </Section>
 
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Access *'
-          tooltip={`The information about access modality for the ${selfString} distribution.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.access}
         />
 
-        <SectionTitle
-          name='Landing Page *'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.landingPage}
           subsection
-          tooltip={`A URL (Web page) that contains information about the associated ${selfString} (with a link to the ${selfString}) or a direct link to the ${selfString} itself. When none exists yet, please provide the link to the README.md file of the ${selfString}.`}
         />
 
-        <CustomTextField
-          label='Landing Page'
-          name='access.landingPage'
-          required
+        <JsonTextField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='access.landingPage'
+          setupProps={fieldDescriptions.landingPage}
+          value={values.access.landingPage}
         />
 
-        <SectionTitle
-          name='Authorizations *'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.authorizations}
           subsection
-          tooltip='This must be one of "Public", "Registered" or "Private". When this field is absent the value will be treated as "Public". "Public" = available to anyone; "Registered" = available to user authorized by the creator; "Private" = available only to the creator.'
         />
 
-        <CustomSelectField
-          label='Authorization'
-          name='access.authorization'
-          required
-        >
-          <MenuItem value='public'>Public</MenuItem>
-
-          <MenuItem value='registered'>Registered</MenuItem>
-
-          <MenuItem value='private'>Private</MenuItem>
-        </CustomSelectField>
+        <JsonSelectField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='access.authorization'
+          setupProps={fieldDescriptions.authorizations}
+          value={values.access.authorizations}
+        />
       </Section>
 
       <Divider variant='middle' />
@@ -99,7 +102,7 @@ export default function DistributionForm(props) {
         isRequired
         jsonField={JsonTextField}
         nameAttr='files'
-        values={fieldDescriptions.files}
+        setupProps={fieldDescriptions.files}
       />
 
       <Divider variant='middle' />
@@ -110,7 +113,7 @@ export default function DistributionForm(props) {
         isRequired
         jsonField={JsonTextField}
         nameAttr='subjects'
-        values={fieldDescriptions.subjects}
+        setupProps={fieldDescriptions.subjects}
       />
 
       <Divider variant='middle' />
@@ -120,7 +123,7 @@ export default function DistributionForm(props) {
         isRequired
         jsonField={JsonSelectField}
         nameAttr='conpStatus'
-        values={fieldDescriptions.conpStatus}
+        setupProps={fieldDescriptions.conpStatus}
       />
     </React.Fragment>
   )

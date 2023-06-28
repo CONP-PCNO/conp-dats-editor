@@ -27,7 +27,7 @@ export default function FieldArraySection(props) {
       <FieldArray name={nameAttr}>
         {(arrayHelpers) => (
           <Box display='flex flex-column'>
-            {values.map((type, index) => {
+            {values.map((value, index) => {
               return (
                 <FieldGroup
                   arrayHelpers={arrayHelpers}
@@ -39,7 +39,8 @@ export default function FieldArraySection(props) {
                     isExperiment={isExperiment}
                     isRequired={isRequired}
                     nameAttr={`${nameAttr}.${index}`}
-                    values={setupProps}
+                    setupProps={setupProps}
+                    value={value}
                     {...fieldProps}
                   />
                 </FieldGroup>
@@ -55,8 +56,8 @@ export default function FieldArraySection(props) {
                 variant='outlined'
               >
                 {values.length > 0
-                  ? `Add another ${nameAttr}`
-                  : `Add a ${nameAttr}`}
+                  ? `Add another ${fieldName}`
+                  : `Add a ${fieldName}`}
               </Button>
             </Box>
           </Box>

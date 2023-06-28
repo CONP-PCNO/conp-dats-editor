@@ -8,10 +8,10 @@ export default function SingleFieldSection(props) {
   const {
     isExperiment,
     isRequired,
-    jsonField,
-    nameAttr,
-    setupProps,
-    ...fieldProps
+    jsonFieldArray,
+    nameAttrArray,
+    setupPropsArray,
+    fieldPropsArray
   } = props
   const selfString = isExperiment ? 'experiment' : 'dataset'
   const { description, name } = parseValues(setupProps, selfString)

@@ -13,10 +13,14 @@ import DateFnsUtils from '@date-io/date-fns'
 import { FieldArray, Field } from 'formik'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import JsonSectionTitle from '../../layout/JsonSectionTitle'
+import JsonSelectField from '../../fields/JsonSelectField'
+import JsonTextField from '../../fields/JsonTextField'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
 import CustomSelectField from '../../fields/CustomSelectField'
+import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function ExtraPropertiesForm(props) {
   const { values, isExperiment } = props
@@ -24,86 +28,119 @@ export default function ExtraPropertiesForm(props) {
   return (
     <React.Fragment>
       <Section>
-        <SectionTitle
-          name='Origin *'
-          tooltip={`Name of the institution or consortium that generated the ${selfString}. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.origin}
         />
 
-        <SectionTitle
-          name='Institution'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.institution']}
           subsection
-          tooltip={`Name of the institution where this ${selfString} was created (if applicable).`}
         />
 
-        <CustomTextField label='Institution' name='origin.institution' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.institution'
+          setupProps={fieldDescriptions['origin.institution']}
+          value={values.origin.institution}
+        />
 
-        <SectionTitle
-          name='Consortium'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.consortium']}
           subsection
-          tooltip={`Name of the consortium where this ${selfString} was created (if applicable).`}
         />
 
-        <CustomTextField label='Consortium' name='origin.consortium' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.consortium'
+          setupProps={fieldDescriptions['origin.consortium']}
+          value={values.origin.consortium}
+        />
 
-        <SectionTitle
-          name='City'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.city']}
           subsection
-          tooltip={`(Principal) city where this ${selfString} was created.`}
         />
 
-        <CustomTextField label='City' name='origin.city' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.city'
+          setupProps={fieldDescriptions['origin.city']}
+          value={values.origin.city}
+        />
 
-        <SectionTitle
-          name='Province'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.province']}
           subsection
-          tooltip={`(Principal) province where this ${selfString} was created.`}
         />
 
-        <CustomTextField label='Province' name='origin.province' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.province'
+          setupProps={fieldDescriptions['origin.province']}
+          value={values.origin.province}
+        />
 
-        <SectionTitle
-          name='Country'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.country']}
           subsection
-          tooltip={`(Principal) country where this ${selfString} was created.`}
         />
 
-        <CustomTextField label='Country' name='origin.country' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.country'
+          setupProps={fieldDescriptions['origin.country']}
+          value={values.origin.province}
+        />
       </Section>
 
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Derived From (For Derived Datasets Only)'
-          tooltip={`Required for derived ${selfString}s only. Provide information about the source ${selfString} this ${selfString} has been derived from.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.derivedFromTitle}
         />
 
-        <SectionTitle
-          name='Derived From'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.derivedFrom}
           subsection
-          tooltip={`Name of the source ${selfString} used to generate this ${selfString}.`}
         />
 
-        <CustomTextField label='Derived From' name='derivedFrom' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='derivedFrom'
+          setupProps={fieldDescriptions.derivedFrom}
+          value={values.derivedFrom}
+        />
 
-        <SectionTitle
-          name={`Parent ${selfString} ID`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.parentId}
           subsection
-          tooltip={`Identifier (DOI) of the source ${selfString} used to generate this ${selfString}.`}
         />
 
-        <CustomTextField
-          label={`Parent ${selfString} ID`}
-          name='parentDatasetId'
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='parentDatasetId'
+          setupProps={fieldDescriptions.parentId}
+          value={values.parentDatasetId}
         />
       </Section>
 
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Primary Publications'
-          tooltip={`The primary publication(s) associated with the ${selfString}, usually describing how the ${selfString} was produced.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.primaryPublications}
         />
 
         <FieldArray name='primaryPublications'>
@@ -119,26 +156,42 @@ export default function ExtraPropertiesForm(props) {
                     key={`primaryPublication_${index}`}
                     name={`primaryPublication_${index}`}
                   >
-                    <SectionTitle
-                      name='Title'
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions['primaryPublications.title']
+                      }
                       subsection
-                      tooltip='The name of the publication.'
                     />
 
-                    <CustomTextField
-                      label='Title'
-                      name={`primaryPublications.${index}.title`}
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.title`}
+                      setupProps={
+                        fieldDescriptions['primaryPublications.title']
+                      }
+                      value={values.primaryPublications[index].title}
                     />
 
-                    <SectionTitle
-                      name='Publication Venue'
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.publicationVenue'
+                        ]
+                      }
                       subsection
-                      tooltip='The name of the publication venue where the document is published (if applicable).'
                     />
 
-                    <CustomTextField
-                      label='Publication Venue'
-                      name={`primaryPublications.${index}.publicationVenue`}
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.publicationVenue`}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.publicationVenue'
+                        ]
+                      }
+                      value={values.primaryPublications[index].publicationVenue}
                     />
 
                     <FieldArray name={`primaryPublications.${index}.authors`}>
@@ -323,24 +376,51 @@ export default function ExtraPropertiesForm(props) {
                       </FieldArray>
                     </Section>
 
-                    <SectionTitle
-                      name='Identifier'
-                      tooltip='A code uniquely identifying the publication locally to a system or globally. Provide a Document Object Identifier (DOI) if you have one.'
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifier'
+                        ]
+                      }
+                      subsection
                     />
 
-                    <CustomTextField
-                      label='Identifier'
-                      name={`primaryPublications.${index}.identifier.identifier`}
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.identifier.identifier`}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifier'
+                        ]
+                      }
+                      value={
+                        values.primaryPublications[index].identifier.identifier
+                      }
                     />
 
-                    <SectionTitle
-                      name='Identifier Source'
-                      tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifierSource'
+                        ]
+                      }
+                      subsection
                     />
 
-                    <CustomTextField
-                      label='Identifier Source'
-                      name={`primaryPublications.${index}.identifier.identifierSource`}
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.identifier.identifierSource`}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifierSource'
+                        ]
+                      }
+                      value={
+                        values.primaryPublications[index].identifier
+                          .identifierSource
+                      }
                     />
                   </FieldGroup>
                 )
@@ -376,9 +456,9 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Dimensions'
-          tooltip={`The different dimensions (granular components) making up a ${selfString}. Providing dimensions give more details about the data types.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.dimensions}
         />
 
         <FieldArray name='dimensions'>
@@ -429,28 +509,39 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Identifier'
-          tooltip={`A code uniquely identifying the ${selfString} locally to a system or globally.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['identifier.identifier']}
         />
 
-        <CustomTextField label='Identifier' name='identifier.identifier' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='identifier.identifier'
+          setupProps={fieldDescriptions['identifier.identifier']}
+          value={values.identifier.identifier}
+        />
 
-        <SectionTitle
-          name='Identifier Source'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['identifier.identifierSource']}
           subsection
-          tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
         />
 
-        <CustomTextField label='Source' name='identifier.identifierSource' />
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='identifier.identifierSource'
+          setupProps={fieldDescriptions['identifier.identifierSource']}
+          value={values.identifier.identifierSource}
+        />
       </Section>
 
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Contact *'
-          tooltip={`Provide contact information (name and email address) of the person responsible for the ${selfString}.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.contact}
         />
 
         <CustomTextField label='Name' name='contact.name' required />
@@ -461,9 +552,9 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Logo'
-          tooltip='Link to a URL for the logo or local filename containing the logo.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.logo}
         />
 
         <CustomRadioGroup label='Type' name='logo.type'>

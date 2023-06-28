@@ -9,8 +9,10 @@
   "creators": {
     "name": "Creators",
     "description": {
+      "dataset": "The person(s) or organization(s) that contributed to the creation of the dataset. This can be the principal investigator, hospital, university, centre, clinic, etc. The first contact provided will be associated as the main contact for this dataset.",
       "experiment": "The person(s) or organization(s) that contributed to the creation of the experiment. This can be the principal investigator, hospital, university, centre, clinic, etc. The first contact provided will be associated as the main contact for this experiment."
-    }
+    },
+    "fieldName": "creator"
   },
   "description": {
     "name": "Description",
@@ -25,7 +27,7 @@
       "dataset": "Terms to describe the nature of the data. Data type can be single or multiple. Add a term with the interlex URI if possible.",
       "experiment": "Terms to describe the nature of the data produced by the experiment (e.g., csv, audio recording, video recording). Data type can be single or multiple. Add a term with the <a href=\"https://neuinfo.org/interlex/dashboard\" rel=\"noreferrer\" target=\"_blank\">interlex URI</a> if possible."
     },
-    "fieldName": "Type"
+    "fieldName": "type"
   },
   "version": {
     "name": "Version",
@@ -50,7 +52,22 @@
   "licenses": {
     "name": "Licenses",
     "description": {
+      "dataset": "The licences under which this dataset is shared.",
       "experiment": "The licences under which this experiment is shared. Note, this applies to the experimental files themselves and not the data that would be generated from the experiment. Visit <a href=\"https://choosealicense.com\" rel=\"noreferrer\" target=\"_blank\">Choose a License</a> for more information on open-source licenses."
+    },
+    "fieldName": "license",
+    "items": {
+      "CC BY": "CC BY",
+      "CC BY-SA": "CC BY-SA",
+      "CC BY-NC": "CC BY-NC",
+      "CC BY-NC-SA": "CC BY-NC-SA",
+      "CC BY-ND": "CC BY-ND",
+      "CC BY-NC-ND": "CC BY-NC-ND",
+      "CC0": "CC0",
+      "ODbL": "ODbL",
+      "ODC-By": "ODC-By",
+      "PDDL": "PDDL",
+      "other": "Other (Please Specify)"
     }
   },
   "keywords": {
@@ -66,36 +83,42 @@
     "description": {
       "dataset": "The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).",
       "experiment": "The technical format of the data generated from the experiment. Use the file extension or MIME type when possible. (Definition adapted from DataCite)."
-    }
+    },
+    "fieldName": "format"
   },
   "size": {
     "name": "Size",
     "description": {
+      "dataset": "The quantity of space required on disk (or other medium) for this dataset.",
       "experiment": "The quantity of space required on disk (or other medium) for this experiment."
     }
   },
   "units": {
     "name": "Units",
-    "description": {
-      "experiment": "Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte)."
-    }
+    "description": "Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).",
+    "items": { "MB": "MB", "GB": "GB", "TB": "TB", "PB": "PB" }
   },
   "access": {
     "name": "Access",
     "description": {
+      "dataset": "The information about access modality for the dataset distribution.",
       "experiment": "The information about access modality for the experiment distribution."
     }
   },
   "landingPage": {
     "name": "Landing Page",
     "description": {
+      "dataset": "A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself. When none exists yet, please provide the link to the README.md file of the dataset.",
       "experiment": "A URL (Web page) that contains information about the associated experiment (with a link to the experiment) or a direct link to the experiment itself. This could be a link to the GitHub, OSF, or Zenodo repository containing the experiment files, a lab website, or faculty page. When none exists yet, please enter \"README.md.\""
     }
   },
   "authorizations": {
     "name": "Authorizations",
-    "description": {
-      "experiment": "Describe who can access the landing page. This must be one of \"Public\", \"Registered\" or \"Private\". When this field is absent the value will be treated as \"Public\". \"Public\" = available to anyone; \"Registered\" = available to user authorized by the creator; \"Private\" = available only to the creator."
+    "description": "Describe who can access the landing page. This must be one of \"Public\", \"Registered\" or \"Private\". When this field is absent the value will be treated as \"Public\". \"Public\" = available to anyone; \"Registered\" = available to user authorized by the creator; \"Private\" = available only to the creator.",
+    "items": {
+      "public": "Public",
+      "registered": "Registered",
+      "private": "Private"
     }
   },
   "files": {
@@ -123,60 +146,76 @@
   "origin": {
     "name": "Origin",
     "description": {
+      "dataset": "Name of the institution or consortium that generated the dataset. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.",
       "experiment": "Name of the institution or consortium that generated the experiment. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution."
     }
   },
   "origin.institution": {
     "name": "Institution",
     "description": {
+      "dataset": "Name of the institution where this dataset was created (if applicable).",
       "experiment": "Name of the institution where this experiment was created (if applicable)."
     }
   },
   "origin.consortium": {
     "name": "Consortium",
     "description": {
+      "dataset": "Name of the consortium where this dataset was created (if applicable).",
       "experiment": "Name of the consortium where this experiment was created (if applicable)."
     }
   },
   "origin.city": {
     "name": "City",
     "description": {
+      "dataset": "(Principal) city where this dataset was created.",
       "experiment": "(Principal) city where this experiment was created."
     }
   },
   "origin.province": {
     "name": "Province",
     "description": {
+      "dataset": "(Principal) province where this dataset was created.",
       "experiment": "(Principal) province where this experiment was created (if applicable)."
     }
   },
   "origin.country": {
     "name": "Country",
     "description": {
+      "dataset": "(Principal) country where this dataset was created.",
       "experiment": "(Principal) country where this experiment was created."
     }
   },
   "derivedFromTitle": {
-    "name": { "experiment": "Derived From (For Derived Experiments Only)" },
+    "name": {
+      "dataset": "Derived From (For Derived Datasets Only)",
+      "experiment": "Derived From (For Derived Experiments Only)"
+    },
     "description": {
+      "dataset": "Required for derived datasets only. Provide information about the source dataset this dataset has been derived from.",
       "experiment": "Required for derived experiments only. Provide information about the source experiment this experiment has been derived from."
     }
   },
   "derivedFrom": {
     "name": "Derived From",
     "description": {
+      "dataset": "Name of the source dataset used to generate this dataset.",
       "experiment": "Name of the source experiment used to generate this experiment."
     }
   },
   "parentId": {
-    "name": { "experiment": "Parent Experiment ID" },
+    "name": {
+      "dataset": "Parent Dataset ID",
+      "experiment": "Parent Experiment ID"
+    },
     "description": {
+      "dataset": "Identifier (DOI) of the source dataset used to generate this dataset.",
       "experiment": "Persistent identifier (e.g., DOI) of the source experiment used to generate this experiment."
     }
   },
   "primaryPublications": {
     "name": "Primary Publications",
     "description": {
+      "dataset": "The primary publication(s) associated with the dataset, usually describing how the dataset was produced.",
       "experiment": "The primary publication(s) associated with the experiment, usually describing how the experiment was produced."
     }
   },
@@ -200,11 +239,10 @@
     "name": "Dates",
     "description": "Relevant dates for the publication. If you provide a date, it must come with a description of the date (i.e.: first submission, final approval, date of publication, ...)."
   },
-  "primaryPublications.identifier": {
+  "primaryPublications.identifier.identifier": {
     "name": "Identifier",
-    "description": "A code uniquely identifying the publication locally to a system or globally. Provide a Digital Object Identifier (DOI) if you have one."
+    "description": "A code uniquely identifying the publication locally to a system or globally. Provide a Document Object Identifier (DOI) if you have one."
   },
-  "primaryPublications.identifier.identifier": { "name": "Identifier" },
   "primaryPublications.identifier.identifierSource": {
     "name": "Identifier Source",
     "description": "Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided."
@@ -212,12 +250,14 @@
   "dimensions": {
     "name": "Dimensions",
     "description": {
+      "dataset": "The different dimensions (granular components) making up a dataset. Providing dimensions give more details about the data types.",
       "experiment": "The different dimensions (granular components) making up a experiment. Providing dimensions give more details about the data types."
     }
   },
   "identifier.identifier": {
     "name": "Identifier",
     "description": {
+      "dataset": "A code uniquely identifying the dataset locally to a system or globally.",
       "experiment": "A code (e.g., digital object identifier, DOI) uniquely identifying the experiment locally to a system or globally."
     }
   },
@@ -227,7 +267,10 @@
   },
   "logo": {
     "name": "Logo",
-    "description": "Relative path and filename (e.g., logo.png, info/logo.jpg) containing the logo within the experimental files (recommended) or link to a URL for the logo."
+    "description": {
+      "dataset": "Link to a URL for the logo or local filename containing the logo.",
+      "experiment": "Relative path and filename (e.g., logo.png, info/logo.jpg) containing the logo within the experimental files (recommended) or link to a URL for the logo."
+    }
   },
   "dates": {
     "name": "Dates",
@@ -238,6 +281,7 @@
   "contact": {
     "name": "Contact",
     "description": {
+      "dataset": "Provide contact information (name and email address) of the person responsible for the dataset.",
       "experiment": "Provide contact information (name and email address) of the person responsible for the experiment."
     }
   },
