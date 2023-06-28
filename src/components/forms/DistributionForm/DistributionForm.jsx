@@ -1,10 +1,10 @@
 import React from 'react'
-import { Grid, Button, MenuItem, Divider, Box } from '@material-ui/core'
-import { FieldArray } from 'formik'
+import { MenuItem, Divider } from '@material-ui/core'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import SelectSection from '../../fields/SelectSection'
 import TextSection from '../../fields/TextSection'
-import FieldGroup from '../../layout/FieldGroup'
+import TextArraySection from '../../layout/TextArraySection'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomSelectField from '../../fields/CustomSelectField'
 import fieldDescriptions from '../../../model/fieldDescriptions.json'
@@ -14,50 +14,13 @@ export default function DistributionForm(props) {
   const selfString = isExperiment ? 'experiment' : 'dataset'
   return (
     <React.Fragment>
-      <Section>
-        <SectionTitle
-          name='Formats *'
-          tooltip={`The technical format of the ${selfString} distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).`}
-        />
-
-        <FieldArray name='formats'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.formats.map((format, index) => {
-                return (
-                  <FieldGroup
-                    arrayHelpers={arrayHelpers}
-                    index={index}
-                    key={`format_${index}`}
-                    name={`format_${index}`}
-                  >
-                    <CustomTextField
-                      fullWidth
-                      label='Format'
-                      name={`formats.${index}`}
-                      required
-                    />
-                  </FieldGroup>
-                )
-              })}
-
-              <Grid item xs={6}>
-                <Button
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push('')
-                  }}
-                  variant='outlined'
-                >
-                  {values.formats.length > 0
-                    ? 'Add another Format'
-                    : 'Add a Format'}
-                </Button>
-              </Grid>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
+      <TextArraySection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='formats'
+        setupProps={fieldDescriptions.formats}
+        values={values.formats}
+      />
 
       <Divider variant='middle' />
 
@@ -145,20 +108,12 @@ export default function DistributionForm(props) {
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='CONP Status *'
-          tooltip={`The CONP status is used to add the CONP logo or Canadian flag on the left of the ${selfString} and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.`}
-        />
-
-        <CustomSelectField label='CONP Status *' name='conpStatus' required>
-          <MenuItem value='CONP'>CONP</MenuItem>
-
-          <MenuItem value='Canadian'>Canadian</MenuItem>
-
-          <MenuItem value='external'>External</MenuItem>
-        </CustomSelectField>
-      </Section>
+      <SelectSection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='conpStatus'
+        values={fieldDescriptions.conpStatus}
+      />
     </React.Fragment>
   )
 }

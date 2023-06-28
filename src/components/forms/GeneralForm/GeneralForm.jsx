@@ -10,9 +10,13 @@ import {
   Box
 } from '@material-ui/core'
 import { FieldArray } from 'formik'
+import FieldArraySection from '../../layout/MultiFieldSection'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import SelectSection from '../../fields/SelectSection'
+import JsonTextField from '../../fields/JsonTextField'
 import TextSection from '../../fields/TextSection'
+import SingleFieldSection from '../../layout/SingleFieldSection'
 import TextArraySection from '../../layout/TextArraySection'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
@@ -29,9 +33,11 @@ export default function GeneralForm(props) {
         General Information
       </Typography>
 
-      <TextSection
+      <SingleFieldSection
+        fullWidth
         isExperiment={isExperiment}
         isRequired
+        jsonField={JsonTextField}
         nameAttr='title'
         values={fieldDescriptions.title}
       />
@@ -223,8 +229,10 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <TextArraySection
+      <FieldArraySection
         isExperiment={isExperiment}
+        isRequired
+        jsonField={JsonTextField}
         nameAttr='types'
         setupProps={fieldDescriptions.types}
         values={values.types}
@@ -241,28 +249,12 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <Section>
-        <SectionTitle
-          name='Privacy *'
-          tooltip={`A qualifier to describe the data protection applied to the ${selfString}. This is relevant for clinical data.
-                     <ul>
-                       <li><i><strong>open</strong>: freely and publicly available</i></li>
-                       <li><i><strong>registered</strong>: available to bona fide researchers/clinical care professionals only</i></li>
-                       <li><i><strong>controlled</strong>: available to qualified researchers approved by a committee after review of their research proposal; also known as managed or restricted access</i></li>
-                       <li><i><strong>private</strong>: available only to researchers of the project; also known as closed</i></li>
-                     </ul>`}
-        />
-
-        <CustomSelectField label='Privacy *' name='privacy'>
-          <MenuItem value='open'>open</MenuItem>
-
-          <MenuItem value='registered'>registered</MenuItem>
-
-          <MenuItem value='controlled'>controlled</MenuItem>
-
-          <MenuItem value='private'>private</MenuItem>
-        </CustomSelectField>
-      </Section>
+      <SelectSection
+        isExperiment={isExperiment}
+        isRequired
+        nameAttr='privacy'
+        values={fieldDescriptions.privacy}
+      />
 
       <Divider variant='middle' />
 
