@@ -245,7 +245,7 @@ export default function ExperimentsForm(props) {
         fullWidth
         isExperiment
         isRequired
-        jsonField={JsonTextField}
+        jsonField={JsonOtherSelectField}
         nameAttr='experimentsAccessibility'
         setupProps={fieldDescriptions.experimentsAccessibility}
         values={values.experimentsAccessibility}

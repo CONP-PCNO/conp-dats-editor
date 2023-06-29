@@ -26,11 +26,13 @@ ${values.description}
 
 **Languages:** ${languages}
 
-**Validation:** ${values.experimentsValidation.join(', ')}
+**Validation:**
+  * ${values.experimentsValidationMeasures.join(', ')}
+  * ${values.experimentsValidationPopulations.join(', ')}
 
 **Accessibility:** ${values.experimentsAccessibility.join(', ')}
 
-**Platforms:** ${values.experimentsRequiredPlatforms.join(', ')}
+**Platforms:** ${values.experimentsModalities.join(', ')}
 
 **Devices:** ${values.experimentsRequiredDevices.join(', ')}
 

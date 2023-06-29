@@ -132,36 +132,61 @@ class DatsToForm {
       experimentsFunctionAssessed:
         this.data.extraProperties
           ?.filter((p) => p.category === 'experimentFunctionAssessed')[0]
-          ?.values.map((a) => a.value)[0] || '',
-      experimentsRepeatability: false,
+          ?.values.map((a) => a.value) || '',
       experimentsLanguages:
         this.data.extraProperties
           ?.filter((p) => p.category === 'experimentLanguages')[0]
           ?.values.map((a) => a.value) || [],
-      experimentsValidation:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentValidation')[0]
-          ?.values.map((a) => a.value) || [],
-      experimentsAccessibility:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentAccessibility')[0]
-          ?.values.map((a) => a.value) || [],
+      experimentsValidationMeasures: {
+        value:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'experimentValidationMeasures')[0]
+            ?.values.map((a) => a.value) || [],
+        valueOther: ''
+      },
+      experimentsValidationPopulations: {
+        value:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'experimentValidationPopulations')[0]
+            ?.values.map((a) => a.value) || [],
+        valueOther: ''
+      },
+      experimentsAccessibility: {
+        value:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'experimentAccessibility')[0]
+            ?.values.map((a) => a.value) || [],
+        valueOther: ''
+      },
       experimentsSpecies:
         this.data.extraProperties
           ?.filter((p) => p.category === 'experimentSpecies')[0]
           ?.values.map((a) => a.value) || [],
-      experimentsRequiredPlatforms:
+      experimentsRequiredModalities:
         this.data.extraProperties
           ?.filter((p) => p.category === 'experimentRequiredPlatforms')[0]
           ?.values.map((a) => a.value) || [],
-      experimentsRequiredDevices:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentRequiredDevices')[0]
-          ?.values.map((a) => a.value) || [],
-      experimentsRequiredSoftware:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentRequiredSoftware')[0]
-          ?.values.map((a) => a.value) || [],
+      experimentsRequiredDevices: {
+        value:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'experimentRequiredDevices')[0]
+            ?.values.map((a) => a.value) || [],
+        valueOther: ''
+      },
+      experimentsRequiredSoftware: {
+        value:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'experimentRequiredSoftware')[0]
+            ?.values.map((a) => a.value) || [],
+        valueOther: ''
+      },
+      experimentsStimuli: {
+        value:
+          this.data.extraProperties
+            ?.filter((p) => p.category === 'experimentStimuli')[0]
+            ?.values.map((a) => a.value) || [],
+        valueOther: ''
+      },
       experimentsAdditionalRequirements:
         this.data.extraProperties
           ?.filter((p) => p.category === 'experimentFunctionAssessed')[0]
