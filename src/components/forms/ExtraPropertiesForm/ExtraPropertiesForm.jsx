@@ -14,8 +14,8 @@ import { FieldArray, Field } from 'formik'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
 import JsonSectionTitle from '../../layout/JsonSectionTitle'
-import JsonSelectField from '../../fields/JsonSelectField'
 import JsonTextField from '../../fields/JsonTextField'
+import JsonOtherSelectField from '../../fields/JsonOtherSelectField'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
@@ -24,7 +24,6 @@ import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function ExtraPropertiesForm(props) {
   const { values, isExperiment } = props
-  const selfString = isExperiment ? 'experiment' : 'dataset'
   return (
     <React.Fragment>
       <Section>
@@ -458,59 +457,6 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <JsonSectionTitle
           isExperiment={isExperiment}
-          setupProps={fieldDescriptions.dimensions}
-        />
-
-        <FieldArray name='dimensions'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.dimensions.map((dimension, index) => {
-                return (
-                  <FieldGroup
-                    arrayHelpers={arrayHelpers}
-                    index={index}
-                    key={`dimension_${index}`}
-                    name={`dimension_${index}`}
-                  >
-                    <CustomTextField
-                      label='Name'
-                      name={`dimensions.${index}.name`}
-                    />
-
-                    <CustomTextField
-                      label='Description'
-                      name={`dimensions.${index}.description`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-
-              <Box py={1}>
-                <Button
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push({
-                      name: '',
-                      description: ''
-                    })
-                  }}
-                  variant='outlined'
-                >
-                  {values.dimensions.length > 0
-                    ? 'Add another Dimension'
-                    : 'Add a Dimension'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-
-      <Divider variant='middle' />
-
-      <Section>
-        <JsonSectionTitle
-          isExperiment={isExperiment}
           setupProps={fieldDescriptions['identifier.identifier']}
         />
 
@@ -577,9 +523,9 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Dates'
-          tooltip={`Relevant dates for the ${selfString}. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...).`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.dates}
         />
 
         <FieldArray name='dates'>
@@ -593,6 +539,13 @@ export default function ExtraPropertiesForm(props) {
                     key={`date_${index}`}
                     name={`date_${index}`}
                   >
+                    <JsonOtherSelectField
+                      isExperiment={isExperiment}
+                      nameAttr={`dates.${index}.description`}
+                      setupProps={fieldDescriptions.dateDescriptions}
+                      value={date.description}
+                    />
+
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Field
                         component={DatePicker}
@@ -601,11 +554,6 @@ export default function ExtraPropertiesForm(props) {
                         name={`dates.${index}.date`}
                       />
                     </MuiPickersUtilsProvider>
-
-                    <CustomTextField
-                      label='Description'
-                      name={`dates.${index}.type.value`}
-                    />
                   </FieldGroup>
                 )
               })}
@@ -631,21 +579,26 @@ export default function ExtraPropertiesForm(props) {
 
       <Divider variant='middle' />
 
+      {isExperiment ? null : (
+        <React.Fragment>
+          <Section>
+            <JsonSectionTitle
+              isExperiment={isExperiment}
+              setupProps={fieldDescriptions.producedBy}
+            />
+
+            <CustomTextField label='Produced By' name='producedBy' />
+          </Section>
+
+          <Divider variant='middle' />
+        </React.Fragment>
+      )}
+
       <Section>
-        <SectionTitle
-          name='Produced By'
-          tooltip={`Process which generated a given ${selfString}.`}
-        />
-
-        <CustomTextField label='Produced By' name='producedBy' />
-      </Section>
-
-      <Divider variant='middle' />
-
-      <Section>
-        <SectionTitle
-          name='Is About *'
-          tooltip={`Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this ${selfString}. You must provide a species, and other entities are optional.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.isAbout}
         />
 
         <FieldArray name='isAbout'>
@@ -733,9 +686,9 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Acknowledges'
-          tooltip={`Grant(s) which funded and supported the work reported by the ${selfString}.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.acknowledges}
         />
 
         <FieldArray name='acknowledges'>
@@ -786,9 +739,9 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Spatial Coverage'
-          tooltip={`The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the ${selfString}.`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.spatialCoverage}
         />
 
         <FieldArray name='spatialCoverage'>
@@ -839,9 +792,10 @@ export default function ExtraPropertiesForm(props) {
       <Divider variant='middle' />
 
       <Section>
-        <SectionTitle
-          name='Ethical Information *'
-          tooltip={`In submitting this ${selfString} for inclusion, I declare that *`}
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.reb_info}
         />
 
         <CustomSelectField
@@ -902,10 +856,12 @@ export default function ExtraPropertiesForm(props) {
           </MenuItem>
         </CustomSelectField>
 
-        <CustomTextField
-          label='Ethics committee approval number'
-          name='reb_number'
-        />
+        {isExperiment ? null : (
+          <CustomTextField
+            label='Ethics committee approval number'
+            name='reb_number'
+          />
+        )}
       </Section>
     </React.Fragment>
   )

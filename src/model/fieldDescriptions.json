@@ -79,7 +79,7 @@
     "fieldName": "keyword"
   },
   "formats": {
-    "name": "Formats",
+    "name": { "dataset": "Formats", "experiment": "Formats (Recommended)" },
     "description": {
       "dataset": "The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).",
       "experiment": "The technical format of the data generated from the experiment. Use the file extension or MIME type when possible. (Definition adapted from DataCite)."
@@ -132,7 +132,7 @@
     "name": "Number of Subjects",
     "description": {
       "dataset": "Total number of subjects constituting the dataset.",
-      "experiment": "Total number of subjects constituting the experiment. If not applicable, please put N/A."
+      "experiment": "Total number of subjects constituting the experiment. If not applicable, please uncheck the box."
     }
   },
   "conpStatus": {
@@ -275,7 +275,26 @@
   "dates": {
     "name": "Dates",
     "description": {
+      "dataset": "Relevant dates for the dataset. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...).",
       "experiment": "Relevant dates for the experiment. If you provide a date, it must come with a description of the date (i.e.: version date, development start date, development end date, date of first publication, ...)."
+    }
+  },
+  "dateDescriptions": {
+    "name": "Date description",
+    "description": "Description of the date",
+    "items": {
+      "dataset": {
+        "First data collection": "First data collection",
+        "Last data collection": "Last data collection",
+        "other": "Other (Please Specify)"
+      },
+      "experiment": {
+        "Date experiment started": "Date experiment started",
+        "Date experiment ended": "Date experiment ended",
+        "Version date": "Version date",
+        "Upload date": "Upload date",
+        "other": "Other (Please Specify)"
+      }
     }
   },
   "contact": {
@@ -292,24 +311,28 @@
   "isAbout": {
     "name": "Is About",
     "description": {
+      "dataset": "Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset. You must provide a species, and other entities are optional.",
       "experiment": "Entities (biological entity, taxonomic information, disease, disease state, molecular entity, anatomical part, treatment) associated with this experiment. You must provide a species; other entities are optional."
     }
   },
   "acknowledges": {
     "name": "Acknowledges",
     "description": {
+      "dataset": "Grant(s) which funded and supported the work reported by the dataset.",
       "experiment": "Grant(s) which funded and supported the work reported by the experiment. Contributors to the experiment not listed as creators."
     }
   },
   "spatialCoverage": {
     "name": "Spatial Coverage",
     "description": {
+      "dataset": "The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the dataset.",
       "experiment": "The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the experiment."
     }
   },
   "reb_info": {
     "name": "Ethical Information",
     "description": {
+      "dataset": "In submitting this dataset for inclusion, I declare that",
       "experiment": "In submitting this experiment for inclusion, I declare that I am not uploading any participant data and the only files included are those necessary to run the experiment."
     }
   },
@@ -317,19 +340,54 @@
     "name": "Function(s) assessed",
     "description": {
       "experiment": "One or more functions primarily assessed by the experiment. More detailed functions can be included as keywords in the General Info section."
-    }
+    },
+    "items": {
+      "Cognitive": "Cognitive",
+      "Sensory": "Sensory",
+      "Motor": "Motor",
+      "Stimulation": "Stimulation",
+      "Passive Recording": "Passive Recording",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "experiment"
   },
   "experimentsModalities": {
     "name": "Modalities",
     "description": {
       "experiment": "One or more modalities (e.g. fMRI, EEG, MEG, behavioural) in which the experiment is performed."
-    }
+    },
+    "items": {
+      "Behavioural": "Behavioural",
+      "EEG": "EEG",
+      "fMRI": "fMRI",
+      "MEG": "MEG",
+      "PET": "PET",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "modality"
+  },
+  "experimentsRequiredSoftwareTitle": {
+    "name": "Software",
+    "description": {
+      "experiment": "Software and version required to run the experiment"
+    },
+    "fieldName": "software"
   },
   "experimentsRequiredSoftware": {
     "name": "Software",
     "description": {
       "experiment": "Software required to run the experiment."
-    }
+    },
+    "items": {
+      "PsychoPy": "PsychoPy",
+      "E-Prime": "E-Prime",
+      "NBS Presentation": "NBS Presentation",
+      "Matlab": "Matlab",
+      "PsychoJS": "PsychoJS",
+      "JSpsych": "JSpsych",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "software"
   },
   "experimentsRequiredSoftwareVersion": {
     "name": "Software Version",
@@ -341,7 +399,16 @@
     "name": "Device(s)",
     "description": {
       "experiment": "Device(s) the experiment can be run on (e.g. PC, tablet, smartphone, internet browser)."
-    }
+    },
+    "items": {
+      "Computer": "Computer",
+      "Laptop": "Laptop",
+      "Tablet": "Tablet",
+      "Smartphone": "Smartphone",
+      "Internet Browser": "Internet Browser",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "device"
   },
   "experimentsRequiredOS": {
     "name": "Operating System",
@@ -353,23 +420,69 @@
     "name": "Stimuli",
     "description": {
       "experiment": "Types of stimuli used for the experiment (e.g., audio, video, image)."
-    }
+    },
+    "items": {
+      "Audio": "Audio",
+      "Video": "Video",
+      "Image": "Image",
+      "None": "None",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "stimulus"
   },
   "experimentsLanguages": {
     "name": "Language(s)",
     "description": {
       "experiment": "Language(s) in which the experiment can be performed."
-    }
+    },
+    "fieldName": "language"
   },
   "experimentsValidation": {
     "name": "Validation",
     "description": { "experiment": "Validation measure(s) and population(s)" }
   },
+  "experimentsValidationMeasures": {
+    "name": "Validation measures",
+    "description": { "experiment": "Measures used to validate the experiment" },
+    "items": {
+      "Construct validity": "Construct validity",
+      "Convergent validity": "Convergent validity",
+      "Divergent validity": "Divergent validity",
+      "Internal reliability": "Internal reliability",
+      "Test-retest reliability": "Test-retest reliability",
+      "Specificity": "Specificity",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "validation measure"
+  },
+  "experimentsValidationPopulations": {
+    "name": "Populations",
+    "description": {
+      "experiment": "Populations for which the experiment is valid."
+    },
+    "items": {
+      "Child": "Child",
+      "Youth": "Youth",
+      "Adult": "Adult",
+      "Healthy": "Healthy",
+      "Disease": "Disease",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "population"
+  },
   "experimentsAccessibility": {
     "name": "Accessibility",
     "description": {
       "experiment": "Accessibility considerations addressed during experimental development (e.g. colourblind friendly)."
-    }
+    },
+    "items": {
+      "Colour-blindness": "Colour-blindness",
+      "Vision impairment": "Vision impairment",
+      "Hearing impairment": "Hearing impairment",
+      "Motor impariment": "Motor impairment",
+      "other": "Other (Please Specify)"
+    },
+    "fieldName": "accessibility consideration"
   },
   "experimentsAdditionalRequirements": {
     "name": "Requirements",

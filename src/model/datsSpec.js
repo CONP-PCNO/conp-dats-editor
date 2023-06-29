@@ -30,7 +30,7 @@ const defaultDatsValidationSchema = yup.object({
   version: yup.number().positive(),
   licenses: yup.array().of(yup.string()).min(1),
   keywords: yup.array().of(yup.string()).min(1),
-  formats: yup.array().of(yup.string()).min(1),
+  formats: yup.array().of(yup.string()),
   size: yup
     .object({
       value: yup.number().positive().required(),
@@ -50,7 +50,10 @@ const defaultDatsValidationSchema = yup.object({
     })
     .required(),
   files: yup.number().integer().positive().required(),
-  subjects: yup.number().integer().positive().required(),
+  subjects: yup.object({
+    applicable: yup.boolean(),
+    value: yup.number().integer().positive()
+  }),
   conpStatus: yup
     .string()
     .matches(/(?:CONP|Canadian|external)/u, {
@@ -89,15 +92,31 @@ const defaultDatsValidationSchema = yup.object({
     .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
     .required(),
   reb_number: yup.string(),
-  experimentsFunctionAssessed: yup.string(),
-  experimentsRepeatability: yup.bool(),
+  experimentsFunctionAssessed: yup.array().of(yup.string()),
   experimentsLanguages: yup.array().of(yup.string()),
-  experimentsValidation: yup.array().of(yup.string()),
-  experimentsAccessibility: yup.array().of(yup.string()),
+  experimentsValidationMeasures: yup
+    .array()
+    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
+  experimentsValidationPopulations: yup
+    .array()
+    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
+  experimentsAccessibility: yup
+    .array()
+    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
   experimentsSpecies: yup.array().of(yup.string()),
-  experimentsRequiredPlatforms: yup.array().of(yup.string()),
-  experimentsRequiredDevices: yup.array().of(yup.string()),
-  experimentsRequiredSoftware: yup.array().of(yup.string()),
+  experimentsModalities: yup.array().of(yup.string()),
+  experimentsRequiredDevices: yup
+    .array()
+    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
+  experimentsRequiredSoftware: yup.array().of(
+    yup.object({
+      software: yup.object({ value: yup.string(), valueOther: yup.string() }),
+      version: yup.string()
+    })
+  ),
+  experimentsStimuli: yup
+    .array()
+    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
   experimentsAdditionalRequirements: yup.string()
 })
 
@@ -136,7 +155,7 @@ const defaultDatsValues = {
   },
   privacy: '',
   files: '',
-  subjects: '',
+  subjects: { applicable: true, value: '' },
   conpStatus: '',
   origin: {
     institution: '',
@@ -173,15 +192,18 @@ const defaultDatsValues = {
   attachments: [],
   reb_info: '',
   reb_number: '',
-  experimentsFunctionAssessed: '',
-  experimentsRepeatability: false,
+  experimentsFunctionAssessed: [],
   experimentsLanguages: [],
-  experimentsValidation: [],
+  experimentsValidationMeasures: [],
+  experimentsValidationPopulations: [],
   experimentsAccessibility: [],
   experimentsSpecies: [],
-  experimentsRequiredPlatforms: [],
+  experimentsModalities: [],
   experimentsRequiredDevices: [],
-  experimentsRequiredSoftware: [],
+  experimentsRequiredSoftware: [
+    { software: { value: 'other', valueOther: '' }, version: '' }
+  ],
+  experimentsStimuli: [],
   experimentsAdditionalRequirements: ''
 }
 

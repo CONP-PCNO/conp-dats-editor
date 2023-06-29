@@ -1,5 +1,7 @@
 import React from 'react'
 import { Divider } from '@material-ui/core'
+import { Field } from 'formik'
+import { Checkbox } from 'formik-material-ui'
 import Section from '../../layout/Section'
 import FieldArraySection from '../../layout/FieldArraySection'
 import SingleFieldSection from '../../layout/SingleFieldSection'
@@ -14,7 +16,7 @@ export default function DistributionForm(props) {
     <React.Fragment>
       <FieldArraySection
         isExperiment={isExperiment}
-        isRequired
+        isRequired={!isExperiment}
         jsonField={JsonTextField}
         nameAttr='formats'
         setupProps={fieldDescriptions.formats}
@@ -107,14 +109,35 @@ export default function DistributionForm(props) {
 
       <Divider variant='middle' />
 
-      <SingleFieldSection
-        fullWidth
-        isExperiment={isExperiment}
-        isRequired
-        jsonField={JsonTextField}
-        nameAttr='subjects'
-        setupProps={fieldDescriptions.subjects}
-      />
+      <Section>
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.subjects}
+        />
+
+        {isExperiment ? (
+          <label>
+            <Field
+              component={Checkbox}
+              name='subjects.applicable'
+              type='checkbox'
+            />
+            Applicable to this experiment
+          </label>
+        ) : null}
+
+        {values.subjects.applicable ? (
+          <JsonTextField
+            fullWidth
+            isExperiment={isExperiment}
+            isRequired
+            nameAttr='subjects.value'
+            setupProps={fieldDescriptions.subjects}
+            value={values.subjects.value}
+          />
+        ) : null}
+      </Section>
 
       <Divider variant='middle' />
 

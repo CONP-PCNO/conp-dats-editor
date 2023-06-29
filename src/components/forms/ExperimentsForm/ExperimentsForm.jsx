@@ -1,242 +1,53 @@
 import React from 'react'
-import { Field, FieldArray } from 'formik'
+import { FieldArray } from 'formik'
 import { Typography, Button, Divider, Box } from '@material-ui/core'
-import { Checkbox } from 'formik-material-ui'
+import FieldArraySection from '../../layout/FieldArraySection'
+import SingleFieldSection from '../../layout/SingleFieldSection'
+import JsonOtherSelectField from '../../fields/JsonOtherSelectField'
+import JsonTextField from '../../fields/JsonTextField'
 import Section from '../../layout/Section'
-import SectionTitle from '../../layout/SectionTitle'
+import JsonSectionTitle from '../../layout/JsonSectionTitle'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
+import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function ExperimentsForm(props) {
   const { values } = props
   return (
     <React.Fragment>
-      <Typography variant='h5' gutterBottom>
+      <Typography gutterBottom variant='h5'>
         Experiment Information
       </Typography>
+
+      <FieldArraySection
+        fullwidth
+        isExperiment
+        isRequired
+        jsonField={JsonOtherSelectField}
+        nameAttr='experimentsFunctionAssessed'
+        setupProps={fieldDescriptions.experimentsFunctionAssessed}
+        values={values.experimentsFunctionAssessed}
+      />
+
+      <Divider variant='middle' />
+
+      <FieldArraySection
+        isExperiment
+        isRequired
+        jsonField={JsonOtherSelectField}
+        nameAttr='experimentsModalities'
+        setupProps={fieldDescriptions.experimentsModalities}
+        values={values.experimentsModalities}
+      />
+
+      <Divider variant='middle' />
+
       <Section>
-        <SectionTitle name='Functions assessed' tooltip='' />
-        <CustomTextField
-          fullWidth
-          name='experimentsFunctionAssessed'
-          label='Functions assessed'
+        <JsonSectionTitle
+          isExperiment
+          setupProps={fieldDescriptions.experimentsRequiredSoftwareTitle}
         />
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle name='Features' tooltip='' />
-        <label>
-          <Field
-            component={Checkbox}
-            type='checkbox'
-            name='experimentsRepeatability'
-          />
-          Repeatable
-        </label>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle name='Languages' tooltip='' />
-        <FieldArray name='experimentsLanguages'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {' '}
-              {values.experimentsLanguages.map((language, index) => {
-                return (
-                  <FieldGroup
-                    key={'language' + index}
-                    name={'language' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      label='Language'
-                      name={`experimentsLanguages.${index}`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => arrayHelpers.push('')}
-                >
-                  {values.experimentsLanguages.length > 0
-                    ? 'Add another language'
-                    : 'Add a language'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Validation'
-          tooltip='Validation measure(s) and population(s)'
-        />
-        <FieldArray name='experimentsValidation'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {' '}
-              {values.experimentsValidation.map((validation, index) => {
-                return (
-                  <FieldGroup
-                    key={'validation' + index}
-                    name={'validation' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      label='Validation measure'
-                      name={`experimentsValidation.${index}`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => arrayHelpers.push('')}
-                >
-                  {values.experimentsValidation.length > 0
-                    ? 'Add another validation measure or population'
-                    : 'Add a validation measure or population'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Accessibility'
-          tooltip='Accessibility considerations (e.g. colourblind friendly)'
-        />
-        <FieldArray name='experimentsAccessibility'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {' '}
-              {values.experimentsAccessibility.map((accesibility, index) => {
-                return (
-                  <FieldGroup
-                    key={'accessibility' + index}
-                    name={'accessibility' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      label='Accessibility consideration'
-                      name={`experimentsAccessibility.${index}`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => arrayHelpers.push('')}
-                >
-                  {values.experimentsAccessibility.length > 0
-                    ? 'Add another accessibility consideration'
-                    : 'Add an accessibility consideration'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Platforms'
-          tooltip='Platforms (e.g. online, offline, fMRI, EEG, MEG)'
-        />
-        <FieldArray name='experimentsRequiredPlatforms'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {' '}
-              {values.experimentsRequiredPlatforms.map((platform, index) => {
-                return (
-                  <FieldGroup
-                    key={'platforms' + index}
-                    name={'platforms' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      label='Platform'
-                      name={`experimentsRequiredPlatforms.${index}`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => arrayHelpers.push('')}
-                >
-                  {values.experimentsRequiredPlatforms.length > 0
-                    ? 'Add another platform'
-                    : 'Add a platform'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Devices'
-          tooltip='Devices required to run the experiment (e.g. PC, smartphone)'
-        />
-        <FieldArray name='experimentsRequiredDevices'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {' '}
-              {values.experimentsRequiredDevices.map((device, index) => {
-                return (
-                  <FieldGroup
-                    key={'devices' + index}
-                    name={'devices' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      label='Device'
-                      name={`experimentsRequiredDevices.${index}`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => arrayHelpers.push('')}
-                >
-                  {values.experimentsRequiredDevices.length > 0
-                    ? 'Add another device'
-                    : 'Add a device'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Software'
-          tooltip='Software and version to run the experiment'
-        />
+
         <FieldArray name='experimentsRequiredSoftware'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
@@ -244,23 +55,47 @@ export default function ExperimentsForm(props) {
               {values.experimentsRequiredSoftware.map((software, index) => {
                 return (
                   <FieldGroup
-                    key={'software' + index}
-                    name={'software' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`software${index}`}
+                    name={`software${index}`}
                   >
+                    <JsonSectionTitle
+                      isExperiment
+                      setupProps={fieldDescriptions.experimentsRequiredSoftware}
+                      subsection
+                    />
+
+                    <JsonOtherSelectField
+                      isExperiment
+                      nameAttr={`experimentsRequiredSoftware.${index}.software`}
+                      setupProps={fieldDescriptions.experimentsRequiredSoftware}
+                      value={values.experimentsRequiredSoftware[index].software}
+                    />
+
+                    <JsonSectionTitle
+                      isExperiment
+                      setupProps={
+                        fieldDescriptions.experimentsRequiredSoftwareVersion
+                      }
+                      subsection
+                    />
+
                     <CustomTextField
-                      label='Software'
-                      name={`experimentsRequiredSoftware.${index}`}
+                      label={
+                        fieldDescriptions.experimentsRequiredSoftwareVersion
+                          .name
+                      }
+                      name={`experimentsRequiredSoftware.${index}.version`}
                     />
                   </FieldGroup>
                 )
               })}
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => arrayHelpers.push('')}
+                  variant='outlined'
                 >
                   {values.experimentsRequiredSoftware.length > 0
                     ? 'Add another software/version'
@@ -271,18 +106,160 @@ export default function ExperimentsForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
+      <FieldArraySection
+        isExperiment
+        isRequired
+        jsonField={JsonOtherSelectField}
+        nameAttr='experimentsRequiredDevices'
+        setupProps={fieldDescriptions.experimentsRequiredDevices}
+        values={values.experimentsRequiredDevices}
+      />
+
+      <Divider variant='middle' />
+
+      <FieldArraySection
+        isExperiment
+        jsonField={JsonOtherSelectField}
+        nameAttr='experimentsStimuli'
+        setupProps={fieldDescriptions.experimentsStimuli}
+        values={values.experimentsStimuli}
+      />
+
+      <Divider variant='middle' />
+
+      <FieldArraySection
+        fullWidth
+        isExperiment
+        isRequired
+        jsonField={JsonTextField}
+        nameAttr='experimentsLanguages'
+        setupProps={fieldDescriptions.experimentsLanguages}
+        values={values.experimentsLanguages}
+      />
+
+      <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Requirements'
-          tooltip='Any additional requirements'
+        <JsonSectionTitle
+          isExperiment
+          setupProps={fieldDescriptions.experimentsValidation}
         />
-        <CustomTextField
-          fullWidth
-          name='experimentsAdditionalRequirements'
-          label='Description of additional requirements'
+
+        <JsonSectionTitle
+          isExperiment
+          setupProps={fieldDescriptions.experimentsValidationMeasures}
+          subsection
         />
+
+        <FieldArray name='experimentsValidationMeasures'>
+          {(arrayHelpers) => (
+            <Box display='flex flex-column'>
+              {' '}
+              {values.experimentsValidationMeasures.map((validation, index) => {
+                return (
+                  <FieldGroup
+                    arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`validationMeasure${index}`}
+                    name={`validationMeasure${index}`}
+                  >
+                    <JsonOtherSelectField
+                      isExperiment
+                      nameAttr={`experimentsValidationMeasures.${index}`}
+                      setupProps={
+                        fieldDescriptions.experimentsValidationMeasures
+                      }
+                      value={values.experimentsValidationMeasures[index]}
+                    />
+                  </FieldGroup>
+                )
+              })}
+              <Box py={1}>
+                <Button
+                  color='secondary'
+                  onClick={() => arrayHelpers.push('')}
+                  variant='outlined'
+                >
+                  {values.experimentsValidationMeasures.length > 0
+                    ? 'Add another validation measure'
+                    : 'Add a validation measure'}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </FieldArray>
+
+        <JsonSectionTitle
+          isExperiment
+          setupProps={fieldDescriptions.experimentsValidationPopulations}
+          subsection
+        />
+
+        <FieldArray name='experimentsValidationPopulations'>
+          {(arrayHelpers) => (
+            <Box display='flex flex-column'>
+              {' '}
+              {values.experimentsValidationPopulations.map(
+                (validation, index) => {
+                  return (
+                    <FieldGroup
+                      arrayHelpers={arrayHelpers}
+                      index={index}
+                      key={`validationPopulation${index}`}
+                      name={`validationPopulation${index}`}
+                    >
+                      <JsonOtherSelectField
+                        isExperiment
+                        nameAttr={`experimentsValidationPopulations.${index}`}
+                        setupProps={
+                          fieldDescriptions.experimentsValidationPopulations
+                        }
+                        value={values.experimentsValidationPopulations[index]}
+                      />
+                    </FieldGroup>
+                  )
+                }
+              )}
+              <Box py={1}>
+                <Button
+                  color='secondary'
+                  onClick={() => arrayHelpers.push('')}
+                  variant='outlined'
+                >
+                  {values.experimentsValidationPopulations.length > 0
+                    ? 'Add another validation population'
+                    : 'Add a validation population'}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </FieldArray>
       </Section>
+
+      <Divider variant='middle' />
+
+      <FieldArraySection
+        fullWidth
+        isExperiment
+        isRequired
+        jsonField={JsonTextField}
+        nameAttr='experimentsAccessibility'
+        setupProps={fieldDescriptions.experimentsAccessibility}
+        values={values.experimentsAccessibility}
+      />
+
+      <Divider variant='middle' />
+
+      <SingleFieldSection
+        fullWidth
+        isExperiment
+        jsonField={JsonTextField}
+        nameAttr='experimentsAdditionalRequirements'
+        setupProps={fieldDescriptions.experimentsAdditionalRequirements}
+      />
     </React.Fragment>
   )
 }
