@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { MenuItem } from '@material-ui/core'
+import { Box, MenuItem } from '@material-ui/core'
 import parseValues from '../../model/fieldParsing'
 import CustomSelectField from '../fields/CustomSelectField'
 import CustomTextField from '../fields/CustomTextField'
@@ -13,27 +13,31 @@ export default function JsonOtherSelectField(props) {
   const label = `${name}${requiredStar}`
   return (
     <React.Fragment>
-      <CustomSelectField
-        label={label}
-        name={`${nameAttr}.value`}
-        required={isRequired}
-      >
-        {Object.entries(items).map((entry) => {
-          const [itemValue, itemLabel] = entry
-          return (
-            <MenuItem key={itemValue} value={itemValue}>
-              {itemLabel}
-            </MenuItem>
-          )
-        })}
-      </CustomSelectField>
+      <Box my={1}>
+        <CustomSelectField
+          label={label}
+          name={`${nameAttr}.value`}
+          required={isRequired}
+        >
+          {Object.entries(items).map((entry) => {
+            const [itemValue, itemLabel] = entry
+            return (
+              <MenuItem key={itemValue} value={itemValue}>
+                {itemLabel}
+              </MenuItem>
+            )
+          })}
+        </CustomSelectField>
+      </Box>
 
       {typeof value !== 'undefined' && value.value === 'other' ? (
-        <CustomTextField
-          label={name}
-          name={`${nameAttr}.valueOther`}
-          required={isRequired}
-        />
+        <Box my={1}>
+          <CustomTextField
+            label={name}
+            name={`${nameAttr}.valueOther`}
+            required={isRequired}
+          />
+        </Box>
       ) : null}
     </React.Fragment>
   )
