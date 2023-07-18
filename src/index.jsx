@@ -3,6 +3,8 @@
 import React from 'react'
 import { Formik, Form } from 'formik'
 import {
+  Container,
+  Grid,
   Stepper,
   Step,
   StepLabel,
@@ -11,7 +13,6 @@ import {
 } from '@material-ui/core'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -245,16 +246,23 @@ export function DatsEditorForm(props) {
                     <div className={classes.section}>
                       <DatsUploader onDatsReceived={onDatsReceived} />
                     </div>
-                    <FormControlLabel
-                      control={
+                    <Grid
+                      alignItems='center'
+                      component='label'
+                      container
+                      justifyContent='center'
+                      spacing={1}
+                    >
+                      <Grid item>Dataset</Grid>
+                      <Grid item>
                         <Switch
                           checked={isExperiment}
                           name='isExperimentSwitch'
                           onChange={toggleIsExperiment}
                         />
-                      }
-                      label='Experiment'
-                    />
+                      </Grid>
+                      <Grid item>Experiment</Grid>
+                    </Grid>
                   </React.Fragment>
                 ) : null}
 
