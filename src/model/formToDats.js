@@ -243,7 +243,7 @@ class FormToDats {
       {
         category: 'experimentFunctionAssessed',
         values: this.data.experimentsFunctionAssessed.map((val) => {
-          return { value: val }
+           return {value: val.value !== 'other' ? val.value : val.valueOther}
         })
       },
       {
@@ -291,7 +291,10 @@ class FormToDats {
         category: 'experimentModalities',
         values: this.data.experimentsModalities.map((modality) => {
           return {
-            value: modality
+            value:
+              modality.value !== 'other'
+                ? modality.value
+                : modality.valueOther
           }
         })
       },
@@ -308,7 +311,7 @@ class FormToDats {
         values: this.data.experimentsRequiredSoftware.map((software) => {
           return {
             value:
-              software.value !== 'other' ? software.value : software.valueOther
+              `${software.software.value !== 'other' ? software.software.value : software.software.valueOther} version ${software.version}`
           }
         })
       },
