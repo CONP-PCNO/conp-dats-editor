@@ -12,7 +12,7 @@ const defaultDatsValidationSchema = yup.object({
         then: yup
           .string()
           .matches(
-            /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d\d$/u
+            /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dX]$/u
           )
           .required(
             'An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'
