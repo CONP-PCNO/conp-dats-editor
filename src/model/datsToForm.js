@@ -1,3 +1,24 @@
+import fieldDescriptions from './fieldDescriptions.json'
+
+function readExtraProperties(data, category, mappingFunction) {
+  return (
+    data.extraProperties
+      ?.filter((property) => property.category === category)[0]
+      ?.values.map(mappingFunction) || []
+  )
+}
+
+function genCustomMap(predefinedValues) {
+  function customMap(value) {
+    if (predefinedValues.includes(value.value)) {
+      return { value: value.value, valueOther: '' }
+    }
+    return { value: 'other', valueOther: value.value }
+  }
+
+  return customMap
+}
+
 class DatsToForm {
   constructor(data) {
     this.data = data
@@ -127,70 +148,84 @@ class DatsToForm {
       refinement: '',
       aggregation: this.data.aggregation || '',
       spatialCoverage: this.data.spatialCoverage || [],
-      reb_info: this.data.reb_info || '',
+      reb_info:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'REB_statement')[0]
+          ?.values.map((a) => ({ value: a.value, valueOther: '' })) || '',
       reb_number: this.data.reb_number || '',
       experimentsFunctionAssessed:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentFunctionAssessed')[0]
-          ?.values.map((a) => a.value) || '',
+        readExtraProperties(
+          this.data,
+          'experimentFunctionAssessed',
+          genCustomMap(
+            Object.keys(fieldDescriptions.experimentsFunctionAssessed.items)
+          )
+        ) || [],
       experimentsLanguages:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentLanguages')[0]
-          ?.values.map((a) => a.value) || [],
-      experimentsValidationMeasures: {
-        value:
-          this.data.extraProperties
-            ?.filter((p) => p.category === 'experimentValidationMeasures')[0]
-            ?.values.map((a) => a.value) || [],
-        valueOther: ''
-      },
-      experimentsValidationPopulations: {
-        value:
-          this.data.extraProperties
-            ?.filter((p) => p.category === 'experimentValidationPopulations')[0]
-            ?.values.map((a) => a.value) || [],
-        valueOther: ''
-      },
-      experimentsAccessibility: {
-        value:
-          this.data.extraProperties
-            ?.filter((p) => p.category === 'experimentAccessibility')[0]
-            ?.values.map((a) => a.value) || [],
-        valueOther: ''
-      },
-      experimentsSpecies:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentSpecies')[0]
-          ?.values.map((a) => a.value) || [],
-      experimentsRequiredModalities:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentRequiredPlatforms')[0]
-          ?.values.map((a) => a.value) || [],
-      experimentsRequiredDevices: {
-        value:
-          this.data.extraProperties
-            ?.filter((p) => p.category === 'experimentRequiredDevices')[0]
-            ?.values.map((a) => a.value) || [],
-        valueOther: ''
-      },
-      experimentsRequiredSoftware: {
-        value:
-          this.data.extraProperties
-            ?.filter((p) => p.category === 'experimentRequiredSoftware')[0]
-            ?.values.map((a) => a.value) || [],
-        valueOther: ''
-      },
-      experimentsStimuli: {
-        value:
-          this.data.extraProperties
-            ?.filter((p) => p.category === 'experimentStimuli')[0]
-            ?.values.map((a) => a.value) || [],
-        valueOther: ''
-      },
+        readExtraProperties(this.data, 'experimentLanguages', (a) => a.value) ||
+        [],
+      experimentsValidationMeasures:
+        readExtraProperties(
+          this.data,
+          'experimentValidationMeasures',
+          genCustomMap(
+            Object.keys(fieldDescriptions.experimentsValidationMeasures.items)
+          )
+        ) || [],
+      experimentsValidationPopulations:
+        readExtraProperties(
+          this.data,
+          'experimentValidationPopulations',
+          genCustomMap(
+            Object.keys(
+              fieldDescriptions.experimentsValidationPopulations.items
+            )
+          )
+        ) || [],
+      experimentsAccessibility:
+        readExtraProperties(
+          this.data,
+          'experimentAccessibility',
+          genCustomMap(
+            Object.keys(fieldDescriptions.experimentsAccessibility.items)
+          )
+        ) || [],
+      experimentsModalities:
+        readExtraProperties(
+          this.data,
+          'experimentModalities',
+          genCustomMap(
+            Object.keys(fieldDescriptions.experimentsModalities.items)
+          )
+        ) || [],
+      experimentsRequiredDevices:
+        readExtraProperties(
+          this.data,
+          'experimentRequiredDevices',
+          genCustomMap(
+            Object.keys(fieldDescriptions.experimentsRequiredDevices.items)
+          )
+        ) || [],
+      experimentsRequiredSoftware:
+        readExtraProperties(
+          this.data,
+          'experimentRequiredSoftware',
+          genCustomMap(
+            Object.keys(fieldDescriptions.experimentsRequiredSoftware.items)
+          )
+        ) || [],
+      experimentsStimuli:
+        readExtraProperties(
+          this.data,
+          'experimentStimuli',
+          genCustomMap(Object.keys(fieldDescriptions.experimentsStimuli.items))
+        ) || [],
       experimentsAdditionalRequirements:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'experimentFunctionAssessed')[0]
-          ?.values.map((a) => a.value)[0] || ''
+        readExtraProperties(
+          this.data,
+          'experimentAdditionalRequirements',
+          (a) => a.value
+        ) || []
     }
 
     if (json.logo.includes('www')) {
