@@ -14,7 +14,7 @@ class FormToDats {
         return {
           date: `${format(date.date, 'yyyy-MM-dd')} 00:00:00`,
           type: {
-            value: date.type.value.toLowerCase()
+            value: date.description.value.toLowerCase()
           }
         }
       }),

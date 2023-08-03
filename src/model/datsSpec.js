@@ -200,9 +200,7 @@ const defaultDatsValues = {
   experimentsSpecies: [],
   experimentsModalities: [],
   experimentsRequiredDevices: [],
-  experimentsRequiredSoftware: [
-    { software: { value: 'other', valueOther: '' }, version: '' }
-  ],
+  experimentsRequiredSoftware: [],
   experimentsStimuli: [],
   experimentsAdditionalRequirements: ''
 }

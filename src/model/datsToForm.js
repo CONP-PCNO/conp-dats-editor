@@ -128,7 +128,11 @@ class DatsToForm {
         this.data.extraProperties
           ?.filter((p) => p.category === 'logo')[0]
           ?.values.map((a) => a.value)[0] || '',
-      dates: this.data.dates || [],
+      dates:
+        this.data.dates?.map((dateVal) => ({
+          date: dateVal.date,
+          description: { value: dateVal.type.value, valueOther: '' }
+        })) || [],
       citations: [],
       producedBy: '',
       isAbout:
