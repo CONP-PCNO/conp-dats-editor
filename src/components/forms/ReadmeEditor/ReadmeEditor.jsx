@@ -3,13 +3,38 @@ import React from 'react'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 
+function getValueOrOther(value) {
+  return value.value === 'other' ? value.valueOther : value.value
+}
+
 export function genDefaultReadme(values) {
-  const publications = values.primaryPublications.join(', ')
-  const identifier = values.identifier.source || ''
+  const publications = values.primaryPublications
+    .map((publication) => publication.title)
+    .join(', ')
+  const identifier = values.identifier.identifier || ''
+  const functionsAssessed = values.experimentsFunctionAssessed
+    .map(getValueOrOther)
+    .join(', ')
   const languages = values.experimentsLanguages.join(', ')
-  const licenses = values.licenses
-    .map((license) =>
-      license.value === 'other' ? license.valueOther : license.value
+  const validationMeasures = values.experimentsValidationMeasures
+    .map(getValueOrOther)
+    .join(', ')
+  const validationPopulations = values.experimentsValidationPopulations
+    .map(getValueOrOther)
+    .join(', ')
+  const licenses = values.licenses.map(getValueOrOther).join(', ')
+  const accessibility = values.experimentsAccessibility
+    .map(getValueOrOther)
+    .join(', ')
+  const modalities = values.experimentsModalities
+    .map(getValueOrOther)
+    .join(', ')
+  const devices = values.experimentsRequiredDevices
+    .map(getValueOrOther)
+    .join(', ')
+  const software = values.experimentsRequiredSoftware
+    .map(
+      (value) => `${getValueOrOther(value.software)} version ${value.version}`
     )
     .join(', ')
   return `# ${values.title}
@@ -20,27 +45,27 @@ ${values.description}
 
 **Experiment DOI:** ${identifier}
 
-**Functions assessed:** ${values.experimentsFunctionAssessed}
+**Functions assessed:** ${functionsAssessed}
 
 ## Features
 
 **Languages:** ${languages}
 
 **Validation:**
-  * ${values.experimentsValidationMeasures.join(', ')}
-  * ${values.experimentsValidationPopulations.join(', ')}
+  * Measures: ${validationMeasures}
+  * Populations: ${validationPopulations}
 
-**Accessibility:** ${values.experimentsAccessibility.join(', ')}
+**Accessibility:** ${accessibility}
 
-**Platforms:** ${values.experimentsModalities.join(', ')}
+**Modalities:** ${modalities}
 
-**Devices:** ${values.experimentsRequiredDevices.join(', ')}
+**Devices:** ${devices}
 
 **Species:** ${values.isAbout.map((isAbout) => isAbout.name).join(', ')}
 
 ## Development
 
-**Software:** ${values.experimentsRequiredSoftware.join(', ')}
+**Software:** ${software}
 
 **Requirements:** ${values.experimentsAdditionalRequirements}
 

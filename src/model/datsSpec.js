@@ -65,8 +65,8 @@ const defaultDatsValidationSchema = yup.object({
   primaryPublications: yup.array().of(yup.string()),
   dimensions: yup.array().of(yup.string()),
   identifier: yup.object({
-    name: yup.string(),
-    source: yup.string().url()
+    identifier: yup.string(),
+    identifierSource: yup.string().url()
   }),
   logo: yup.object({
     type: yup.string().oneOf(['url', 'fileName']),
