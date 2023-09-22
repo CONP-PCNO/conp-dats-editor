@@ -1,14 +1,35 @@
-import { React, useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { Box } from '@material-ui/core'
+import {
+  FormControl,
+  Box,
+  InputLabel,
+  TextField,
+  Select,
+  MenuItem
+} from '@material-ui/core'
 
-export default function JsonOtherSelectField(props) {
-  const { value, setValue, options } = props
+import { makeStyles } from '@material-ui/core/styles'
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    minWidth: 220
+  }
+}))
+
+export default function HybridSelectTextField(props) {
+  console.log(props)
+  const { field, label, options } = props
 
   const [useTextInput, setUseTextInput] = useState(false)
+  const { value } = field
   const useSelect = Object.values(options).includes(value) && !useTextInput
   const defaultSelect = useSelect ? value : 'other'
   const defaultInput = useSelect ? '' : value
+  const classes = useStyles()
+
+  function setValue(newVal) {
+    field.onChange({ target: { name: field.name, value: newVal } })
+  }
 
   const handleSelect = useCallback(
     (ev) => {
@@ -27,23 +48,31 @@ export default function JsonOtherSelectField(props) {
   return (
     <React.Fragment>
       <Box my={1}>
-        <select onChange={handleSelect} value={defaultSelect}>
-          {Object.entries(options).map((option) => {
-            const [optionValue, optionLabel] = option
-            return (
-              <option key={optionValue} value={optionValue}>
-                {optionLabel}
-              </option>
-            )
-          })}
-        </select>
+        <FormControl className={classes.formControl} variant='outlined'>
+          <InputLabel>{label}</InputLabel>
+
+          <Select onChange={handleSelect} value={defaultSelect}>
+            {Object.entries(options).map((option) => {
+              const [optionValue, optionLabel] = option
+              return (
+                <MenuItem key={optionValue} value={optionValue}>
+                  {optionLabel}
+                </MenuItem>
+              )
+            })}
+          </Select>
+        </FormControl>
       </Box>
 
       {!useSelect && (
-        <input
-          onChange={(ev) => setValue(ev.target.value)}
-          value={defaultInput}
-        />
+        <Box my={1}>
+          <TextField
+            fullWidth
+            onChange={(ev) => setValue(ev.target.value)}
+            value={defaultInput}
+            variant='outlined'
+          />
+        </Box>
       )}
     </React.Fragment>
   )
