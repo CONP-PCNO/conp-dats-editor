@@ -1,30 +1,33 @@
-import { React, useState } from 'react'
+import { React, useCallback, useState } from 'react'
 
 import { Box } from '@material-ui/core'
 
 export default function JsonOtherSelectField(props) {
   const { value, setValue, options } = props
-  const defaultSelect = Object.values(options).includes(value) ? value : 'other'
-  const [selectedValue, setSelectedValue] = useState(defaultSelect)
-  const defaultInput = Object.values(options).includes(value) ? '' : value
-  const [inputValue, setInputValue] = useState(defaultInput)
 
-  function handleSelect(ev) {
-    const newVal = ev.target.value
-    if (newVal === 'other') {
-      setSelectedValue(newVal)
-      setInputValue('')
-      setValue('')
-    } else {
-      setSelectedValue(newVal)
-      setValue(newVal)
-    }
-  }
+  const [useTextInput, setUseTextInput] = useState(false)
+  const useSelect = Object.values(options).includes(value) && !useTextInput
+  const defaultSelect = useSelect ? value : 'other'
+  const defaultInput = useSelect ? '' : value
+
+  const handleSelect = useCallback(
+    (ev) => {
+      const newVal = ev.target.value
+      if (newVal === 'other') {
+        setUseTextInput(true)
+        setValue('')
+      } else {
+        setUseTextInput(false)
+        setValue(newVal)
+      }
+    },
+    [setUseTextInput, setValue]
+  )
 
   return (
     <React.Fragment>
       <Box my={1}>
-        <select onChange={handleSelect} value={selectedValue}>
+        <select onChange={handleSelect} value={defaultSelect}>
           {Object.entries(options).map((option) => {
             const [optionValue, optionLabel] = option
             return (
@@ -36,12 +39,12 @@ export default function JsonOtherSelectField(props) {
         </select>
       </Box>
 
-      {value ? (
+      {!useSelect && (
         <input
           onChange={(ev) => setValue(ev.target.value)}
-          value={inputValue}
+          value={defaultInput}
         />
-      ) : null}
+      )}
     </React.Fragment>
   )
 }
