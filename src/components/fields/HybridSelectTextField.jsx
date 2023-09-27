@@ -17,14 +17,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function HybridSelectTextField(props) {
-  console.log(props)
   const { field, label, options } = props
 
   const [useTextInput, setUseTextInput] = useState(false)
   const { value } = field
-  const useSelect = Object.values(options).includes(value) && !useTextInput
-  const defaultSelect = useSelect ? value : 'other'
-  const defaultInput = useSelect ? '' : value
+  const defaultSelect = useTextInput ? 'other' : value
+  const defaultInput = useTextInput ? value : ''
   const classes = useStyles()
 
   function setValue(newVal) {
@@ -51,7 +49,7 @@ export default function HybridSelectTextField(props) {
         <FormControl className={classes.formControl} variant='outlined'>
           <InputLabel>{label}</InputLabel>
 
-          <Select onChange={handleSelect} value={defaultSelect}>
+          <Select label={label} onChange={handleSelect} value={defaultSelect}>
             {Object.entries(options).map((option) => {
               const [optionValue, optionLabel] = option
               return (
@@ -64,7 +62,7 @@ export default function HybridSelectTextField(props) {
         </FormControl>
       </Box>
 
-      {!useSelect && (
+      {Boolean(useTextInput) && (
         <Box my={1}>
           <TextField
             fullWidth
