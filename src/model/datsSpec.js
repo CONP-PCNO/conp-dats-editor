@@ -94,29 +94,19 @@ const defaultDatsValidationSchema = yup.object({
   reb_number: yup.string(),
   experimentsFunctionAssessed: yup.array().of(yup.string()),
   experimentsLanguages: yup.array().of(yup.string()),
-  experimentsValidationMeasures: yup
-    .array()
-    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
-  experimentsValidationPopulations: yup
-    .array()
-    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
-  experimentsAccessibility: yup
-    .array()
-    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
+  experimentsValidationMeasures: yup.array().of(yup.string()),
+  experimentsValidationPopulations: yup.array().of(yup.string()),
+  experimentsAccessibility: yup.array().of(yup.string()),
   experimentsSpecies: yup.array().of(yup.string()),
   experimentsModalities: yup.array().of(yup.string()),
-  experimentsRequiredDevices: yup
-    .array()
-    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
+  experimentsRequiredDevices: yup.array().of(yup.string()),
   experimentsRequiredSoftware: yup.array().of(
     yup.object({
-      software: yup.object({ value: yup.string(), valueOther: yup.string() }),
+      software: yup.string(),
       version: yup.string()
     })
   ),
-  experimentsStimuli: yup
-    .array()
-    .of(yup.object({ value: yup.string(), valueOther: yup.string() })),
+  experimentsStimuli: yup.array().of(yup.string()),
   experimentsAdditionalRequirements: yup.string()
 })
 
@@ -137,12 +127,7 @@ const defaultDatsValues = {
   description: '',
   types: [],
   version: '',
-  licenses: [
-    {
-      value: '',
-      valueOther: ''
-    }
-  ],
+  licenses: [''],
   keywords: [],
   formats: [],
   size: {

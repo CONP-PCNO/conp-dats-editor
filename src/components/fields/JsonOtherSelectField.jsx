@@ -14,7 +14,7 @@ export default function JsonOtherSelectField(props) {
       component={HybridSelectTextField}
       inputProps={{ 'data-testid': `${nameAttr}.value` }}
       label={label}
-      name={`${nameAttr}.value`}
+      name={nameAttr}
       options={items}
     />
   )

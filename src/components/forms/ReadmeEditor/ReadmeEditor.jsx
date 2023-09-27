@@ -3,39 +3,22 @@ import React from 'react'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 
-function getValueOrOther(value) {
-  return value.value === 'other' ? value.valueOther : value.value
-}
-
 export function genDefaultReadme(values) {
   const publications = values.primaryPublications
     .map((publication) => publication.title)
     .join(', ')
   const identifier = values.identifier.identifier || ''
-  const functionsAssessed = values.experimentsFunctionAssessed
-    .map(getValueOrOther)
-    .join(', ')
+  const functionsAssessed = values.experimentsFunctionAssessed.join(', ')
   const languages = values.experimentsLanguages.join(', ')
-  const validationMeasures = values.experimentsValidationMeasures
-    .map(getValueOrOther)
-    .join(', ')
-  const validationPopulations = values.experimentsValidationPopulations
-    .map(getValueOrOther)
-    .join(', ')
-  const licenses = values.licenses.map(getValueOrOther).join(', ')
-  const accessibility = values.experimentsAccessibility
-    .map(getValueOrOther)
-    .join(', ')
-  const modalities = values.experimentsModalities
-    .map(getValueOrOther)
-    .join(', ')
-  const devices = values.experimentsRequiredDevices
-    .map(getValueOrOther)
-    .join(', ')
+  const validationMeasures = values.experimentsValidationMeasures.join(', ')
+  const validationPopulations =
+    values.experimentsValidationPopulations.join(', ')
+  const licenses = values.licenses.join(', ')
+  const accessibility = values.experimentsAccessibility.join(', ')
+  const modalities = values.experimentsModalities.join(', ')
+  const devices = values.experimentsRequiredDevices.join(', ')
   const software = values.experimentsRequiredSoftware
-    .map(
-      (value) => `${getValueOrOther(value.software)} version ${value.version}`
-    )
+    .map((value) => `${value} version ${value.version}`)
     .join(', ')
   return `# ${values.title}
 

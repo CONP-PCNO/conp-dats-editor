@@ -14,7 +14,7 @@ class FormToDats {
         return {
           date: `${format(date.date, 'yyyy-MM-dd')} 00:00:00`,
           type: {
-            value: date.description.value.toLowerCase()
+            value: date.description.toLowerCase()
           }
         }
       }),
@@ -64,7 +64,7 @@ class FormToDats {
       privacy: this.data.privacy,
       licenses: this.data.licenses.map((license) => {
         return {
-          name: license.value !== 'other' ? license.value : license.valueOther
+          name: license
         }
       }),
       distributions: [
@@ -243,7 +243,7 @@ class FormToDats {
       {
         category: 'experimentFunctionAssessed',
         values: this.data.experimentsFunctionAssessed.map((val) => {
-           return {value: val.value !== 'other' ? val.value : val.valueOther}
+          return { value: val }
         })
       },
       {
@@ -258,10 +258,7 @@ class FormToDats {
         category: 'experimentValidationMeasures',
         values: this.data.experimentsValidationMeasures.map((validation) => {
           return {
-            value:
-              validation.value !== 'other'
-                ? validation.value
-                : validation.valueOther
+            value: validation
           }
         })
       },
@@ -269,10 +266,7 @@ class FormToDats {
         category: 'experimentValidationPopulations',
         values: this.data.experimentsValidationPopulations.map((validation) => {
           return {
-            value:
-              validation.value !== 'other'
-                ? validation.value
-                : validation.valueOther
+            value: validation
           }
         })
       },
@@ -280,10 +274,7 @@ class FormToDats {
         category: 'experimentAccessibility',
         values: this.data.experimentsAccessibility.map((accessibility) => {
           return {
-            value:
-              accessibility.value !== 'other'
-                ? accessibility.value
-                : accessibility.valueOther
+            value: accessibility
           }
         })
       },
@@ -291,10 +282,7 @@ class FormToDats {
         category: 'experimentModalities',
         values: this.data.experimentsModalities.map((modality) => {
           return {
-            value:
-              modality.value !== 'other'
-                ? modality.value
-                : modality.valueOther
+            value: modality
           }
         })
       },
@@ -302,7 +290,7 @@ class FormToDats {
         category: 'experimentRequiredDevices',
         values: this.data.experimentsRequiredDevices.map((device) => {
           return {
-            value: device.value !== 'other' ? device.value : device.valueOther
+            value: device
           }
         })
       },
@@ -310,8 +298,7 @@ class FormToDats {
         category: 'experimentRequiredSoftware',
         values: this.data.experimentsRequiredSoftware.map((software) => {
           return {
-            value:
-              `${software.software.value !== 'other' ? software.software.value : software.software.valueOther} version ${software.version}`
+            value: `${software.software} version ${software.version}`
           }
         })
       },
@@ -319,8 +306,7 @@ class FormToDats {
         category: 'experimentStimuli',
         values: this.data.experimentsStimuli.map((stimulus) => {
           return {
-            value:
-              stimulus.value !== 'other' ? stimulus.value : stimulus.valueOther
+            value: stimulus
           }
         })
       },

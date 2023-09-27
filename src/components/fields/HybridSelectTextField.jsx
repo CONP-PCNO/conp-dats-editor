@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import {
   FormControl,
@@ -19,8 +19,9 @@ const useStyles = makeStyles((theme) => ({
 export default function HybridSelectTextField(props) {
   const { field, label, options } = props
 
-  const [useTextInput, setUseTextInput] = useState(false)
   const { value } = field
+  const validOption = value === '' || Object.keys(options).includes(value)
+  const [useTextInput, setUseTextInput] = useState(!validOption)
   const defaultSelect = useTextInput ? 'other' : value
   const defaultInput = useTextInput ? value : ''
   const classes = useStyles()
@@ -42,6 +43,12 @@ export default function HybridSelectTextField(props) {
     },
     [setUseTextInput, setValue]
   )
+
+  useEffect(() => {
+    if (!validOption) {
+      setUseTextInput(true)
+    }
+  })
 
   return (
     <React.Fragment>

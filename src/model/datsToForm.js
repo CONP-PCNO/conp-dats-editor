@@ -1,22 +1,9 @@
-import fieldDescriptions from './fieldDescriptions.json'
-
-function readExtraProperties(data, category, mappingFunction) {
+function readExtraProperties(data, category) {
   return (
     data.extraProperties
       ?.filter((property) => property.category === category)[0]
-      ?.values.map(mappingFunction) || []
+      ?.values.map((val) => val.value) || []
   )
-}
-
-function genCustomMap(predefinedValues) {
-  function customMap(value) {
-    if (predefinedValues.includes(value.value)) {
-      return { value: value.value, valueOther: '' }
-    }
-    return { value: 'other', valueOther: value.value }
-  }
-
-  return customMap
 }
 
 class DatsToForm {
@@ -131,7 +118,7 @@ class DatsToForm {
       dates:
         this.data.dates?.map((dateVal) => ({
           date: dateVal.date,
-          description: { value: dateVal.type.value, valueOther: '' }
+          description: dateVal.type.value
         })) || [],
       citations: [],
       producedBy: '',
@@ -155,81 +142,28 @@ class DatsToForm {
       reb_info:
         this.data.extraProperties
           ?.filter((p) => p.category === 'REB_statement')[0]
-          ?.values.map((a) => ({ value: a.value, valueOther: '' })) || '',
+          ?.values.map((a) => a.value) || '',
       reb_number: this.data.reb_number || '',
       experimentsFunctionAssessed:
-        readExtraProperties(
-          this.data,
-          'experimentFunctionAssessed',
-          genCustomMap(
-            Object.keys(fieldDescriptions.experimentsFunctionAssessed.items)
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentFunctionAssessed') || [],
       experimentsLanguages:
-        readExtraProperties(this.data, 'experimentLanguages', (a) => a.value) ||
-        [],
+        readExtraProperties(this.data, 'experimentLanguages') || [],
       experimentsValidationMeasures:
-        readExtraProperties(
-          this.data,
-          'experimentValidationMeasures',
-          genCustomMap(
-            Object.keys(fieldDescriptions.experimentsValidationMeasures.items)
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentValidationMeasures') || [],
       experimentsValidationPopulations:
-        readExtraProperties(
-          this.data,
-          'experimentValidationPopulations',
-          genCustomMap(
-            Object.keys(
-              fieldDescriptions.experimentsValidationPopulations.items
-            )
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentValidationPopulations') || [],
       experimentsAccessibility:
-        readExtraProperties(
-          this.data,
-          'experimentAccessibility',
-          genCustomMap(
-            Object.keys(fieldDescriptions.experimentsAccessibility.items)
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentAccessibility') || [],
       experimentsModalities:
-        readExtraProperties(
-          this.data,
-          'experimentModalities',
-          genCustomMap(
-            Object.keys(fieldDescriptions.experimentsModalities.items)
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentModalities') || [],
       experimentsRequiredDevices:
-        readExtraProperties(
-          this.data,
-          'experimentRequiredDevices',
-          genCustomMap(
-            Object.keys(fieldDescriptions.experimentsRequiredDevices.items)
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentRequiredDevices') || [],
       experimentsRequiredSoftware:
-        readExtraProperties(
-          this.data,
-          'experimentRequiredSoftware',
-          genCustomMap(
-            Object.keys(fieldDescriptions.experimentsRequiredSoftware.items)
-          )
-        ) || [],
+        readExtraProperties(this.data, 'experimentRequiredSoftware') || [],
       experimentsStimuli:
-        readExtraProperties(
-          this.data,
-          'experimentStimuli',
-          genCustomMap(Object.keys(fieldDescriptions.experimentsStimuli.items))
-        ) || [],
+        readExtraProperties(this.data, 'experimentStimuli') || [],
       experimentsAdditionalRequirements:
-        readExtraProperties(
-          this.data,
-          'experimentAdditionalRequirements',
-          (a) => a.value
-        ) || []
+        readExtraProperties(this.data, 'experimentAdditionalRequirements') || []
     }
 
     if (json.logo.includes('www')) {
@@ -256,32 +190,6 @@ class DatsToForm {
           return Object.assign(date, { date: new Date(date.date) })
         })
       })
-    })
-
-    json.licenses.forEach((license, index) => {
-      if (
-        [
-          'CC BY',
-          'CC BY-SA',
-          'CC BY-NC',
-          'CC BY-NC-SA',
-          'CC BY-ND',
-          'CC BY-NC-ND',
-          'ODbL',
-          'ODC-By',
-          'PDDL'
-        ].includes('license')
-      ) {
-        json.licenses[index] = {
-          value: license,
-          valueOther: ''
-        }
-      } else {
-        json.licenses[index] = {
-          value: 'other',
-          valueOther: license
-        }
-      }
     })
 
     return json
