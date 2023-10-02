@@ -56,14 +56,16 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
-      <FieldArraySection
-        isExperiment={isExperiment}
-        isRequired
-        jsonField={JsonTextField}
-        nameAttr='types'
-        setupProps={fieldDescriptions.types}
-        values={values.types}
-      />
+      {isExperiment ? null : (
+        <FieldArraySection
+          isExperiment={isExperiment}
+          isRequired
+          jsonField={JsonTextField}
+          nameAttr='types'
+          setupProps={fieldDescriptions.types}
+          values={values.types}
+        />
+      )}
 
       <Divider variant='middle' />
 

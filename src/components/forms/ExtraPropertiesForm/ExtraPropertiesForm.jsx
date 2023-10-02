@@ -330,8 +330,8 @@ export default function ExtraPropertiesForm(props) {
                                   <FieldGroup
                                     arrayHelpers={arrayHelpers}
                                     index={index}
-                                    key={`date_${index}`}
-                                    name={`date_${index}`}
+                                    key={`date_${idx}`}
+                                    name={`date_${idx}`}
                                   >
                                     <MuiPickersUtilsProvider
                                       utils={DateFnsUtils}
@@ -360,7 +360,8 @@ export default function ExtraPropertiesForm(props) {
                                   arrayHelpers.push({
                                     date: new Date(
                                       new Date().setHours(0, 0, 0, 0)
-                                    )
+                                    ),
+                                    description: ''
                                   })
                                 }}
                                 variant='outlined'
@@ -558,7 +559,7 @@ export default function ExtraPropertiesForm(props) {
                 )
               })}
 
-              <Box item xs={6}>
+              <Box xs={6}>
                 <Button
                   color='secondary'
                   onClick={() => {

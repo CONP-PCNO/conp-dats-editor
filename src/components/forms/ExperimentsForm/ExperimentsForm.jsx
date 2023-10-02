@@ -42,6 +42,17 @@ export default function ExperimentsForm(props) {
 
       <Divider variant='middle' />
 
+      <FieldArraySection
+        isExperiment
+        isRequired
+        jsonField={JsonTextField}
+        nameAttr='types'
+        setupProps={fieldDescriptions.types}
+        values={values.types}
+      />
+
+      <Divider variant='middle' />
+
       <Section>
         <JsonSectionTitle
           isExperiment

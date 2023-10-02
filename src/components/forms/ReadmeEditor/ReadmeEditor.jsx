@@ -18,7 +18,7 @@ export function genDefaultReadme(values) {
   const modalities = values.experimentsModalities.join(', ')
   const devices = values.experimentsRequiredDevices.join(', ')
   const software = values.experimentsRequiredSoftware
-    .map((value) => `${value} version ${value.version}`)
+    .map((value) => `${value.software} version ${value.version}`)
     .join(', ')
   return `# ${values.title}
 

@@ -159,7 +159,12 @@ class DatsToForm {
       experimentsRequiredDevices:
         readExtraProperties(this.data, 'experimentRequiredDevices') || [],
       experimentsRequiredSoftware:
-        readExtraProperties(this.data, 'experimentRequiredSoftware') || [],
+        readExtraProperties(this.data, 'experimentRequiredSoftware')?.map(
+          (val) => {
+            const match = val.match(/^(?<software>.*)version (?<version>.*)$/u)
+            return { software: match[1], version: match[2] }
+          }
+        ) || [],
       experimentsStimuli:
         readExtraProperties(this.data, 'experimentStimuli') || [],
       experimentsAdditionalRequirements:

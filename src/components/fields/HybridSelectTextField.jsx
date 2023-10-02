@@ -20,7 +20,7 @@ export default function HybridSelectTextField(props) {
   const { field, label, options } = props
 
   const { value } = field
-  const validOption = value === '' || Object.keys(options).includes(value)
+  const validOption = value === '' || Object.values(options).includes(value)
   const [useTextInput, setUseTextInput] = useState(!validOption)
   const defaultSelect = useTextInput ? 'other' : value
   const defaultInput = useTextInput ? value : ''
