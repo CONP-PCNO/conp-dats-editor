@@ -52,7 +52,7 @@ const defaultDatsValidationSchema = yup.object({
   files: yup.number().integer().positive().required(),
   subjects: yup.object({
     applicable: yup.boolean(),
-    value: yup.number().integer().positive()
+    value: yup.number().integer().positive().nullable()
   }),
   conpStatus: yup
     .string()
@@ -65,8 +65,8 @@ const defaultDatsValidationSchema = yup.object({
   primaryPublications: yup.array().of(yup.string()),
   dimensions: yup.array().of(yup.string()),
   identifier: yup.object({
-    identifier: yup.string(),
-    identifierSource: yup.string().url()
+    identifier: yup.string().url(),
+    identifierSource: yup.string()
   }),
   logo: yup.object({
     type: yup.string().oneOf(['url', 'fileName']),

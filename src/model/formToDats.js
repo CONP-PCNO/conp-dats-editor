@@ -161,7 +161,8 @@ class FormToDats {
         category: 'subjects',
         values: [
           {
-            value: this.data.subjects.applicable ? this.data.subjects : 'N/A'
+            // value: this.data.subjects.applicable ? this.data.subjects.value : 'N/A'
+            value: this.data.subjects.applicable && this.data.subjects.value != null ? this.data.subjects.value : 'N/A'
           }
         ]
       },

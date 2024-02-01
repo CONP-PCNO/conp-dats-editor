@@ -16,6 +16,10 @@ import Switch from '@material-ui/core/Switch'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import DatsErrors from './components/DatsErrors/DatsErrors'
 import DatsUploader from './components/DatsUploader/DatsUploader'
@@ -87,7 +91,8 @@ const datasetSteps = [
   'General Info',
   'Distribution',
   'Extra Properties',
-  'Review & Download'
+  'Review & Download', 
+  'Readme Editor'
 ]
 
 const experimentSteps = [
@@ -164,7 +169,7 @@ export function DatsEditorForm(props) {
   const [isExperiment, setIsExperiment] = React.useState(false)
 
   const steps = isExperiment ? experimentSteps : datasetSteps
-  const postDatsSteps = isExperiment ? 2 : 1
+  const postDatsSteps = isExperiment ? 2 : 2
 
   const isLastStep = (activeStep) =>
     activeStep === steps.length - (postDatsSteps + 1)
@@ -178,6 +183,17 @@ export function DatsEditorForm(props) {
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
     setValuesState(formData)
+    if(formData.experimentsLanguages.length > 0){
+      setIsExperiment(true)
+    }
+    else{
+      setIsExperiment(false)
+    }
+  }
+
+  const handleRadioChange = (event) => {
+    setIsExperiment(event.target.value === 'experiment')
+    setActiveStep(0) // Réinitialiser l'étape active si la sélection change
   }
 
   const toggleIsExperiment = () => {
@@ -231,6 +247,7 @@ export function DatsEditorForm(props) {
             onSubmit={(data, { setSubmitting }) => {
               setSubmitting(true)
               const datsJson = new FormToDats(data)
+              console.log('datsJson', datsJson)
               setDats(datsJson.getJson())
               setActiveStep(activeStep + 1)
               setSubmitting(false)
@@ -245,7 +262,8 @@ export function DatsEditorForm(props) {
                     <div className={classes.section}>
                       <DatsUploader onDatsReceived={onDatsReceived} />
                     </div>
-                    <Grid
+
+                    {/* <Grid
                       alignItems='center'
                       component='label'
                       container
@@ -261,7 +279,23 @@ export function DatsEditorForm(props) {
                         />
                       </Grid>
                       <Grid item>Experiment</Grid>
+                    </Grid> */}
+                    <Grid container direction="column" alignItems="center" justify="center">
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <RadioGroup
+                        
+                        aria-label="isExperiment"
+                        name="isExperiment"
+                        value={isExperiment ? 'experiment' : 'dataset'}
+                        onChange={handleRadioChange}
+                      >
+                        <FormControlLabel value="dataset" control={<Radio />} label="Dataset" style={{ fontSize: '1rem' }}/>
+                        <FormControlLabel value="experiment" control={<Radio />} label="Experiment" style={{ fontSize: '1rem' }}/>
+                      </RadioGroup>
+                    </FormControl>
                     </Grid>
+
+
                   </React.Fragment>
                 ) : null}
 

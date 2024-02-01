@@ -61,10 +61,15 @@ class DatsToForm {
         this.data.extraProperties
           ?.filter((p) => p.category === 'files')[0]
           ?.values.map((a) => a.value)[0] || '',
-      subjects:
-        this.data.extraProperties
+      subjects: {
+        applicable: this.data.extraProperties
           ?.filter((p) => p.category === 'subjects')[0]
-          ?.values.map((a) => a.value)[0] || '',
+          ? (readExtraProperties(this.data, 'experimentLanguages') === null || readExtraProperties(this.data, 'experimentLanguages').length === 0)
+          : false,
+        value: this.data.extraProperties
+          ?.filter((p) => p.category === 'subjects')[0]
+          ?.values.map((a) => a.value === 'N/A' ? null : parseInt(a.value, 10))[0] || null,
+      },
       conpStatus:
         this.data.extraProperties
           ?.filter((p) => p.category === 'CONP_status')[0]
@@ -142,7 +147,22 @@ class DatsToForm {
       reb_info:
         this.data.extraProperties
           ?.filter((p) => p.category === 'REB_statement')[0]
-          ?.values.map((a) => a.value) || '',
+          ?.values.map((a) => {
+            if (a.value.includes('participants have provided a valid informed consent to')){
+              return "option_1";
+            }
+            if (a.value.includes('a waiver or other authorization to deposit these')){
+              return "option_2";
+            }
+            if (a.value.includes('local law or a relevant institutional authorization')){
+              return "option_3";
+            }
+            if (a.value.includes('these data are not derived from human participants.')){
+              return "option_4";
+            } else {
+              return a.value;
+            }
+          }) || '',
       reb_number: this.data.reb_number || '',
       experimentsFunctionAssessed:
         readExtraProperties(this.data, 'experimentFunctionAssessed') || [],
@@ -196,7 +216,6 @@ class DatsToForm {
         })
       })
     })
-
     return json
   }
 }
