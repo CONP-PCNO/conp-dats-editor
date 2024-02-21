@@ -218,6 +218,14 @@ class FormToDats {
         ]
       },
       {
+        category: 'registrationPage',
+        values: [
+          {
+            value: this.data.registrationPageURL
+          }
+        ]
+      },
+      {
         category: 'contact',
         values: [
           {

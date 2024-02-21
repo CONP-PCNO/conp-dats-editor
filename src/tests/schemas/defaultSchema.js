@@ -54,6 +54,7 @@ export const defaultValidationSchema = yup.object({
     fileName: yup.string(),
     url: yup.string().url()
   }),
+  registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
   dates: yup.array().of(
     yup.object({
       date: yup.date(),

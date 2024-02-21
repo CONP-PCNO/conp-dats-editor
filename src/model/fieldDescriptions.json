@@ -272,6 +272,10 @@
       "experiment": "Relative path and filename (e.g., logo.png, info/logo.jpg) containing the logo within the experimental files (recommended) or link to a URL for the logo."
     }
   },
+  "registrationPage": {
+    "name": "Registration Page",
+    "description": "If the dataset “Privacy” field above has been set to either 'registered', 'controlled', or 'private', please provide the URL of the registration page where users can obtain access credentials or the email of a contact person who manages access."
+  },
   "dates": {
     "name": "Dates",
     "description": {

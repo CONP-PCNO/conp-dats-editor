@@ -143,6 +143,20 @@ export default function GeneralForm(props) {
 
       <Divider variant='middle' />
 
+      {!isExperiment && (
+        <Section>
+          <JsonSectionTitle
+            isExperiment={isExperiment}
+            isRequired
+            setupProps={fieldDescriptions.registrationPage}
+          />
+
+          <CustomTextField label='registrationPage' name='registrationPageURL' required />
+        </Section>
+      )}
+
+      <Divider variant='middle' /> 
+
       <FieldArraySection
         isExperiment={isExperiment}
         isRequired

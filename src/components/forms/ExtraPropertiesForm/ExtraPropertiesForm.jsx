@@ -523,6 +523,20 @@ export default function ExtraPropertiesForm(props) {
 
       <Divider variant='middle' />
 
+      {/* {!isExperiment && (
+        <Section>
+          <JsonSectionTitle
+            isExperiment={isExperiment}
+            isRequired
+            setupProps={fieldDescriptions.registrationPage}
+          />
+
+          <CustomTextField label='registrationPage' name='registrationPageURL' required />
+        </Section>
+      )}
+
+      <Divider variant='middle' /> */}
+
       <Section>
         <JsonSectionTitle
           isExperiment={isExperiment}
