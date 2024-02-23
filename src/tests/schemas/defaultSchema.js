@@ -54,7 +54,12 @@ export const defaultValidationSchema = yup.object({
     fileName: yup.string(),
     url: yup.string().url()
   }),
-  registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
+  // registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
+  registrationPageURL: yup.string().when('privacy', {
+    is: (value) => ['registered', 'controlled', 'private'].includes(value),
+    then: yup.string().required('Registration page URL is required when privacy is set to registered, controlled, or private.'),
+    otherwise: yup.string()
+  }),
   dates: yup.array().of(
     yup.object({
       date: yup.date(),

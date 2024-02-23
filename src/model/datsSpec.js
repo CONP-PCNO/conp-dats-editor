@@ -73,7 +73,31 @@ const defaultDatsValidationSchema = yup.object({
     fileName: yup.string(),
     url: yup.string().url()
   }),
-  registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
+  // registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
+  registrationPageURL: yup.string().when('privacy', {
+    is: (value) => ['registered', 'controlled', 'private'].includes(value),
+    then: yup.string()
+      .required('Registration page is required when privacy is set to registered, controlled, or private.')
+      .test(
+        'is-url-or-email',
+        'Registration page must be a valid URL or email address',
+        (value) => {
+          // Regex pour valider une URL
+          const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+          '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+  
+          // Regex pour valider un email
+          const emailPattern = new RegExp('^\\S+@\\S+\\.\\S+$');
+  
+          return urlPattern.test(value) || emailPattern.test(value);
+        }
+      ),
+    otherwise: yup.string()
+  }),
   dates: yup.array().of(
     yup.object({
       date: yup.date(),

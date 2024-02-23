@@ -15,6 +15,9 @@ import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function GeneralForm(props) {
   const { values, isExperiment } = props
+  // Détermine si registrationPageURL doit être obligatoire
+  const isRegistrationPageRequired = ['registered', 'controlled', 'private'].includes(values.privacy);
+
   return (
     <React.Fragment>
       <Typography gutterBottom variant='h5'>
@@ -147,11 +150,14 @@ export default function GeneralForm(props) {
         <Section>
           <JsonSectionTitle
             isExperiment={isExperiment}
-            isRequired
+            isRequired={isRegistrationPageRequired}
             setupProps={fieldDescriptions.registrationPage}
           />
 
-          <CustomTextField label='registrationPage' name='registrationPageURL' required />
+          <CustomTextField
+           label='registrationPage' 
+           name='registrationPageURL' 
+           required={isRegistrationPageRequired}  />
         </Section>
       )}
 
