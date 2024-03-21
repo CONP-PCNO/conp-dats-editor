@@ -74,29 +74,26 @@ const defaultDatsValidationSchema = yup.object({
     url: yup.string().url()
   }),
   // registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
-  registrationPageURL: yup.string().when('privacy', {
-    is: (value) => ['registered', 'controlled', 'private'].includes(value),
-    then: yup.string()
-      .required('Registration page is required when privacy is set to registered, controlled, or private.')
-      .test(
-        'is-url-or-email',
-        'Registration page must be a valid URL or email address',
-        (value) => {
-          // Regex pour valider une URL
-          const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
-          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
-          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
-          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
-          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
-          '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
-  
-          // Regex pour valider un email
-          const emailPattern = new RegExp('^\\S+@\\S+\\.\\S+$');
-  
-          return urlPattern.test(value) || emailPattern.test(value);
-        }
-      ),
-    otherwise: yup.string()
+  registrationPageURL: yup.string()
+  .when('$isExperiment', {
+    is: true, // Si isExperiment est true dans le contexte de validation
+    then: yup.string(), // Alors le champ n'est pas requis
+    otherwise: yup.string() // Sinon, appliquez la logique existante
+      .when('privacy', {
+        is: (value) => ['registered', 'controlled', 'private'].includes(value),
+        then: yup.string()
+          .required('Registration page is required when privacy is set to registered, controlled, or private.')
+          .test(
+            'is-url-or-email',
+            'Registration page must be a valid URL or email address',
+            (value) => {
+              const urlPattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$','i');
+              const emailPattern = new RegExp('^\\S+@\\S+\\.\\S+$');
+              return urlPattern.test(value) || emailPattern.test(value);
+            }
+          ),
+        otherwise: yup.string()
+      })
   }),
   dates: yup.array().of(
     yup.object({
@@ -112,10 +109,13 @@ const defaultDatsValidationSchema = yup.object({
   refinement: yup.string(),
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
-  reb_info: yup
-    .string()
+  reb_info: yup.string()
     .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
-    .required(),
+    .when('privacy', {
+      is: 'open',
+      then: yup.string().notRequired(),
+      otherwise: yup.string().required('reb_info is required unless privacy is open.')
+  }),
   reb_number: yup.string(),
   experimentsFunctionAssessed: yup.array().of(yup.string()),
   experimentsLanguages: yup.array().of(yup.string()),

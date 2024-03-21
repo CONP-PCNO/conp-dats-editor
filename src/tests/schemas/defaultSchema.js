@@ -54,12 +54,7 @@ export const defaultValidationSchema = yup.object({
     fileName: yup.string(),
     url: yup.string().url()
   }),
-  // registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
-  registrationPageURL: yup.string().when('privacy', {
-    is: (value) => ['registered', 'controlled', 'private'].includes(value),
-    then: yup.string().required('Registration page URL is required when privacy is set to registered, controlled, or private.'),
-    otherwise: yup.string()
-  }),
+  registrationPageURL: yup.string(),
   dates: yup.array().of(
     yup.object({
       date: yup.date(),
@@ -74,9 +69,12 @@ export const defaultValidationSchema = yup.object({
   refinement: yup.string(),
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
-  reb_info: yup
-    .string()
-    .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
-    .required(),
+  reb_info: yup.string()
+  .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
+  .when('privacy', {
+    is: 'open',
+    then: yup.string().notRequired(),
+    otherwise: yup.string().required('reb_info is required unless privacy is open.')
+  }),
   reb_number: yup.string()
 })

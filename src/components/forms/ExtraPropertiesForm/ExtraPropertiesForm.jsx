@@ -24,6 +24,7 @@ import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function ExtraPropertiesForm(props) {
   const { values, isExperiment } = props
+  const isPrivacyOpen = values.privacy === 'open';
   return (
     <React.Fragment>
       <Section>
@@ -809,13 +810,15 @@ export default function ExtraPropertiesForm(props) {
       <Section>
         <JsonSectionTitle
           isExperiment={isExperiment}
-          isRequired
+          isRequired={!isPrivacyOpen} // isRequired basé sur la condition
           setupProps={fieldDescriptions.reb_info}
+          isDisabled={isPrivacyOpen} // isRequired basé sur la condition 
         />
 
         <CustomSelectField
           label='Select a statement *'
           name='reb_info'
+          disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           style={{
             minWidth: 200,
             maxWidth: 700
@@ -828,6 +831,7 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
             value='option_1'
+            disabled={isPrivacyOpen}
           >
             Participants have provided a valid informed consent to the
             de-identification and deposit of their data in an open-access
@@ -841,6 +845,7 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
             value='option_2'
+            disabled={isPrivacyOpen}
           >
             A waiver or other authorization to deposit these de-identified data
             in an open-access portal was obtained from a research ethics body
@@ -854,6 +859,7 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
             value='option_3'
+            disabled={isPrivacyOpen}
           >
             Local law or a relevant institutional authorization otherwise
             enables the deposit of these data in an open-access portal.
@@ -866,6 +872,7 @@ export default function ExtraPropertiesForm(props) {
               maxWidth: 700
             }}
             value='option_4'
+            disabled={isPrivacyOpen}
           >
             These data are not derived from human participants.
           </MenuItem>
@@ -875,6 +882,7 @@ export default function ExtraPropertiesForm(props) {
           <CustomTextField
             label='Ethics committee approval number'
             name='reb_number'
+            disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           />
         )}
       </Section>

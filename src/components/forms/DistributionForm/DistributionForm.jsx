@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Divider } from '@material-ui/core'
 import { Field } from 'formik'
 import { Checkbox } from 'formik-material-ui'
@@ -9,9 +9,19 @@ import JsonSectionTitle from '../../layout/JsonSectionTitle'
 import JsonSelectField from '../../fields/JsonSelectField'
 import JsonTextField from '../../fields/JsonTextField'
 import fieldDescriptions from '../../../model/fieldDescriptions.json'
+import { useFormikContext } from 'formik';
 
 export default function DistributionForm(props) {
   const { values, isExperiment } = props
+  const { values : formikValues, setFieldValue, validateForm } = useFormikContext();
+  useEffect(() => {
+    if (formikValues.privacy === 'open') {
+      setFieldValue('reb_info', '').then(() => {
+        validateForm();
+      });
+    } 
+  }, [formikValues.privacy, setFieldValue, validateForm]);
+
   return (
     <React.Fragment>
       <FieldArraySection

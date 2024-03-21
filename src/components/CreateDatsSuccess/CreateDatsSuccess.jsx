@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Typography } from '@material-ui/core'
+import { Button, Typography, Box } from '@material-ui/core'
 
 function CreateDatsSuccess(props) {
   const { dats, classes } = props
@@ -32,20 +32,24 @@ function CreateDatsSuccess(props) {
         To edit the current DATS file, click on the 'EDIT' button.
       </Typography>
 
-      <Typography gutterBottom variant='body1'>
-        To start the creation of a new DATS.json file, click on 'CREATE A NEW
-        DATS'.
-      </Typography>
+      <Box paddingBottom={2}> 
+        <Typography gutterBottom variant='body1'>
+          To start the creation of a new DATS.json file, click on 'CREATE A NEW
+          DATS'.
+        </Typography>
+      </Box>
 
       <div className={classes.wrapper}>
-        <Button
-          className={classes.button}
-          color='primary'
-          onClick={downloadDats}
-          variant='contained'
-        >
-          Download
-        </Button>
+        <Box paddingBottom={10}> 
+          <Button
+            className={classes.button}
+            color='primary'
+            onClick={downloadDats}
+            variant='contained'
+          >
+            Download
+          </Button>
+        </Box>
       </div>
     </React.Fragment>
   )

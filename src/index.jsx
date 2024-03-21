@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 800,
+      width: '65vw',
       marginLeft: 'auto',
       marginRight: 'auto'
     }
@@ -201,11 +201,37 @@ export function DatsEditorForm(props) {
     setActiveStep(0)
   }
 
-  const handleNext = () => {
-    setTimeout(() => {
-      setActiveStep(activeStep + 1)
-      window.scrollTo(0, 0)
-    }, 200)
+  const handleNext = (errors) => {
+    let modifiedErrors = { ...errors };
+    console.log(modifiedErrors['reb_info'])
+    // Retirer la clé 'reb_info' si activeStep n'est pas 2
+    if (activeStep !== 2) {
+      delete modifiedErrors['reb_info'];
+    }
+    if (isExperiment) {
+      delete modifiedErrors['registrationPageURL'];
+    }
+    console.log(Object.keys(modifiedErrors).length, modifiedErrors)
+    if (Object.keys(modifiedErrors).length === 0) {
+      setTimeout(() => {
+        setActiveStep(activeStep + 1)
+        window.scrollTo(0, 0)
+      }, 200)
+    }
+    else {
+      // Logique pour défiler jusqu'au premier champ d'erreur
+      const firstErrorKey = Object.keys(errors)[0];
+      const errorFieldSelector = `[name="${firstErrorKey}"]`;
+      const errorFieldElement = document.querySelector(errorFieldSelector);
+  
+      if (errorFieldElement) {
+        errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Optionnel: focus sur le champ pour accessibilité
+        if (errorFieldElement.focus) {
+          errorFieldElement.focus();
+        }
+      }
+    }
   }
 
   const handleBack = () => {
@@ -254,6 +280,7 @@ export function DatsEditorForm(props) {
             }}
             validateOnChange={false}
             validationSchema={validationSchema || defaultDatsValidationSchema}
+            validationContext={{ isExperiment: isExperiment }}
           >
             {({ values, errors, touched, isSubmitting, handleReset }) => (
               <Form>
@@ -346,7 +373,7 @@ export function DatsEditorForm(props) {
                       <Button
                         className={classes.button}
                         color='primary'
-                        onClick={handleNext}
+                        onClick={() => handleNext(errors)} 
                         variant='contained'
                       >
                         Next
