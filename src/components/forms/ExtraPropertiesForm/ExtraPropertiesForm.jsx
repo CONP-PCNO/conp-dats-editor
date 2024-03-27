@@ -24,7 +24,7 @@ import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function ExtraPropertiesForm(props) {
   const { values, isExperiment } = props
-  const isPrivacyOpen = values.privacy === 'open';
+  const isPrivacyOpen = values.privacy === 'registered' || values.privacy === 'controlled' || values.privacy === 'private';
   return (
     <React.Fragment>
       <Section>

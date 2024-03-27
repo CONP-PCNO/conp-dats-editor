@@ -72,9 +72,9 @@ export const defaultValidationSchema = yup.object({
   reb_info: yup.string()
   .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
   .when('privacy', {
-    is: 'open',
+    is: (privacy) => privacy === 'registered' || privacy === 'controlled' || privacy === 'private',
     then: yup.string().notRequired(),
-    otherwise: yup.string().required('reb_info is required unless privacy is open.')
+    otherwise: yup.string().required('reb_info is required unless privacy is registered, controlled, or private.')
   }),
   reb_number: yup.string()
 })
