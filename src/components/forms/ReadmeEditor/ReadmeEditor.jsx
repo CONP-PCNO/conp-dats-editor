@@ -104,7 +104,6 @@ export function ReadmeEditor(props) {
       />
 
       <div className={wrapperClass}>
-        <Box paddingBottom={10}>
           <Button
             className={buttonClass}
             color='primary'
@@ -113,7 +112,6 @@ export function ReadmeEditor(props) {
           >
             Download
           </Button>
-        </Box>
       </div>
     </React.Fragment>
   )
