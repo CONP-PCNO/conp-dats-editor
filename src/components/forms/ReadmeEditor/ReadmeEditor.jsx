@@ -1,4 +1,4 @@
-import { Button, Box } from '@material-ui/core'
+import { Button} from '@material-ui/core'
 import React from 'react'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
@@ -104,14 +104,14 @@ export function ReadmeEditor(props) {
       />
 
       <div className={wrapperClass}>
-          <Button
-            className={buttonClass}
-            color='primary'
-            onClick={onClick}
-            variant='contained'
-          >
-            Download
-          </Button>
+        <Button
+          className={buttonClass}
+          color='primary'
+          onClick={onClick}
+          variant='contained'
+        >
+          Download
+        </Button>
       </div>
     </React.Fragment>
   )
