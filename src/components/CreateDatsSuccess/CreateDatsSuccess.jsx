@@ -22,25 +22,16 @@ function CreateDatsSuccess(props) {
         DATS.json created successfully
       </Typography>
 
-      <Typography gutterBottom variant='body1'>
-        The DATS.json file has been created and should be accessible below or in
-        your downloaded files. If the file was not automatically downloaded,
-        click on the 'DOWNLOAD' button below to download it.
-      </Typography>
-
-      <Typography gutterBottom variant='body1'>
-        To edit the current DATS file, click on the 'EDIT' button.
-      </Typography>
-
-      <Box paddingBottom={2}> 
+      <Box paddingBottom={1}>
         <Typography gutterBottom variant='body1'>
-          To start the creation of a new DATS.json file, click on 'CREATE A NEW
-          DATS'.
+          Click the "Download" button below to download your "DATS.json" file. This is 
+          the first of the two files you will need to provide for the creation of your 
+          dataset page in the CONP Portal.
         </Typography>
       </Box>
 
       <div className={classes.wrapper}>
-        <Box paddingBottom={10}> 
+        <Box paddingBottom={5}> 
           <Button
             className={classes.button}
             color='primary'
@@ -51,6 +42,16 @@ function CreateDatsSuccess(props) {
           </Button>
         </Box>
       </div>
+
+      <Box paddingBottom={2}> 
+        <Typography gutterBottom variant='body1'>
+          Once you've downloaded the "DATS.json" file, click the "Next" button below 
+          to continue to the Markdown text editor that will allow you to create a 
+          "README.md" file for your dataset.
+        </Typography>
+      </Box>
+
+
     </React.Fragment>
   )
 }

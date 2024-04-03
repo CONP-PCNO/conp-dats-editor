@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    minWidth: 220
+    minWidth: 220,
+    maxWidth: '100%',
   }
 }))
 

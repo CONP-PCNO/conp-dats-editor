@@ -1,4 +1,4 @@
-import { Button} from '@material-ui/core'
+import {Button, Box, Typography} from '@material-ui/core'
 import React from 'react'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
@@ -97,21 +97,47 @@ export function ReadmeEditor(props) {
 
   return (
     <React.Fragment>
-      <MDEditor
-        onChange={setReadme}
-        previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
-        value={readme}
-      />
+      <div style={{ height: '400px' }}>
+        <MDEditor
+          height="400px"
+          onChange={setReadme}
+          previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
+          value={readme}
+        />
+      </div>
+
+      <Box paddingTop={3}>
+        <Typography gutterBottom variant='body1'>
+          Click the "Download" button below to download your "README" file. This is 
+          the second of the two files you will need to provide for the creation of your 
+          dataset page in the CONP Portal.
+        </Typography>
+      </Box>
+
+      <Box> 
+        <Typography gutterBottom variant='body1'>
+          To edit the current DATS file, click on the 'EDIT' button.
+        </Typography>
+      </Box>
+
+      <Box paddingBottom={1}> 
+        <Typography gutterBottom variant='body1'>
+          To start the creation of a new DATS.json file, click on 'CREATE A NEW
+          DATS'.
+        </Typography>
+      </Box>
 
       <div className={wrapperClass}>
-        <Button
-          className={buttonClass}
-          color='primary'
-          onClick={onClick}
-          variant='contained'
-        >
-          Download
-        </Button>
+        {/* <Box paddingBottom={10}> */}
+          <Button
+            className={buttonClass}
+            color='primary'
+            onClick={onClick}
+            variant='contained'
+          >
+            Downloads
+          </Button>
+        {/* </Box> */}
       </div>
     </React.Fragment>
   )
