@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Button, Divider, Box, Typography } from '@material-ui/core'
 import FieldArraySection from '../../layout/FieldArraySection'
 import { FieldArray } from 'formik'
@@ -70,58 +70,62 @@ export default function GeneralForm(props) {
         />
       )}
 
-      <Divider variant='middle' />
+      {isExperiment ? null : (
+        <>
+          <Divider variant='middle' />
 
-      <Section>
-        <JsonSectionTitle
-          isExperiment={isExperiment}
-          setupProps={fieldDescriptions.dimensions}
-        />
+          <Section>
+            <JsonSectionTitle
+              isExperiment={isExperiment}
+              setupProps={fieldDescriptions.dimensions}
+            />
 
-        <FieldArray name='dimensions'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.dimensions.map((dimension, index) => {
-                return (
-                  <FieldGroup
-                    arrayHelpers={arrayHelpers}
-                    index={index}
-                    key={`dimension_${index}`}
-                    name={`dimension_${index}`}
-                  >
-                    <CustomTextField
-                      label='Name'
-                      name={`dimensions.${index}.name`}
-                    />
+            <FieldArray name='dimensions'>
+              {(arrayHelpers) => (
+                <Box display='flex flex-column'>
+                  {values.dimensions.map((dimension, index) => {
+                    return (
+                      <FieldGroup
+                        arrayHelpers={arrayHelpers}
+                        index={index}
+                        key={`dimension_${index}`}
+                        name={`dimension_${index}`}
+                      >
+                        <CustomTextField
+                          label='Name'
+                          name={`dimensions.${index}.name`}
+                        />
 
-                    <CustomTextField
-                      label='Description'
-                      name={`dimensions.${index}.description`}
-                    />
-                  </FieldGroup>
-                )
-              })}
+                        <CustomTextField
+                          label='Description'
+                          name={`dimensions.${index}.description`}
+                        />
+                      </FieldGroup>
+                    )
+                  })}
 
-              <Box py={1}>
-                <Button
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push({
-                      name: '',
-                      description: ''
-                    })
-                  }}
-                  variant='outlined'
-                >
-                  {values.dimensions.length > 0
-                    ? 'Add another Dimension'
-                    : 'Add a Dimension'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
+                  <Box py={1}>
+                    <Button
+                      color='secondary'
+                      onClick={() => {
+                        arrayHelpers.push({
+                          name: '',
+                          description: ''
+                        })
+                      }}
+                      variant='outlined'
+                    >
+                      {values.dimensions.length > 0
+                        ? 'Add another Dimension'
+                        : 'Add a Dimension'}
+                    </Button>
+                  </Box>
+                </Box>
+              )}
+            </FieldArray>
+          </Section>
+        </>
+      )}
 
       <Divider variant='middle' />
 

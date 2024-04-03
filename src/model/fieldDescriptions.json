@@ -454,7 +454,7 @@
       "Divergent validity": "Divergent validity",
       "Internal reliability": "Internal reliability",
       "Test-retest reliability": "Test-retest reliability",
-      "Specificity": "Specificity",
+      "Specificity": "Specificity/Sensitivity",
       "other": "Other (Please Specify)"
     },
     "fieldName": "validation measure"

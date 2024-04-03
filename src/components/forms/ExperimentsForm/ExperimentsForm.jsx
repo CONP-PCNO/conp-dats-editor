@@ -56,6 +56,59 @@ export default function ExperimentsForm(props) {
       <Section>
         <JsonSectionTitle
           isExperiment
+          setupProps={fieldDescriptions.dimensions}
+        />
+
+        <FieldArray name='dimensions'>
+          {(arrayHelpers) => (
+            <Box display='flex flex-column'>
+              {values.dimensions.map((dimension, index) => {
+                return (
+                  <FieldGroup
+                    arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`dimension_${index}`}
+                    name={`dimension_${index}`}
+                  >
+                    <CustomTextField
+                      label='Name'
+                      name={`dimensions.${index}.name`}
+                    />
+
+                    <CustomTextField
+                      label='Description'
+                      name={`dimensions.${index}.description`}
+                    />
+                  </FieldGroup>
+                )
+              })}
+
+              <Box py={1}>
+                <Button
+                  color='secondary'
+                  onClick={() => {
+                    arrayHelpers.push({
+                      name: '',
+                      description: ''
+                    })
+                  }}
+                  variant='outlined'
+                >
+                  {values.dimensions.length > 0
+                    ? 'Add another Dimension'
+                    : 'Add a Dimension'}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </FieldArray>
+      </Section>
+
+      <Divider variant='middle' />
+
+      <Section>
+        <JsonSectionTitle
+          isExperiment
           setupProps={fieldDescriptions.experimentsRequiredSoftwareTitle}
         />
 
