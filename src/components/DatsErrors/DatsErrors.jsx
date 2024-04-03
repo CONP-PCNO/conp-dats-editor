@@ -2,6 +2,9 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 
 function genErrorString(key, errors) {
+  if (!errors[key]) {
+    return ''; // Retourne une chaîne vide ou un message d'erreur par défaut
+  }
   if (Array.isArray(errors[key])) {
     return errors[key].map((err) => Object.values(err))
   }
