@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, parseISO, isValid } from 'date-fns'
 
 class FormToDats {
   constructor(data) {
@@ -101,8 +101,15 @@ class FormToDats {
       primaryPublications: this.data.primaryPublications.map((pp) => {
         return Object.assign(pp, {
           dates: pp.dates.map((date) => {
+            let parsedDate;
+            if (Date.parse(date.date)) { // Vérifier si date.date est déjà une date valide
+              parsedDate = new Date(date.date);
+            } else {
+              parsedDate = parseISO(date.date); // Essayer de parser comme ISO si ce n'est pas une date valide
+            }
+  
             return Object.assign(date, {
-              date: `${format(date.date, 'yyyy-MM-dd')} 00:00:00`,
+              date: isValid(parsedDate) ? `${format(parsedDate, 'yyyy-MM-dd')} 00:00:00` : "Date invalide",
               type: {
                 value: date.type.value.toLowerCase()
               }
