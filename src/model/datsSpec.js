@@ -73,26 +73,20 @@ const defaultDatsValidationSchema = yup.object({
     fileName: yup.string(),
     url: yup.string().url()
   }),
-  // registrationPageURL: yup.string().url('Please enter a valid URL').nullable(),
-  registrationPageURL: yup.string()
-  .when('$isExperiment', {
-    is: true, // Si isExperiment est true dans le contexte de validation
-    then: yup.string(), // Alors le champ n'est pas requis
-    otherwise: yup.string() // Sinon, appliquez la logique existante
-      .when('privacy', {
-        is: (value) => ['registered', 'controlled', 'private'].includes(value),
-        then: yup.string()
-          .required('Registration page is required when privacy is set to registered, controlled, or private.')
-          .test(
-            'is-url-or-email',
-            'Registration page must be a valid URL or email address',
-            (value) => {
-              const urlPattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$','i');
-              const emailPattern = new RegExp('^\\S+@\\S+\\.\\S+$');
-              return urlPattern.test(value) || emailPattern.test(value);
-            }
-          ),
-        otherwise: yup.string()
+  registrationPageURL: yup.string().when(['privacy', 'isExperiment'], {
+    is: (privacy, isExperiment) => {
+      console.log("Valeur de privacy :", privacy, "isExperiment :", isExperiment);
+      // Le champ est non requis si isExperiment est true, 
+      // ou si la privacy n'est pas dans ['registered', 'controlled', 'private']
+      return isExperiment || !['registered', 'controlled', 'private'].includes(privacy);
+    },
+    then: yup.string(), // Ici, le champ n'est pas requis
+    otherwise: yup.string()
+      .required('Registration page is required when privacy is set to registered, controlled, or private.')
+      .test('is-url-or-email', 'Registration page must be a valid URL or email address', (value) => {
+        const urlPattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$','i');
+        const emailPattern = new RegExp('^\\S+@\\S+\\.\\S+$');
+        return urlPattern.test(value) || emailPattern.test(value);
       })
   }),
   dates: yup.array().of(

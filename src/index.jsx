@@ -203,7 +203,6 @@ export function DatsEditorForm(props) {
 
   const handleNext = (errors) => {
     let modifiedErrors = { ...errors };
-    console.log(modifiedErrors['reb_info'])
     // Retirer la clé 'reb_info' si activeStep n'est pas 2
     if (activeStep !== 2) {
       delete modifiedErrors['reb_info'];
@@ -266,10 +265,9 @@ export function DatsEditorForm(props) {
               </Step>
             ))}
           </Stepper>
-
           <Formik
             enableReinitialize
-            initialValues={valuesState}
+            initialValues={{ ...valuesState, isExperiment: isExperiment }}
             onSubmit={(data, { setSubmitting }) => {
               setSubmitting(true)
               const datsJson = new FormToDats(data)
