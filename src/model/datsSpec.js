@@ -110,11 +110,11 @@ const defaultDatsValidationSchema = yup.object({
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
   reb_info: yup.string()
-    .oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
     .when('privacy', {
-      is: (privacy) => privacy === 'registered' || privacy === 'controlled' || privacy === 'private',
-      then: yup.string().notRequired(),
-      otherwise: yup.string().required('reb_info is required unless privacy is registered, controlled, or private.')
+      is: (privacy) => ['registered', 'controlled', 'private'].includes(privacy),
+      then: yup.string(),
+      otherwise: yup.string().oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
+        .required('reb_info is required unless privacy is registered, controlled, or private.')
   }),
   reb_number: yup.string(),
   experimentsFunctionAssessed: yup.array().of(yup.string()),
