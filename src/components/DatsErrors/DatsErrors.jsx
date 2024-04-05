@@ -6,7 +6,8 @@ function genErrorString(key, errors) {
     return ''; // Retourne une chaîne vide ou un message d'erreur par défaut
   }
   if (Array.isArray(errors[key])) {
-    return errors[key].map((err) => Object.values(err))
+    // return errors[key].map((err) => Object.values(err))
+    return errors[key].map((err) => err ? Object.values(err).join(', ') : '').join('; ');
   }
   return JSON.stringify(errors[key])
 }
