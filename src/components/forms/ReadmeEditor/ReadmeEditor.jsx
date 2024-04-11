@@ -125,6 +125,8 @@ export function ReadmeEditor(props) {
             .w-md-editor-toolbar { background-color: white !important; color: black !important; }
             .w-md-editor-toolbar li > button { color: black !important; }
             .w-md-editor-text-input { color: black !important; -webkit-text-fill-color: black !important;}
+            .w-md-editor-input { scrollbar-color: #888 #f0f0f0; }
+            .w-md-editor-preview { scrollbar-color: #888 #f0f0f0; }
           `}
         </style>
       </div>
