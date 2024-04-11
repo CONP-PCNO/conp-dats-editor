@@ -1,5 +1,5 @@
 import {Button, Box, Typography} from '@material-ui/core'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 
@@ -82,6 +82,10 @@ export function ReadmeEditor(props) {
   const { readmeStart, wrapperClass, buttonClass } = props
   const [readme, setReadme] = React.useState(readmeStart)
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   function downloadReadme() {
     const element = document.createElement('a')
     const file = new Blob([readme], { type: 'text/plain' })
@@ -95,15 +99,34 @@ export function ReadmeEditor(props) {
 
   const onClick = React.useCallback(downloadReadme, [readme])
 
+  // Style spécifique pour la prévisualisation Markdown
+  const markdownPreviewStyle = {
+    backgroundColor: 'white', // Fond blanc
+    color: 'black'            // Texte noir
+  };
+
+  const editorStyle = {
+    background: 'white', // Fond blanc pour l'éditeur
+    color: 'black',      // Texte noir pour l'éditeur
+  };
+
   return (
     <React.Fragment>
       <div style={{ height: '400px' }}>
         <MDEditor
           height="400px"
           onChange={setReadme}
-          previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
+          style={editorStyle} 
+          previewOptions={{ rehypePlugins: [[rehypeSanitize]], style: markdownPreviewStyle, }}
           value={readme}
         />
+        <style>
+          {`
+            .w-md-editor-toolbar { background-color: white !important; color: black !important; }
+            .w-md-editor-toolbar li > button { color: black !important; }
+            .w-md-editor-text-input { color: black !important; -webkit-text-fill-color: black !important;}
+          `}
+        </style>
       </div>
 
       <Box paddingTop={3}>

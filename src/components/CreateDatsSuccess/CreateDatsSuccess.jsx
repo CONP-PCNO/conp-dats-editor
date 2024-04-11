@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Typography, Box } from '@material-ui/core'
 
 function CreateDatsSuccess(props) {
   const { dats, classes } = props
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const downloadDats = () => {
     const element = document.createElement('a')
