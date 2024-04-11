@@ -170,6 +170,7 @@ export function DatsEditorForm(props) {
 
   const steps = isExperiment ? experimentSteps : datasetSteps
   const postDatsSteps = isExperiment ? 2 : 2
+  const [nextClicked, setNextClicked] = React.useState(false);
 
   const isLastStep = (activeStep) =>
     activeStep === steps.length - (postDatsSteps + 1)
@@ -208,6 +209,9 @@ export function DatsEditorForm(props) {
       delete modifiedErrors['reb_info'];
     }
     if (isExperiment) {
+      if(activeStep == 2){
+        setNextClicked(true)
+      }
       delete modifiedErrors['registrationPageURL'];
     }
     console.log(Object.keys(modifiedErrors).length, modifiedErrors)
@@ -232,6 +236,11 @@ export function DatsEditorForm(props) {
       }
     }
   }
+
+  const handleConfirm = () => {
+    setNextClicked(true); // Set when 'Confirm' is clicked
+    // setActiveStep(activeStep + 1);
+  };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1)
@@ -269,6 +278,7 @@ export function DatsEditorForm(props) {
             enableReinitialize
             initialValues={{ ...valuesState, isExperiment: isExperiment }}
             onSubmit={(data, { setSubmitting }) => {
+              setNextClicked(true);
               setSubmitting(true)
               const datsJson = new FormToDats(data)
               console.log('datsJson', datsJson)
@@ -364,6 +374,7 @@ export function DatsEditorForm(props) {
                         disabled={isSubmitting}
                         type='submit'
                         variant='contained'
+                        onClick={handleConfirm}
                       >
                         Confirm
                       </Button>
@@ -371,7 +382,7 @@ export function DatsEditorForm(props) {
                       <Button
                         className={classes.button}
                         color='primary'
-                        onClick={() => handleNext(errors)} 
+                        onClick={() => handleNext(errors)}  
                         variant='contained'
                       >
                         Next
@@ -403,6 +414,8 @@ export function DatsEditorForm(props) {
                   className={classes.section}
                   errors={errors}
                   touched={touched}
+                  steps={activeStep}
+                  next={nextClicked}
                 />
               </Form>
             )}

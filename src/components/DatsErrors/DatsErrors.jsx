@@ -25,12 +25,14 @@ function warningFromKey(key, errors, touched) {
 }
 
 export default function DatsErrors(props) {
-  const { errors, touched, className } = props
+  const { errors, touched, className, steps, next } = props
 
   if (Object.keys(errors).length === 0) {
     return null
   }
-
+  if (errors['reb_info'] && !next) {
+    return null
+  }
   return (
     <div className={className}>
       <Typography gutterBottom variant='h6'>
