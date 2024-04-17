@@ -76,7 +76,6 @@ const defaultDatsValidationSchema = yup.object({
   }),
   registrationPageURL: yup.string().when(['privacy', 'isExperiment'], {
     is: (privacy, isExperiment) => {
-      console.log("Valeur de privacy :", privacy, "isExperiment :", isExperiment);
       // Le champ est non requis si isExperiment est true, 
       // ou si la privacy n'est pas dans ['registered', 'controlled', 'private']
       return isExperiment || !['registered', 'controlled', 'private'].includes(privacy);

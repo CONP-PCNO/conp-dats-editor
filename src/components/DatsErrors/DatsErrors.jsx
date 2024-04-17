@@ -25,13 +25,20 @@ function warningFromKey(key, errors, touched) {
 }
 
 export default function DatsErrors(props) {
-  const { errors, touched, className, steps, next } = props
-
+  const { errors, touched, className, next } = props
   if (Object.keys(errors).length === 0) {
     return null
   }
   if (errors['reb_info'] && !next) {
-    return null
+    delete errors['reb_info'];
+  }
+
+  // Calculer les warnings à partir des erreurs
+  const warnings = Object.keys(errors).map(key => warningFromKey(key, errors, touched)).filter(x => x !== null);
+
+  // Si aucun warning valide n'est généré, ne rien rendre
+  if (warnings.length === 0) {
+    return null;
   }
   return (
     <div className={className}>

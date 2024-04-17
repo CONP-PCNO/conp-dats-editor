@@ -205,12 +205,57 @@ export function DatsEditorForm(props) {
   const handleNext = (errors) => {
     let modifiedErrors = { ...errors };
     // Retirer la clé 'reb_info' si activeStep n'est pas 2
-    if (activeStep !== 2) {
-      delete modifiedErrors['reb_info'];
+    if(!isExperiment){
+      if (activeStep !== 2) {
+        if(modifiedErrors['reb_info']){
+          delete modifiedErrors['reb_info'];
+        }
+        if(modifiedErrors['contact']){
+          delete modifiedErrors['contact'];
+        }
+      }
+      if(activeStep !== 1){
+        if(modifiedErrors['size']){
+          delete modifiedErrors['size'];
+        }
+        if(modifiedErrors['access']){
+          delete modifiedErrors['access'];
+        }
+        if(modifiedErrors['files']){
+          delete modifiedErrors['files'];
+        }
+        if(modifiedErrors['conpStatus']){
+          delete modifiedErrors['conpStatus'];
+        }
+      }
     }
     if (isExperiment) {
       if(activeStep == 2){
         setNextClicked(true)
+      }
+      if(activeStep !== 1){
+        if(modifiedErrors['size']){
+          delete modifiedErrors['size'];
+        }
+        if(modifiedErrors['access']){
+          delete modifiedErrors['access'];
+        }
+        if(modifiedErrors['files']){
+          delete modifiedErrors['files'];
+        }
+        if(modifiedErrors['conpStatus']){
+          delete modifiedErrors['conpStatus'];
+        }
+      }
+      if (activeStep !== 2) {
+        if(modifiedErrors['contact']){
+          delete modifiedErrors['contact'];
+        }
+      }
+      if(activeStep !== 3){
+        if(modifiedErrors['types']){
+          delete modifiedErrors['types'];
+        }
       }
       delete modifiedErrors['registrationPageURL'];
     }
@@ -252,6 +297,24 @@ export function DatsEditorForm(props) {
     window.scrollTo(0, 0)
   }
 
+  const downloadDats = (formData) => {
+    if (!valuesState || Object.keys(valuesState).length === 0) {
+      alert('No data available to download.');
+      return;
+    }
+    console.log(formData)
+    const datsJson = new FormToDats(formData).getJson();
+    const element = document.createElement('a')
+    const file = new Blob([JSON.stringify(datsJson, null, 2)], {
+      type: 'text/plain'
+    })
+    element.href = URL.createObjectURL(file)
+    element.download = 'DATS.json'
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+
   /* eslint react/jsx-newline: "off" */
   /* eslint react/jsx-max-depth: "off" */
   /* eslint react/forbid-component-props: "off" */
@@ -288,7 +351,7 @@ export function DatsEditorForm(props) {
             }}
             validateOnChange={false}
             validationSchema={validationSchema || defaultDatsValidationSchema}
-            validationContext={{ isExperiment: isExperiment }}
+            validationContext={{ isExperiment: isExperiment }}  
           >
             {({ values, errors, touched, isSubmitting, handleReset }) => (
               <Form>
@@ -343,6 +406,17 @@ export function DatsEditorForm(props) {
                 )}
 
                 <div className={classes.buttons}>
+                  {/* <Button
+                    className={classes.button}
+                    style={{ backgroundColor: '#4CAF50', color: 'white', marginRight: 'auto' }} 
+                    onClick={() => downloadDats(values)}
+                    // onClick={console.log('pressed')}
+                    variant="contained"
+                  >
+                    Save partial DATS
+                  </Button>
+ */}
+
                   {shouldShowClearButton(activeStep) ? (
                     <Button
                       className={classes.button}
@@ -414,7 +488,6 @@ export function DatsEditorForm(props) {
                   className={classes.section}
                   errors={errors}
                   touched={touched}
-                  steps={activeStep}
                   next={nextClicked}
                 />
               </Form>
