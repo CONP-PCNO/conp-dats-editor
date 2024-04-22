@@ -18,7 +18,7 @@
     "name": "Description",
     "description": {
       "dataset": "A short paragraph providing an overview of the dataset and the context of data collection. Suggestion of items to include (if applicable) are: main use of the dataset, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the dataset.",
-      "experiment": "A short paragraph providing an overview of the experiment and the context of data collection. Suggestion of items to include (if applicable) are: main use of the experiment, population studied, study design, sample size, data collected, methods, techniques, apparatus used to generate the data. Ideally, the first sentence of the description should give a good overall description of the experiment."
+      "experiment": "A short paragraph providing a rapid overview of the experiment and the context of data collection. Suggestion of items to include (if applicable) are: main procedure of the experiment, population studied, experimental design, data collected, methods, techniques, apparatus used to generate the outputs. Ideally, the first sentence of the description should give a good overall description of the experiment."
     }
   },
   "types": {
@@ -82,7 +82,7 @@
     "name": { "dataset": "Formats", "experiment": "Formats (Recommended)" },
     "description": {
       "dataset": "The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).",
-      "experiment": "The technical format of the experiment distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite)."
+      "experiment": "The technical format of the data generated from the experiment. Use the file extension or MIME type when possible. (Definition adapted from DataCite)."
     },
     "fieldName": "format"
   },
@@ -423,7 +423,7 @@
   "experimentsStimuli": {
     "name": "Stimuli",
     "description": {
-      "experiment": "The stimuli used during the experiment, if applicable."
+      "experiment": "Types of stimuli used for the experiment (e.g., audio, video, image)."
     },
     "items": {
       "Audio": "Audio",
