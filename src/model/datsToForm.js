@@ -44,7 +44,7 @@ class DatsToForm {
       types: this.data.types.map((a) => a?.information?.value) || [],
       version: this.data.version || '',
       licenses: this.data.licenses.map((a) => a?.name) || [],
-      keywords: this.data.keywords.map((a) => a?.value) || [],
+      keywords: this.data.keywords?.map((a) => a?.value) || [],
       formats: this.data.distributions[0]?.formats || [],
       size: {
         value: this.data.distributions[0]?.size || '',

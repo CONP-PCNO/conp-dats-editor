@@ -171,6 +171,7 @@ export function DatsEditorForm(props) {
   const steps = isExperiment ? experimentSteps : datasetSteps
   const postDatsSteps = isExperiment ? 2 : 2
   const [nextClicked, setNextClicked] = React.useState(false);
+  const [validateOnChange, setValidateOnChange] = React.useState(false);
 
   const isLastStep = (activeStep) =>
     activeStep === steps.length - (postDatsSteps + 1)
@@ -268,10 +269,10 @@ export function DatsEditorForm(props) {
     }
     else {
       // Logique pour défiler jusqu'au premier champ d'erreur
-      const firstErrorKey = Object.keys(errors)[0];
+      const firstErrorKey = Object.keys(modifiedErrors)[0];
       const errorFieldSelector = `[name="${firstErrorKey}"]`;
       const errorFieldElement = document.querySelector(errorFieldSelector);
-  
+
       if (errorFieldElement) {
         errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         // Optionnel: focus sur le champ pour accessibilité
@@ -284,6 +285,7 @@ export function DatsEditorForm(props) {
 
   const handleConfirm = () => {
     setNextClicked(true); // Set when 'Confirm' is clicked
+    setValidateOnChange(true);
     // setActiveStep(activeStep + 1);
   };
 
@@ -349,7 +351,7 @@ export function DatsEditorForm(props) {
               setActiveStep(activeStep + 1)
               setSubmitting(false)
             }}
-            validateOnChange={false}
+            validateOnChange={validateOnChange}
             validationSchema={validationSchema || defaultDatsValidationSchema}
             validationContext={{ isExperiment: isExperiment }}  
           >
@@ -406,16 +408,17 @@ export function DatsEditorForm(props) {
                 )}
 
                 <div className={classes.buttons}>
-                  {/* <Button
+                {activeStep < 3 && (
+                  <Button
                     className={classes.button}
-                    style={{ backgroundColor: '#4CAF50', color: 'white', marginRight: 'auto' }} 
+                    style={{ backgroundColor: '#3f51b5', color: 'white', marginRight: 'auto' }} 
                     onClick={() => downloadDats(values)}
                     // onClick={console.log('pressed')}
                     variant="contained"
                   >
                     Save partial DATS
                   </Button>
- */}
+                )}
 
                   {shouldShowClearButton(activeStep) ? (
                     <Button

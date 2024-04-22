@@ -32,7 +32,7 @@ export default function DatsErrors(props) {
   if (errors['reb_info'] && !next) {
     delete errors['reb_info'];
   }
-
+  
   // Calculer les warnings à partir des erreurs
   const warnings = Object.keys(errors).map(key => warningFromKey(key, errors, touched)).filter(x => x !== null);
 
