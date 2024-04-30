@@ -27,10 +27,12 @@ const defaultDatsValidationSchema = yup.object({
     email: yup.string().email().required()
   }),
   description: yup.string().required(),
-  types: yup.array().of(yup.string()).min(1).required(),
-  version: yup.number().positive(),
-  licenses: yup.array().of(yup.string()).min(1),
-  keywords: yup.array().of(yup.string()).min(1),
+  types: yup.array().of(yup.string().required()
+  .notOneOf([""], "Type cannot be empty")).min(1).required("Type cannot be empty"),
+  version: yup.number().positive().required(),
+  licenses: yup.array().of(yup.string().required()).min(1, 'min 1'),
+  keywords: yup.array().of(yup.string().required()
+  .notOneOf([""], "Keywords cannot be empty")).min(1).required("Keywords cannot be empty"),
   formats: yup.array().of(yup.string()),
   size: yup
     .object({
@@ -146,7 +148,8 @@ const defaultDatsValues = {
   description: '',
   types: [],
   version: '',
-  licenses: [''],
+  // licenses: [''],
+  licenses: [],
   keywords: [],
   formats: [],
   size: {

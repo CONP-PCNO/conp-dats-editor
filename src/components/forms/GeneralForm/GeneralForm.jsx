@@ -14,7 +14,7 @@ import SingleFieldSection from '../../layout/SingleFieldSection'
 import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 export default function GeneralForm(props) {
-  const { values, isExperiment } = props
+  const { values, isExperiment, nextClicked } = props
   // Détermine si registrationPageURL doit être obligatoire
   const isRegistrationPageRequired = ['registered', 'controlled', 'private'].includes(values.privacy);
 
@@ -30,6 +30,7 @@ export default function GeneralForm(props) {
         isRequired
         jsonField={JsonTextField}
         nameAttr='title'
+        nextClicked = {nextClicked}
         setupProps={fieldDescriptions.title}
       />
 
@@ -53,6 +54,7 @@ export default function GeneralForm(props) {
         jsonField={JsonTextField}
         minRows={4}
         multiline
+        nextClicked = {nextClicked}
         nameAttr='description'
         setupProps={fieldDescriptions.description}
       />

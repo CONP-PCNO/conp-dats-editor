@@ -1,5 +1,5 @@
 import React from 'react'
-import { FieldArray } from 'formik'
+import { FieldArray, useFormikContext, getIn } from 'formik'
 import Section from '../layout/Section'
 import SectionTitle from '../layout/SectionTitle'
 import { Button, Box } from '@material-ui/core'
@@ -20,15 +20,35 @@ export default function FieldArraySection(props) {
   const { name, description, fieldName } = parseValues(setupProps, selfString)
   const requiredStar = isRequired ? ' *' : ''
   const JsonField = jsonField
+  const [initialized, setInitialized] = React.useState(false);
+
+  // Utiliser FormikContext pour accéder aux erreurs et au statut touched de Formik
+  const { errors, touched } = useFormikContext();
+
   return (
     <Section>
       <SectionTitle name={`${name}${requiredStar}`} tooltip={description} />
 
       <FieldArray name={nameAttr}>
-        {(arrayHelpers) => (
-          <Box display='flex flex-column'>
-            {values.map((value, index) => {
-              return (
+        {(arrayHelpers) => {
+          if ((nameAttr === 'types' || nameAttr === 'keywords' || nameAttr === 'licenses') && values.length === 0 && !initialized) {
+            arrayHelpers.push('');
+            setInitialized(true); // Indique que l'initialisation a été faite
+          }
+
+          return (
+            <Box display='flex flex-column'>
+              {values.map((value, index) => {
+
+                // const errorText = getIn(errors, `${nameAttr}[${index}]`);  // Accède à l'erreur pour chaque élément
+                // const isError = !!errorText && (!value || value === "");  // Détermine si le champ a une erreur
+
+                const fieldPath = `${nameAttr}[${index}]`;
+                const errorText = getIn(errors, fieldPath);  // Get error message
+                const touchedField = getIn(touched, fieldPath);  // Check if field was touched
+                const isError = touchedField && !!errorText;  // Display error only if field was touched
+
+                return(
                 <FieldGroup
                   arrayHelpers={arrayHelpers}
                   index={index}
@@ -41,11 +61,13 @@ export default function FieldArraySection(props) {
                     nameAttr={`${nameAttr}.${index}`}
                     setupProps={setupProps}
                     value={value}
+                    // error={isError}
+                    // helperText={errorText}
                     {...fieldProps}
                   />
                 </FieldGroup>
-              )
-            })}
+                )
+                })}
 
             <Box py={1}>
               <Button
@@ -61,7 +83,7 @@ export default function FieldArraySection(props) {
               </Button>
             </Box>
           </Box>
-        )}
+        )}}
       </FieldArray>
     </Section>
   )

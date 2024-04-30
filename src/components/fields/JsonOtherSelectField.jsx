@@ -9,10 +9,11 @@ export default function JsonOtherSelectField(props) {
   const { name, items } = parseValues(setupProps, selfString)
   const requiredStar = isRequired ? ' *' : ''
   const label = `${name}${requiredStar}`
+
   return (
     <FastField
       component={HybridSelectTextField}
-      inputProps={{ 'data-testid': `${nameAttr}.value` }}
+      inputProps={{ 'data-testid': `${nameAttr}` }}
       label={label}
       name={nameAttr}
       options={items}

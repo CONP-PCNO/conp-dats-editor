@@ -102,7 +102,7 @@ const experimentSteps = [
   'Readme Editor'
 ]
 
-function renderStep(step, classes, values, dats, isExperiment) {
+function renderStep(step, classes, values, dats, isExperiment, nextClicked) {
   switch (step) {
     case experimentSteps[0]:
       return (
@@ -110,6 +110,7 @@ function renderStep(step, classes, values, dats, isExperiment) {
           classes={classes}
           isExperiment={isExperiment}
           values={values}
+          nextClicked = {nextClicked}
         />
       )
     case experimentSteps[1]:
@@ -203,8 +204,10 @@ export function DatsEditorForm(props) {
     setActiveStep(0)
   }
 
-  const handleNext = (errors) => {
+  const handleNext = (errors, values) => {
     let modifiedErrors = { ...errors };
+    setNextClicked(true)
+    //console.log('values',values)
     // Retirer la clé 'reb_info' si activeStep n'est pas 2
     if(!isExperiment){
       if (activeStep !== 2) {
@@ -231,9 +234,6 @@ export function DatsEditorForm(props) {
       }
     }
     if (isExperiment) {
-      if(activeStep == 2){
-        setNextClicked(true)
-      }
       if(activeStep !== 1){
         if(modifiedErrors['size']){
           delete modifiedErrors['size'];
@@ -252,13 +252,18 @@ export function DatsEditorForm(props) {
         if(modifiedErrors['contact']){
           delete modifiedErrors['contact'];
         }
+        if(delete modifiedErrors['registrationPageURL']){
+          delete modifiedErrors['registrationPageURL'];
+        }
+        if(modifiedErrors['reb_info']){
+          delete modifiedErrors['reb_info'];
+        }
       }
       if(activeStep !== 3){
         if(modifiedErrors['types']){
           delete modifiedErrors['types'];
         }
       }
-      delete modifiedErrors['registrationPageURL'];
     }
     console.log(Object.keys(modifiedErrors).length, modifiedErrors)
     if (Object.keys(modifiedErrors).length === 0) {
@@ -269,14 +274,58 @@ export function DatsEditorForm(props) {
     }
     else {
       // Logique pour défiler jusqu'au premier champ d'erreur
-      const firstErrorKey = Object.keys(modifiedErrors)[0];
-      const errorFieldSelector = `[name="${firstErrorKey}"]`;
-      const errorFieldElement = document.querySelector(errorFieldSelector);
+      var firstErrorKey = Object.keys(modifiedErrors)[0];
+      var errorFieldSelector = `[name="${firstErrorKey}"]`;
+      var errorFieldElement = document.querySelector(errorFieldSelector);
 
-      if (errorFieldElement) {
+      // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
+      if (firstErrorKey === 'access') {
+        firstErrorKey = firstErrorKey + '.landingPage';
+      } else if (firstErrorKey === 'creators') {
+        firstErrorKey = firstErrorKey + '.0.name';
+      } else if (firstErrorKey === 'size') {
+        firstErrorKey = firstErrorKey + '.value';
+      } else if (firstErrorKey === 'conpStatus') {
+        // Pas besoin de modification pour 'conpStatus'
+      }
+      errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+      errorFieldElement = document.querySelector(errorFieldSelector);
+
+      if (errorFieldElement === null) {
+        firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+        errorFieldElement = document.querySelector(errorFieldSelector);
+      }
+
+      if (firstErrorKey === 'conpStatus' && errorFieldElement) {
+        // Pour 'conpStatus', accéder au div parent
+        let parentDivElement = errorFieldElement.parentNode;
+        // Ensuite, accéder au premier div enfant du div parent
+        let childDivElement = parentDivElement.querySelector('div'); // Assurez-vous que c'est bien un div que vous voulez sélectionner
+    
+        childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (childDivElement.focus) {
+          childDivElement.focus();
+          childDivElement.blur();
+          childDivElement.focus();
+        }
+      } else if (firstErrorKey === 'licenses.0' && errorFieldElement) {
+        // Traiter spécifiquement pour 'licenses'
+        let childDivElement = errorFieldElement.querySelector('div'); // Sélectionner le premier div enfant
+        if (childDivElement) {
+          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (childDivElement.focus) {
+            childDivElement.focus();
+            childDivElement.blur();
+            childDivElement.focus();
+          }
+        }
+      } else if (errorFieldElement) {
         errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         // Optionnel: focus sur le champ pour accessibilité
         if (errorFieldElement.focus) {
+          errorFieldElement.focus();
+          errorFieldElement.blur();
           errorFieldElement.focus();
         }
       }
@@ -343,7 +392,6 @@ export function DatsEditorForm(props) {
             enableReinitialize
             initialValues={{ ...valuesState, isExperiment: isExperiment }}
             onSubmit={(data, { setSubmitting }) => {
-              setNextClicked(true);
               setSubmitting(true)
               const datsJson = new FormToDats(data)
               console.log('datsJson', datsJson)
@@ -404,7 +452,8 @@ export function DatsEditorForm(props) {
                   classes,
                   values,
                   dats,
-                  isExperiment
+                  isExperiment,
+                  nextClicked
                 )}
 
                 <div className={classes.buttons}>
@@ -459,7 +508,7 @@ export function DatsEditorForm(props) {
                       <Button
                         className={classes.button}
                         color='primary'
-                        onClick={() => handleNext(errors)}  
+                        onClick={() => handleNext(errors, values)}  
                         variant='contained'
                       >
                         Next
