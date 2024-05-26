@@ -1,6 +1,7 @@
 import * as yup from 'yup'
 
 const defaultDatsValidationSchema = yup.object({
+  isExperiment: yup.boolean(),
   title: yup.string().required(),
   creators: yup.array().of(
     yup.object({
@@ -80,6 +81,7 @@ const defaultDatsValidationSchema = yup.object({
     is: (privacy, isExperiment) => {
       // Le champ est non requis si isExperiment est true, 
       // ou si la privacy n'est pas dans ['registered', 'controlled', 'private']
+      //console.log('isExperimentURL:', isExperiment); 
       return isExperiment || !['registered', 'controlled', 'private'].includes(privacy);
     },
     then: yup.string(), // Ici, le champ n'est pas requis
@@ -113,20 +115,38 @@ const defaultDatsValidationSchema = yup.object({
         .required('reb_info is required unless privacy is registered, controlled, or private.')
   }),
   reb_number: yup.string(),
-  experimentsFunctionAssessed: yup.array().of(yup.string()),
-  experimentsLanguages: yup.array().of(yup.string()),
+  experimentsFunctionAssessed: yup.array().when('isExperiment', {
+    is: true,
+    then: yup.array().of(yup.string().required()),
+    otherwise: yup.array().of(yup.string())
+  }),
+  experimentsLanguages: yup.array().when('isExperiment', {
+    is: true,
+    then: yup.array().of(yup.string().required()),
+    otherwise: yup.array().of(yup.string())
+  }),
   experimentsValidationMeasures: yup.array().of(yup.string()),
   experimentsValidationPopulations: yup.array().of(yup.string()),
   experimentsAccessibility: yup.array().of(yup.string()),
   experimentsSpecies: yup.array().of(yup.string()),
-  experimentsModalities: yup.array().of(yup.string()),
-  experimentsRequiredDevices: yup.array().of(yup.string()),
-  experimentsRequiredSoftware: yup.array().of(
-    yup.object({
-      software: yup.string(),
-      version: yup.string()
-    })
-  ),
+  experimentsModalities: yup.array().when('isExperiment', {
+    is: true,
+    then: yup.array().of(yup.string().required()),
+    otherwise: yup.array().of(yup.string())
+  }),
+  experimentsRequiredDevices: yup.array().when('isExperiment', {
+    is: true,
+    then: yup.array().of(yup.string().required()),
+    otherwise: yup.array().of(yup.string())
+  }),
+  experimentsRequiredSoftware: yup.array().when('isExperiment', {
+    is : true,
+    then: yup.array().of(
+      yup.object({
+        software: yup.string().required(),
+        version: yup.string()
+      }))
+  }),
   experimentsStimuli: yup.array().of(yup.string()),
   experimentsAdditionalRequirements: yup.string()
 })
