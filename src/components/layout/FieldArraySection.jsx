@@ -20,8 +20,7 @@ export default function FieldArraySection(props) {
   const { name, description, fieldName } = parseValues(setupProps, selfString)
   const requiredStar = isRequired ? ' *' : ''
   const JsonField = jsonField
-  const [initialized, setInitialized] = React.useState(false);
-
+  //const [initialized, setInitialized] = React.useState(false); 
   // Utiliser FormikContext pour accéder aux erreurs et au statut touched de Formik
   const { errors, touched } = useFormikContext();
 
@@ -31,9 +30,9 @@ export default function FieldArraySection(props) {
 
       <FieldArray name={nameAttr}>
         {(arrayHelpers) => {
-          if ((nameAttr === 'types' || nameAttr === 'keywords' || nameAttr === 'licenses') && values.length === 0 && !initialized) {
+          if ((nameAttr === 'types' || nameAttr === 'keywords' || nameAttr === 'licenses'|| nameAttr === 'experimentsFunctionAssessed' || nameAttr === 'experimentsModalities' || nameAttr == 'experimentsLanguages') && values.length === 0) {
             arrayHelpers.push('');
-            setInitialized(true); // Indique que l'initialisation a été faite
+            //setInitialized(true); // Indique que l'initialisation a été faite
           }
 
           return (

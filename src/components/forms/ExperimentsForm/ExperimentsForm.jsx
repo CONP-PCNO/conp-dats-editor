@@ -109,11 +109,19 @@ export default function ExperimentsForm(props) {
       <Section>
         <JsonSectionTitle
           isExperiment
+          isRequired
           setupProps={fieldDescriptions.experimentsRequiredSoftwareTitle}
         />
 
         <FieldArray name='experimentsRequiredSoftware'>
-          {(arrayHelpers) => (
+          {(arrayHelpers) => {
+
+            // Vérifier si le tableau est vide et initialiser si nécessaire
+            if (arrayHelpers.form.values.experimentsRequiredSoftware.length === 0) {
+              arrayHelpers.push({ software: '', version: '' });  // Assurez-vous que la structure ajoutée correspond à vos champs attendus
+            }
+
+            return (
             <Box display='flex flex-column'>
               {' '}
               {values.experimentsRequiredSoftware.map((software, index) => {
@@ -167,7 +175,8 @@ export default function ExperimentsForm(props) {
                 </Button>
               </Box>
             </Box>
-          )}
+
+          )}}
         </FieldArray>
       </Section>
 
@@ -308,7 +317,7 @@ export default function ExperimentsForm(props) {
       <FieldArraySection
         fullWidth
         isExperiment
-        isRequired
+        isRequired={false}
         jsonField={JsonOtherSelectField}
         nameAttr='experimentsAccessibility'
         setupProps={fieldDescriptions.experimentsAccessibility}
