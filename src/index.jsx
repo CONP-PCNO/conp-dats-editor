@@ -263,6 +263,18 @@ export function DatsEditorForm(props) {
         if(modifiedErrors['types']){
           delete modifiedErrors['types'];
         }
+        if(modifiedErrors['experimentsRequiredSoftware']){
+          delete modifiedErrors['experimentsRequiredSoftware'];
+        }
+        if(modifiedErrors['experimentsFunctionAssessed']){
+          delete modifiedErrors['experimentsFunctionAssessed'];
+        }
+        if(modifiedErrors['experimentsLanguages']){
+          delete modifiedErrors['experimentsLanguages'];
+        }
+        if(modifiedErrors['experimentsModalities']){
+          delete modifiedErrors['experimentsModalities'];
+        }
       }
     }
     console.log(Object.keys(modifiedErrors).length, modifiedErrors)
@@ -296,7 +308,7 @@ export function DatsEditorForm(props) {
         errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
         errorFieldElement = document.querySelector(errorFieldSelector);
       }
-
+      console.log('firstErrorKey', firstErrorKey, errorFieldElement)
       if (firstErrorKey === 'conpStatus' && errorFieldElement) {
         // Pour 'conpStatus', accéder au div parent
         let parentDivElement = errorFieldElement.parentNode;
@@ -309,6 +321,18 @@ export function DatsEditorForm(props) {
           childDivElement.blur();
           childDivElement.focus();
         }
+      } else if (firstErrorKey === 'privacy' && errorFieldElement) {
+          // Pour 'conpStatus', accéder au div parent
+          let parentDivElement = errorFieldElement.parentNode;
+          // Ensuite, accéder au premier div enfant du div parent
+          let childDivElement = parentDivElement.querySelector('div'); // Assurez-vous que c'est bien un div que vous voulez sélectionner
+      
+          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (childDivElement.focus) {
+            childDivElement.focus();
+            childDivElement.blur();
+            childDivElement.focus();
+          }
       } else if (firstErrorKey === 'licenses.0' && errorFieldElement) {
         // Traiter spécifiquement pour 'licenses'
         let childDivElement = errorFieldElement.querySelector('div'); // Sélectionner le premier div enfant
@@ -332,9 +356,67 @@ export function DatsEditorForm(props) {
     }
   }
 
-  const handleConfirm = () => {
+  const handleConfirm = (errors) => {
+    console.log('errors', errors)
     setNextClicked(true); // Set when 'Confirm' is clicked
     setValidateOnChange(true);
+
+
+
+    if (Object.keys(errors).length === 0) {
+      console.log('no error')
+    }
+    else {
+      // Logique pour défiler jusqu'au premier champ d'erreur
+      var firstErrorKey = Object.keys(errors)[0];
+      var errorFieldSelector = `[name="${firstErrorKey}"]`;
+      var errorFieldElement = document.querySelector(errorFieldSelector);
+      console.log('firstErrorKeyTop', firstErrorKey, errorFieldElement)
+      // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
+      if (firstErrorKey === 'experimentsRequiredSoftware') {
+        firstErrorKey = firstErrorKey + '.0.software';
+      } else if (firstErrorKey === 'creators') {
+        firstErrorKey = firstErrorKey + '.0.name';
+      } else if (firstErrorKey === 'size') {
+        firstErrorKey = firstErrorKey + '.value';
+      } else if (firstErrorKey === 'conpStatus') {
+        // Pas besoin de modification pour 'conpStatus'
+      }
+      errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+      errorFieldElement = document.querySelector(errorFieldSelector);
+
+      if (errorFieldElement === null) {
+        firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+        errorFieldElement = document.querySelector(errorFieldSelector);
+      }
+      console.log('firstErrorKey', firstErrorKey, errorFieldElement)
+      if ((firstErrorKey === 'experimentsRequiredSoftware.0.software' || firstErrorKey === 'experimentsFunctionAssessed.0' || firstErrorKey === 'experimentsModalities.0') && errorFieldElement) {
+          // Pour 'conpStatus', accéder au div parent
+          let childDivElement = errorFieldElement.querySelector('div');
+
+          // Ensuite, accéder au premier div enfant du div parent
+          //let childDivElement = parentDivElement.querySelector('div'); // Assurez-vous que c'est bien un div que vous voulez sélectionner
+          console.log('dans le if du focus')
+          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (childDivElement.focus) {
+            childDivElement.focus();
+            childDivElement.blur();
+            childDivElement.focus();
+          }
+      } else if (errorFieldElement) {
+        errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Optionnel: focus sur le champ pour accessibilité
+        console.log('in the else focus')
+        if (errorFieldElement.focus) {
+          errorFieldElement.focus();
+          errorFieldElement.blur();
+          errorFieldElement.focus();
+        }
+      }
+    }
+
+
     // setActiveStep(activeStep + 1);
   };
 
@@ -401,7 +483,8 @@ export function DatsEditorForm(props) {
             }}
             validateOnChange={validateOnChange}
             validationSchema={validationSchema || defaultDatsValidationSchema}
-            validationContext={{ isExperiment: isExperiment }}  
+            // validationContext={{ isExperiment: isExperiment }} 
+            context={{ isExperiment: isExperiment }} 
           >
             {({ values, errors, touched, isSubmitting, handleReset }) => (
               <Form>
@@ -500,7 +583,8 @@ export function DatsEditorForm(props) {
                         disabled={isSubmitting}
                         type='submit'
                         variant='contained'
-                        onClick={handleConfirm}
+                        //onClick={handleConfirm}
+                        onClick={() => handleConfirm(errors)} 
                       >
                         Confirm
                       </Button>
