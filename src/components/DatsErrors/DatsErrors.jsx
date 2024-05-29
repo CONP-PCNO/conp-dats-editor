@@ -36,7 +36,7 @@ function warningFromKey(key, errors, touched) {
 }
 
 export default function DatsErrors(props) {
-  const { errors, touched, className, next } = props
+  const { errors, touched, className, formEmpty} = props
   if (Object.keys(errors).length === 0) {
     return null
   }
@@ -55,6 +55,8 @@ export default function DatsErrors(props) {
       </Typography>
 
       {Object.keys(errors).map((key) => warningFromKey(key, errors, touched))}
+
+      {formEmpty && <Typography gutterBottom variant='subtitle1'>All fields are empty</Typography>}
     </div>
   )
 }

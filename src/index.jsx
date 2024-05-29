@@ -173,6 +173,7 @@ export function DatsEditorForm(props) {
   const postDatsSteps = isExperiment ? 2 : 2
   const [nextClicked, setNextClicked] = React.useState(false);
   const [validateOnChange, setValidateOnChange] = React.useState(false);
+  const [formEmpty, setFormEmpty] = React.useState(false);
 
   const isLastStep = (activeStep) =>
     activeStep === steps.length - (postDatsSteps + 1)
@@ -185,6 +186,7 @@ export function DatsEditorForm(props) {
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
+    //console.log('formData', formData)
     setValuesState(formData)
     if(formData.experimentsLanguages.length > 0){
       setIsExperiment(true)
@@ -204,10 +206,39 @@ export function DatsEditorForm(props) {
     setActiveStep(0)
   }
 
+  // const checkRequiredFields = (values) => {
+  //   const requiredFields = ['title', 'description', 'version', 'privacy', 'licenses', 'keywords'];
+  //   console.log('Checking required fields...');
+    
+  //   const allFieldsEmpty = requiredFields.every((field) => {
+  //     const value = values[field];
+  //     console.log(`Checking field: ${field}, value:`, value);
+      
+  //     if (Array.isArray(value)) {
+  //       const isEmpty = value.length === 0 || (value.length === 1 && value[0] === '');
+  //       console.log(`Field ${field} is array and is empty: ${isEmpty}`);
+  //       return isEmpty;
+  //     } else if (typeof value === 'object' && value !== null) {
+  //       const isEmpty = Object.keys(value).length === 0 || Object.values(value).some(v => v === '');
+  //       console.log(`Field ${field} is object and is empty: ${isEmpty}`);
+  //       return isEmpty;
+  //     } else {
+  //       const isEmpty = !value;
+  //       console.log(`Field ${field} is primitive and is empty: ${isEmpty}`);
+  //       return isEmpty;
+  //     }
+  //   });
+  
+  //   console.log('All fields empty:', allFieldsEmpty);
+  //   return allFieldsEmpty;
+  // };
+
   const handleNext = (errors, values) => {
     let modifiedErrors = { ...errors };
+    //console.log('value top', errors)
     setNextClicked(true)
-    //console.log('values',values)
+    //setFormEmpty(false)
+    console.log('values',values )
     // Retirer la clé 'reb_info' si activeStep n'est pas 2
     if(!isExperiment){
       if (activeStep !== 2) {
@@ -280,6 +311,13 @@ export function DatsEditorForm(props) {
     console.log(Object.keys(modifiedErrors).length, modifiedErrors)
     if (Object.keys(modifiedErrors).length === 0) {
       setTimeout(() => {
+        // const hasEmptyField = checkRequiredFields(values);
+        // console.log('apres check')
+        // if (hasEmptyField) {
+        //   console.log('tout est vide')
+        //   setFormEmpty(true)
+        //   return; // Retourner immédiatement si l'un des champs spécifiques est vide
+        // }
         setActiveStep(activeStep + 1)
         window.scrollTo(0, 0)
       }, 200)
@@ -481,9 +519,9 @@ export function DatsEditorForm(props) {
               setActiveStep(activeStep + 1)
               setSubmitting(false)
             }}
-            validateOnChange={validateOnChange}
+            // validateOnChange={validateOnChange}
+            validateOnChange={true}
             validationSchema={validationSchema || defaultDatsValidationSchema}
-            // validationContext={{ isExperiment: isExperiment }} 
             context={{ isExperiment: isExperiment }} 
           >
             {({ values, errors, touched, isSubmitting, handleReset }) => (
@@ -511,7 +549,7 @@ export function DatsEditorForm(props) {
                       </Grid>
                       <Grid item>Experiment</Grid>
                     </Grid> */}
-                    <Grid container direction="column" alignItems="center" justify="center">
+                    <Grid container direction="column" alignItems="center" justifyContent="center">
                     <FormControl component="fieldset" className={classes.formControl}>
                       <RadioGroup
                         
@@ -624,7 +662,7 @@ export function DatsEditorForm(props) {
                   className={classes.section}
                   errors={errors}
                   touched={touched}
-                  next={nextClicked}
+                  formEmpty={formEmpty}
                 />
               </Form>
             )}

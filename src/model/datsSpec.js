@@ -3,26 +3,46 @@ import * as yup from 'yup'
 const defaultDatsValidationSchema = yup.object({
   isExperiment: yup.boolean(),
   title: yup.string().required(),
+  // creators: yup.array().of(
+  //   yup.object({
+  //     name: yup.string(),
+  //     email: yup.string().email(),
+  //     orcid: yup.string().when('type', {
+  //       // eslint-disable-next-line eqeqeq
+  //       is: (type) => type === 'Person',
+  //       then: yup
+  //         .string()
+  //         .matches(
+  //           /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dX]$/u,
+  //           "The ORCID format must match: https://orcid.org/XXXX-XXXX-XXXX-XXXX"
+  //         )
+  //         .required(
+  //           'An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'
+  //         ),
+  //       otherwise: yup.string()
+  //     })
+  //   })
+  // ),
+
   creators: yup.array().of(
-    yup.object({
-      name: yup.string(),
-      email: yup.string().email(),
+    yup.object().shape({
+      type: yup.string().required('Type is required'), // Assurez-vous que le type est toujours défini
+      name: yup.string().when('type', {
+        is: 'Organization',
+        then: yup.string().required('Name/Institution is required'),
+        otherwise: yup.string().nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
+      }),
+      email: yup.string().email('Invalid email format').nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
       orcid: yup.string().when('type', {
-        // eslint-disable-next-line eqeqeq
-        is: (type) => type === 'Person',
-        then: yup
-          .string()
-          .matches(
-            /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dX]$/u,
-            "The ORCID format must match: https://orcid.org/XXXX-XXXX-XXXX-XXXX"
-          )
-          .required(
-            'An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'
-          ),
-        otherwise: yup.string()
-      })
+        is: 'Person',
+        then: yup.string().matches(
+          /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dX]$/u,
+          "The ORCID format must match: https://orcid.org/XXXX-XXXX-XXXX-XXXX"
+        ).required('An ORCID is required'),
+        otherwise: yup.string().nullable(),
+      }).nullable()
     })
-  ),
+  ).min(1, 'At least one creator is required'), 
   contact: yup.object().shape({
     name: yup.string().required(),
     email: yup.string().email().required()
@@ -31,7 +51,11 @@ const defaultDatsValidationSchema = yup.object({
   types: yup.array().of(yup.string().required()
   .notOneOf([""], "Type cannot be empty")).min(1).required("Type cannot be empty"),
   version: yup.number().positive().required(),
-  licenses: yup.array().of(yup.string().required()).min(1, 'min 1'),
+  // licenses: yup.array().of(yup.string().required()).min(1, 'min 1'),
+  // licenses: yup.array().of(yup.string().required()
+  // .notOneOf([""], "Licenses cannot be empty")).min(1).required("Licenses cannot be empty"),
+  // licenses: yup.array().of(yup.string().required("Licenses cannot be empty")),
+  licenses: yup.array().of(yup.string().required("Licenses cannot be empty")).min(1, "At least one license is required").required("Licenses are required"),
   keywords: yup.array().of(yup.string().required()
   .notOneOf([""], "Keywords cannot be empty")).min(1).required("Keywords cannot be empty"),
   formats: yup.array().of(yup.string()),
