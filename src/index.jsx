@@ -578,7 +578,7 @@ export function DatsEditorForm(props) {
                 )}
 
                 <div className={classes.buttons}>
-                {activeStep < 3 && (
+                {(activeStep < 3 || (isExperiment && activeStep < 4))  && (
                   <Button
                     className={classes.button}
                     style={{ backgroundColor: '#3f51b5', color: 'white', marginRight: 'auto' }} 

@@ -23,7 +23,25 @@ const defaultDatsValidationSchema = yup.object({
   //     })
   //   })
   // ),
-
+  // creators: yup.array().of(
+  //   yup.object().shape({
+  //     type: yup.string().required('Type is required'), // Assurez-vous que le type est toujours défini
+  //     name: yup.string().when('type', {
+  //       is: 'Organization',
+  //       then: yup.string().required('Name/Institution is required'),
+  //       otherwise: yup.string().nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
+  //     }),
+  //     email: yup.string().email('Invalid email format').nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
+  //     orcid: yup.string().when('type', {
+  //       is: 'Person',
+  //       then: yup.string().matches(
+  //         /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dX]$/u,
+  //         "The ORCID format must match: https://orcid.org/XXXX-XXXX-XXXX-XXXX"
+  //       ).required('An ORCID is required'),
+  //       otherwise: yup.string().nullable(),
+  //     }).nullable()
+  //   })
+  // ).min(1, 'At least one creator is required'), 
   creators: yup.array().of(
     yup.object().shape({
       type: yup.string().required('Type is required'), // Assurez-vous que le type est toujours défini
@@ -31,6 +49,21 @@ const defaultDatsValidationSchema = yup.object({
         is: 'Organization',
         then: yup.string().required('Name/Institution is required'),
         otherwise: yup.string().nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
+      }),
+      fullName: yup.string().when('type', {
+        is: 'Person',
+        then: yup.string().required('Full name is required'),
+        otherwise: yup.string().nullable()
+      }),
+      firstName: yup.string().when('type', {
+        is: 'Person',
+        then: yup.string().required('First name is required'),
+        otherwise: yup.string().nullable()
+      }),
+      lastName: yup.string().when('type', {
+        is: 'Person',
+        then: yup.string().required('Last name is required'),
+        otherwise: yup.string().nullable()
       }),
       email: yup.string().email('Invalid email format').nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
       orcid: yup.string().when('type', {
@@ -42,7 +75,7 @@ const defaultDatsValidationSchema = yup.object({
         otherwise: yup.string().nullable(),
       }).nullable()
     })
-  ).min(1, 'At least one creator is required'), 
+  ).min(1, 'At least one creator is required'),
   contact: yup.object().shape({
     name: yup.string().required(),
     email: yup.string().email().required()
@@ -167,7 +200,7 @@ const defaultDatsValidationSchema = yup.object({
     is : true,
     then: yup.array().of(
       yup.object({
-        software: yup.string().required(),
+        software: yup.string().required().matches(/^(?!\s*$).+/, 'Software name cannot be empty or just spaces'),
         version: yup.string()
       }))
   }),
