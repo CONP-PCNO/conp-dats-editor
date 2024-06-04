@@ -160,7 +160,7 @@ export function ReadmeEditor(props) {
             onClick={onClick}
             variant='contained'
           >
-            Downloads
+            Download
           </Button>
         {/* </Box> */}
       </div>
