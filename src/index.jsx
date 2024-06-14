@@ -238,7 +238,7 @@ export function DatsEditorForm(props) {
     //console.log('value top', errors)
     setNextClicked(true)
     //setFormEmpty(false)
-    console.log('values',values )
+    //console.log('values',values )
     // Retirer la clé 'reb_info' si activeStep n'est pas 2
     if(!isExperiment){
       if (activeStep !== 2) {
@@ -308,7 +308,7 @@ export function DatsEditorForm(props) {
         }
       }
     }
-    console.log(Object.keys(modifiedErrors).length, modifiedErrors)
+    //console.log(Object.keys(modifiedErrors).length, modifiedErrors)
     if (Object.keys(modifiedErrors).length === 0) {
       setTimeout(() => {
         // const hasEmptyField = checkRequiredFields(values);
@@ -342,11 +342,18 @@ export function DatsEditorForm(props) {
       errorFieldElement = document.querySelector(errorFieldSelector);
 
       if (errorFieldElement === null) {
-        firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
-        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
-        errorFieldElement = document.querySelector(errorFieldSelector);
+        if(firstErrorKey == 'creators.0.name'){
+          firstErrorKey = 'creators.0.fullName'
+          errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+          errorFieldElement = document.querySelector(errorFieldSelector);
+        }
+        else{
+          firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
+          errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+          errorFieldElement = document.querySelector(errorFieldSelector);
+        }
       }
-      console.log('firstErrorKey', firstErrorKey, errorFieldElement)
+      //console.log('firstErrorKey', firstErrorKey, errorFieldElement)
       if (firstErrorKey === 'conpStatus' && errorFieldElement) {
         // Pour 'conpStatus', accéder au div parent
         let parentDivElement = errorFieldElement.parentNode;
@@ -395,21 +402,21 @@ export function DatsEditorForm(props) {
   }
 
   const handleConfirm = (errors) => {
-    console.log('errors', errors)
+    //console.log('errors', errors)
     setNextClicked(true); // Set when 'Confirm' is clicked
     setValidateOnChange(true);
 
 
 
     if (Object.keys(errors).length === 0) {
-      console.log('no error')
+      //console.log('no error')
     }
     else {
       // Logique pour défiler jusqu'au premier champ d'erreur
       var firstErrorKey = Object.keys(errors)[0];
       var errorFieldSelector = `[name="${firstErrorKey}"]`;
       var errorFieldElement = document.querySelector(errorFieldSelector);
-      console.log('firstErrorKeyTop', firstErrorKey, errorFieldElement)
+      //console.log('firstErrorKeyTop', firstErrorKey, errorFieldElement)
       // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
       if (firstErrorKey === 'experimentsRequiredSoftware') {
         firstErrorKey = firstErrorKey + '.0.software';
@@ -428,14 +435,12 @@ export function DatsEditorForm(props) {
         errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
         errorFieldElement = document.querySelector(errorFieldSelector);
       }
-      console.log('firstErrorKey', firstErrorKey, errorFieldElement)
+      //console.log('firstErrorKey', firstErrorKey, errorFieldElement)
       if ((firstErrorKey === 'experimentsRequiredSoftware.0.software' || firstErrorKey === 'experimentsFunctionAssessed.0' || firstErrorKey === 'experimentsModalities.0') && errorFieldElement) {
           // Pour 'conpStatus', accéder au div parent
           let childDivElement = errorFieldElement.querySelector('div');
 
           // Ensuite, accéder au premier div enfant du div parent
-          //let childDivElement = parentDivElement.querySelector('div'); // Assurez-vous que c'est bien un div que vous voulez sélectionner
-          console.log('dans le if du focus')
           childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           if (childDivElement.focus) {
             childDivElement.focus();
@@ -444,8 +449,6 @@ export function DatsEditorForm(props) {
           }
       } else if (errorFieldElement) {
         errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Optionnel: focus sur le champ pour accessibilité
-        console.log('in the else focus')
         if (errorFieldElement.focus) {
           errorFieldElement.focus();
           errorFieldElement.blur();
@@ -473,7 +476,7 @@ export function DatsEditorForm(props) {
       alert('No data available to download.');
       return;
     }
-    console.log(formData)
+    //console.log(formData)
     const datsJson = new FormToDats(formData).getJson();
     const element = document.createElement('a')
     const file = new Blob([JSON.stringify(datsJson, null, 2)], {

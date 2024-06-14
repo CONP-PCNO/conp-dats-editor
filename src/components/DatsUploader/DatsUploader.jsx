@@ -39,7 +39,7 @@ const DatsUploader = (props) => {
       reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
         const json = JSON.parse(reader.result);
-        console.log(json);
+        //console.log(json);
         onDatsReceived(json);
       };
       reader.readAsText(file);
