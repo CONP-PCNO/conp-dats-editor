@@ -1,26 +1,27 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 
-function genErrorString(key, errors) {
-  if (!errors[key]) {
+function genErrorString(errors) {
+  if (!errors) {
     return ''; // Retourne une chaîne vide ou un message d'erreur par défaut
   }
-  if (Array.isArray(errors[key])) {
-
-    //return errors[key].map((err) => Object.values(err))
-    //return errors[key].map((err) => err ? Object.values(err).join(', ') : '').join('; ');
-
-    return errors[key].map(err => {
-      // Vérifie si l'erreur est un objet et le transforme en chaîne
-      // Sinon, retourne l'erreur telle quelle si elle est déjà une chaîne
-      if (typeof err === 'object' && err !== null && !(err instanceof Array)) {
-        return Object.values(err).join(', ');
+  if (typeof errors === 'string') {
+    return errors; // Retourne directement la chaîne si c'est une chaîne d'erreur
+  }
+  if (Array.isArray(errors)) {
+    return errors.map((err, index) => {
+      if (typeof err === 'object' && err !== null) {
+        return `Item ${index}: ${genErrorString(err)}`;
       }
-      // Si l'erreur est une autre structure (comme un tableau ou autre), on la convertit en JSON
       return typeof err === 'string' ? err : JSON.stringify(err);
     }).join('; ');
   }
-  return JSON.stringify(errors[key])
+  if (typeof errors === 'object' && errors !== null) {
+    return Object.keys(errors).map((key) => {
+      return `${key}: ${genErrorString(errors[key])}`;
+    }).join('; ');
+  }
+  return JSON.stringify(errors);
 }
 
 function warningFromKey(key, errors, touched) {
@@ -30,7 +31,7 @@ function warningFromKey(key, errors, touched) {
 
   return (
     <Typography gutterBottom key={`${Math.random()}`} variant='subtitle1'>
-      {`${key}: ${genErrorString(key, errors)}`}
+      {`${key}: ${genErrorString(errors[key])}`}
     </Typography>
   )
 }
@@ -41,6 +42,8 @@ export default function DatsErrors(props) {
     return null
   }
   
+  //console.log(errors)
+
   // Calculer les warnings à partir des erreurs
   const warnings = Object.keys(errors).map(key => warningFromKey(key, errors, touched)).filter(x => x !== null);
   // Si aucun warning valide n'est généré, ne rien rendre
@@ -54,7 +57,8 @@ export default function DatsErrors(props) {
         with the following fields:
       </Typography>
 
-      {Object.keys(errors).map((key) => warningFromKey(key, errors, touched))}
+      {/* {Object.keys(errors).map((key) => warningFromKey(key, errors, touched))} */}
+      {warnings}
 
       {formEmpty && <Typography gutterBottom variant='subtitle1'>All fields are empty</Typography>}
     </div>

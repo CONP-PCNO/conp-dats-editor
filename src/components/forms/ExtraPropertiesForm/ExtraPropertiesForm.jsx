@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Button,
   Divider,
   FormControlLabel,
   Radio,
   Box,
-  MenuItem
+  MenuItem,
+  Select,
+  FormControl, 
+  InputLabel, 
+  makeStyles
 } from '@material-ui/core'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { FieldArray, Field } from 'formik'
+import { FieldArray, Field, useFormikContext } from 'formik'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
 import JsonSectionTitle from '../../layout/JsonSectionTitle'
@@ -22,9 +26,43 @@ import CustomRadioGroup from '../../fields/CustomRadioGroup'
 import CustomSelectField from '../../fields/CustomSelectField'
 import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
+const useStyles = makeStyles((theme) => ({
+  select: {
+    minWidth: 200, // Ajustez cette valeur pour définir la largeur du menu déroulant
+  },
+  menuItem: {
+    minWidth: 207, // Ajustez cette valeur pour définir la largeur des éléments du menu
+  }
+}));
+
 export default function ExtraPropertiesForm(props) {
-  const { values, isExperiment } = props
+  const { values, setFieldValue } = useFormikContext();
+  const { isExperiment } = props
   const isPrivacyOpen = values.privacy === 'registered' || values.privacy === 'controlled' || values.privacy === 'private';
+  const currentYear = new Date().getFullYear();
+  const years = Array.from(new Array(currentYear - 1899), (val, index) => currentYear - index);
+  const classes = useStyles();
+
+  useEffect(() => {
+    values.primaryPublications.forEach((publication, index) => {
+      if (!publication.authors || publication.authors.length === 0) {
+        setFieldValue(`primaryPublications.${index}.authors`, [{
+          fullName: '',
+          firstName: '',
+          middleInitial: '',
+          lastName: '',
+          affiliations: []
+        }]);
+      }
+      if (!publication.dates || publication.dates.length === 0) {
+        setFieldValue(`primaryPublications.${index}.dates`, [{
+          date: '',
+          description: ''
+        }]);
+      }
+    });
+  }, [values.primaryPublications, setFieldValue]);
+
   return (
     <React.Fragment>
       <Section>
@@ -205,6 +243,7 @@ export default function ExtraPropertiesForm(props) {
 
                           {(
                             values.primaryPublications[index]?.authors || []
+                            // authors.length === 0 ? [{}] : authors
                           ).map((author, idx) => {
                             return (
                               <FieldGroup
@@ -249,6 +288,7 @@ export default function ExtraPropertiesForm(props) {
                                       {(
                                         values.primaryPublications[index]
                                           ?.authors[idx]?.affiliations || []
+                                        // author.affiliations || []
                                       ).map((affiliation, i) => {
                                         return (
                                           <FieldGroup
@@ -334,7 +374,7 @@ export default function ExtraPropertiesForm(props) {
                                     key={`date_${idx}`}
                                     name={`date_${idx}`}
                                   >
-                                    <MuiPickersUtilsProvider
+                                    {/* <MuiPickersUtilsProvider
                                       utils={DateFnsUtils}
                                     >
                                       <Field
@@ -343,7 +383,48 @@ export default function ExtraPropertiesForm(props) {
                                         label='Date'
                                         name={`primaryPublications.${index}.dates.${idx}.date`}
                                       />
-                                    </MuiPickersUtilsProvider>
+                                    </MuiPickersUtilsProvider> */}
+
+                                    {/* <Field
+                                      as={Select}
+                                      label='Year'
+                                      name={`primaryPublications.${index}.dates.${idx}.date`}
+                                    >
+                                      {years.map((year) => (
+                                        <MenuItem key={year} value={year}>
+                                          {year}
+                                        </MenuItem>
+                                      ))}
+                                    </Field> */}
+
+                                    <FormControl fullWidth>
+                                      <InputLabel id={`date-${idx}-label`}>Year</InputLabel>
+                                      <Field
+                                        as={Select}
+                                        labelId={`date-${idx}-label`}
+                                        label='Year'
+                                        name={`primaryPublications.${index}.dates.${idx}.date`}
+                                        value={date.date || ''}
+                                        className={classes.select}
+                                        MenuProps={{
+                                          PaperProps: {
+                                            style: {
+                                              width: 207 // Ajustez cette valeur pour définir la largeur du menu déroulant
+                                            }
+                                          }
+                                        }}
+                                      >
+                                        <MenuItem value="" className={classes.menuItem}>
+                                          {/* Cette option représente une chaîne vide */}
+                                          <em>None</em>
+                                        </MenuItem>
+                                        {years.map((year) => (
+                                          <MenuItem key={year} value={year} className={classes.menuItem}>
+                                            {year}
+                                          </MenuItem>
+                                        ))}
+                                      </Field>
+                                    </FormControl>
 
                                     <CustomTextField
                                       label='Description'
@@ -359,9 +440,10 @@ export default function ExtraPropertiesForm(props) {
                                 color='secondary'
                                 onClick={() => {
                                   arrayHelpers.push({
-                                    date: new Date(
-                                      new Date().setHours(0, 0, 0, 0)
-                                    ),
+                                    date: new Date().toISOString(),
+                                    // date: new Date(
+                                    //   new Date().setHours(0, 0, 0, 0)
+                                    // ),
                                     description: ''
                                   })
                                 }}
@@ -389,6 +471,7 @@ export default function ExtraPropertiesForm(props) {
 
                     <JsonTextField
                       isExperiment={isExperiment}
+                      label='DOI (https://dx.doi.org/10.xxxx/xxxxxx) or ARK (https://example.org/ark:/12345/abc12345)'
                       nameAttr={`primaryPublications.${index}.identifier.identifier`}
                       setupProps={
                         fieldDescriptions[

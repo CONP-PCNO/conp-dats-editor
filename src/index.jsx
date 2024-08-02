@@ -235,10 +235,10 @@ export function DatsEditorForm(props) {
 
   const handleNext = (errors, values) => {
     let modifiedErrors = { ...errors };
-    //console.log('value top', errors)
+    // console.log('value top', errors)
     setNextClicked(true)
     //setFormEmpty(false)
-    //console.log('values',values )
+    // console.log('values',values )
     // Retirer la clé 'reb_info' si activeStep n'est pas 2
     if(!isExperiment){
       if (activeStep !== 2) {
@@ -247,6 +247,9 @@ export function DatsEditorForm(props) {
         }
         if(modifiedErrors['contact']){
           delete modifiedErrors['contact'];
+        }
+        if(modifiedErrors['primaryPublications']){
+          delete modifiedErrors['primaryPublications'];
         }
       }
       if(activeStep !== 1){
@@ -289,6 +292,9 @@ export function DatsEditorForm(props) {
         if(modifiedErrors['reb_info']){
           delete modifiedErrors['reb_info'];
         }
+        if(modifiedErrors['primaryPublications']){
+          delete modifiedErrors['primaryPublications'];
+        }
       }
       if(activeStep !== 3){
         if(modifiedErrors['types']){
@@ -327,7 +333,7 @@ export function DatsEditorForm(props) {
       var firstErrorKey = Object.keys(modifiedErrors)[0];
       var errorFieldSelector = `[name="${firstErrorKey}"]`;
       var errorFieldElement = document.querySelector(errorFieldSelector);
-
+      //console.log('primaryPublications', errors.primaryPublications[0], errors.primaryPublications[0].identifier.identifier)
       // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
       if (firstErrorKey === 'access') {
         firstErrorKey = firstErrorKey + '.landingPage';
@@ -337,8 +343,35 @@ export function DatsEditorForm(props) {
         firstErrorKey = firstErrorKey + '.value';
       } else if (firstErrorKey === 'conpStatus') {
         // Pas besoin de modification pour 'conpStatus'
+      } else if (firstErrorKey === 'contact') {
+        firstErrorKey = firstErrorKey + '.name';
       }
-      errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+      else if (firstErrorKey === 'primaryPublications') {
+        for (let i = 0; i < 20; i++) {
+          if (errors.primaryPublications[i] && errors.primaryPublications[i].title) {
+            firstErrorKey = `primaryPublications.${i}.title`;
+            break;
+          } else if (errors.primaryPublications[i] && errors.primaryPublications[i].authors) {
+            firstErrorKey = `primaryPublications.${i}.authors.0.fullName`;
+            break;
+          } else if (errors.primaryPublications?.[i]?.dates?.[0]?.date) {
+            firstErrorKey = `primaryPublications.${i}.dates.0.date`;
+            break;
+          } else if (errors.primaryPublications?.[i]?.identifier?.identifier) {
+            firstErrorKey = `primaryPublications.${i}.identifier.identifier`;
+            break;
+          } else if (errors.primaryPublications?.[i]?.identifier?.identifierSource) {
+            firstErrorKey = `primaryPublications.${i}.identifier.identifierSource`;
+            break;
+          }
+        }
+      }
+      if(firstErrorKey === 'primaryPublications.0.dates.0.date'){
+        errorFieldSelector = `[id='mui-component-select-${firstErrorKey}']`;
+      }
+      else{
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+      }
       errorFieldElement = document.querySelector(errorFieldSelector);
 
       if (errorFieldElement === null) {
@@ -353,7 +386,7 @@ export function DatsEditorForm(props) {
           errorFieldElement = document.querySelector(errorFieldSelector);
         }
       }
-      //console.log('firstErrorKey', firstErrorKey, errorFieldElement)
+      // console.log('firstErrorKey', firstErrorKey, errorFieldElement)
       if (firstErrorKey === 'conpStatus' && errorFieldElement) {
         // Pour 'conpStatus', accéder au div parent
         let parentDivElement = errorFieldElement.parentNode;
@@ -406,8 +439,6 @@ export function DatsEditorForm(props) {
     setNextClicked(true); // Set when 'Confirm' is clicked
     setValidateOnChange(true);
 
-
-
     if (Object.keys(errors).length === 0) {
       //console.log('no error')
     }
@@ -416,7 +447,7 @@ export function DatsEditorForm(props) {
       var firstErrorKey = Object.keys(errors)[0];
       var errorFieldSelector = `[name="${firstErrorKey}"]`;
       var errorFieldElement = document.querySelector(errorFieldSelector);
-      //console.log('firstErrorKeyTop', firstErrorKey, errorFieldElement)
+      // console.log('firstErrorKeyTop', firstErrorKey, errorFieldElement, Object.keys(errors)[0], errors)
       // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
       if (firstErrorKey === 'experimentsRequiredSoftware') {
         firstErrorKey = firstErrorKey + '.0.software';
@@ -427,9 +458,35 @@ export function DatsEditorForm(props) {
       } else if (firstErrorKey === 'conpStatus') {
         // Pas besoin de modification pour 'conpStatus'
       }
-      errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+      else if (firstErrorKey === 'primaryPublications') {
+        // console.log('firstErrorKey', firstErrorKey, errors.primaryPublications)
+        for (let i = 0; i < 20; i++) {
+          if (errors.primaryPublications[i] && errors.primaryPublications[i].title) {
+            firstErrorKey = `primaryPublications.${i}.title`;
+            break;
+          } else if (errors.primaryPublications[i] && errors.primaryPublications[i].authors) {
+            firstErrorKey = `primaryPublications.${i}.authors.0.fullName`;
+            break;
+          } else if (errors.primaryPublications?.[i]?.dates?.[0]?.date) {
+            firstErrorKey = `primaryPublications.${i}.dates.0.date`;
+            break;
+          } else if (errors.primaryPublications?.[i]?.identifier?.identifier) {
+            firstErrorKey = `primaryPublications.${i}.identifier.identifier`;
+            break;
+          } else if (errors.primaryPublications?.[i]?.identifier?.identifierSource) {
+            firstErrorKey = `primaryPublications.${i}.identifier.identifierSource`;
+            break;
+          }
+        }
+      }
+      if(firstErrorKey === 'primaryPublications.0.dates.0.date'){
+        errorFieldSelector = `[id='mui-component-select-${firstErrorKey}']`;
+      }
+      else{
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
+      }
       errorFieldElement = document.querySelector(errorFieldSelector);
-
+      // console.log('id to go', errorFieldElement, errorFieldSelector)
       if (errorFieldElement === null) {
         firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
         errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
@@ -517,7 +574,7 @@ export function DatsEditorForm(props) {
             onSubmit={(data, { setSubmitting }) => {
               setSubmitting(true)
               const datsJson = new FormToDats(data)
-              console.log('datsJson', datsJson)
+              // console.log('datsJson', datsJson)
               setDats(datsJson.getJson())
               setActiveStep(activeStep + 1)
               setSubmitting(false)

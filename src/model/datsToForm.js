@@ -202,7 +202,9 @@ class DatsToForm {
     json.primaryPublications = json.primaryPublications.map((pp) => {
       return Object.assign(pp, {
         dates: (pp?.dates || []).map((date) => {
-          return Object.assign(date, { date: new Date(date.date) })
+          // return Object.assign(date, { date: new Date(date.date) })
+          // return Object.assign(date, { date: date.date }); 
+          return Object.assign(date, { date: date.date.split('-')[0] });
         })
       })
     })
