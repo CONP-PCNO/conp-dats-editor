@@ -1,91 +1,63 @@
 import * as yup from 'yup'
 
-// Schéma de validation pour les publications principales
-// const publicationSchema = yup.object().shape({
-//   title: yup.string().required('Title is required'),
-//   publicationVenue: yup.string(),
-//   authors: yup.array().of(
-//     yup.string().required('Author is required')
-//   ).min(1, 'At least one author is required'),
-//   dates: yup.array().of(yup.date()),
-//   identifier: yup.object().shape({
-//     identifier: yup.string(),
-//     identifierSource: yup.string(),
-//   }),
-// }).test('has-primary-fields', 'Title and at least one author are required if primary publication is present', function (value) {
-//   if (value) {
-//     const { title, authors } = value;
-//     if (title || (authors && authors.length > 0)) {
-//       return !!title && (authors && authors.length > 0);
-//     }
-//   }
-//   return true;
-// });
-
-const doiRegex = /^https:\/\/dx\.doi\.org\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
+// const doiRegex = /^https:\/\/dx\.doi\.org\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
+const doiRegex = /^https:\/\/.+\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
 const arkRegex = /^https:\/\/[a-zA-Z0-9.-]+\/ark:\/\d{5}\/[\w.-]+$/i;
 
 const publicationSchema = yup.object().shape({
-  title: yup.string().required('Title is required'),
-  publicationVenue: yup.string(),
-  authors: yup.array().of(
-    yup.object().shape({
-      fullName: yup.string().required('Full name is required'),
-      firstName: yup.string().required('First name is required'),
-      middleInitial: yup.string().nullable(),
-      lastName: yup.string().required('Last name is required'),
-      affiliations: yup.array().of(yup.string())
-    })
-  ).min(1, 'At least one author is required'),
-  // dates: yup.array().of(yup.date()),
+  title: yup.string().nullable(), // Le titre est facultatif
+  publicationVenue: yup.string().nullable(),
+  authors: yup.array()
+    .nullable()
+    .when('title', {
+      is: (title) => !!title, // Si le titre est fourni
+      then: yup.array()
+        .of(
+          yup.object().shape({
+            fullName: yup.string().required('Full name is required'),
+            firstName: yup.string().required('First name is required'),
+            lastName: yup.string().required('Last name is required'),
+            middleInitial: yup.string().nullable(),
+            affiliations: yup.array().of(yup.string().nullable()).nullable(),
+          })
+        )
+        .min(1, 'At least one author is required if title is provided'), // Au moins un auteur requis
+      otherwise: yup.array().nullable(), // Sinon, les auteurs ne sont pas requis
+    }),
   dates: yup.array().of(
     yup.object().shape({
-      date: yup.date().required('Date is required'),
-      description: yup.string()
+      date: yup.date().nullable(),
+      description: yup.string().nullable(),
     })
-  ),
-  identifier: yup.object().shape({
-    // identifier: yup.string().required('Identifier is required'),
-    identifier: yup.string().required('Identifier is required')
-    .test('is-doi-or-ark', 'Identifier must be a valid DOI or ARK URL', value => {
-      if (!value) return false;
-      return doiRegex.test(value) || arkRegex.test(value);
+  ).nullable(),
+  identifier: yup
+    .object()
+    .nullable()
+    .when('title', {
+      is: (title) => !!title,
+      then: yup
+        .object()
+        .shape({
+          identifier: yup
+            .string()
+            .required('Identifier must be a valid DOI or ARK URL')
+            .test(
+              'is-doi-or-ark',
+              'Identifier must be a valid DOI or ARK URL',
+              (value) => !!value && (doiRegex.test(value) || arkRegex.test(value)) // Valide uniquement si DOI ou ARK
+            ),
+          identifierSource: yup.string().nullable(),
+        }),
+      otherwise: yup.object().shape({
+        identifier: yup.string().nullable(),
+        identifierSource: yup.string().nullable(),
+      }),
     }),
-    identifierSource: yup.string().required('Identifier is required'),
-  }),
-}).test('has-primary-fields', 'Title and at least one author are required if primary publication is present', function (value) {
-  if (value) {
-    const { title, authors } = value;
-    if (title || (authors && authors.length > 0)) {
-      return !!title && (authors && authors.length > 0);
-    }
-  }
-  return true;
 });
 
 const defaultDatsValidationSchema = yup.object({
   isExperiment: yup.boolean(),
   title: yup.string().required(),
-  // creators: yup.array().of(
-  //   yup.object({
-  //     name: yup.string(),
-  //     email: yup.string().email(),
-  //     orcid: yup.string().when('type', {
-  //       // eslint-disable-next-line eqeqeq
-  //       is: (type) => type === 'Person',
-  //       then: yup
-  //         .string()
-  //         .matches(
-  //           /^https:\/\/orcid.org\/\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dX]$/u,
-  //           "The ORCID format must match: https://orcid.org/XXXX-XXXX-XXXX-XXXX"
-  //         )
-  //         .required(
-  //           'An ORCID (https://orcid.org/XXXX-XXXX-XXXX-XXXX) is required'
-  //         ),
-  //       otherwise: yup.string()
-  //     })
-  //   })
-  // ),
   creators: yup.array().of(
     yup.object().shape({
       type: yup.string().required('Type is required'),
@@ -127,9 +99,7 @@ const defaultDatsValidationSchema = yup.object({
   description: yup.string().required(),
   types: yup.array().of(yup.string().required()
   .notOneOf([""], "Type cannot be empty")).min(1).required("Type cannot be empty"),
-  version: yup.number().positive().required(),
-  // licenses: yup.array().of(yup.string().required()).min(1, 'min 1'),
-  // licenses: yup.array().of(yup.string().required("Licenses cannot be empty")),
+  version: yup.string().required(),
   licenses: yup.array().of(yup.string().required("Licenses cannot be empty")).min(1, "At least one license is required").required("Licenses are required"),
   keywords: yup.array().of(yup.string().required()
   .notOneOf([""], "Keywords cannot be empty")).min(1).required("Keywords cannot be empty"),
