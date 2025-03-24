@@ -34,12 +34,6 @@ export const defaultValidationSchema = yup.object({
   privacy: yup.string().required(),
   files: yup.number().integer().positive().required(),
   subjects: yup.number().integer().positive().nullable(),
-  // subjects: yup.object({
-  //   applicable: yup.boolean(),
-  //   value: yup.number().integer().positive().nullable()
-  // }),
-  
-  // subjects: yup.number().integer().positive().required(),
   conpStatus: yup.string().required(),
   derivedFrom: yup.string(),
   parentDatasetId: yup.string(),

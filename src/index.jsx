@@ -163,12 +163,10 @@ function renderStep(step, classes, values, dats, isExperiment, nextClicked) {
 export function DatsEditorForm(props) {
   const { validationSchema, initialActiveStep } = props
   const classes = useStyles()
-
   const [activeStep, setActiveStep] = React.useState(initialActiveStep || 0)
   const [dats, setDats] = React.useState()
   const [valuesState, setValuesState] = React.useState(defaultDatsValues)
   const [isExperiment, setIsExperiment] = React.useState(false)
-
   const steps = isExperiment ? experimentSteps : datasetSteps
   const postDatsSteps = isExperiment ? 2 : 2
   const [nextClicked, setNextClicked] = React.useState(false);
@@ -198,7 +196,7 @@ export function DatsEditorForm(props) {
 
   const handleRadioChange = (event) => {
     setIsExperiment(event.target.value === 'experiment')
-    setActiveStep(0) // Réinitialiser l'étape active si la sélection change
+    setActiveStep(0)
   }
 
   const toggleIsExperiment = () => {
@@ -206,143 +204,66 @@ export function DatsEditorForm(props) {
     setActiveStep(0)
   }
 
-  // const checkRequiredFields = (values) => {
-  //   const requiredFields = ['title', 'description', 'version', 'privacy', 'licenses', 'keywords'];
-  //   console.log('Checking required fields...');
-    
-  //   const allFieldsEmpty = requiredFields.every((field) => {
-  //     const value = values[field];
-  //     console.log(`Checking field: ${field}, value:`, value);
-      
-  //     if (Array.isArray(value)) {
-  //       const isEmpty = value.length === 0 || (value.length === 1 && value[0] === '');
-  //       console.log(`Field ${field} is array and is empty: ${isEmpty}`);
-  //       return isEmpty;
-  //     } else if (typeof value === 'object' && value !== null) {
-  //       const isEmpty = Object.keys(value).length === 0 || Object.values(value).some(v => v === '');
-  //       console.log(`Field ${field} is object and is empty: ${isEmpty}`);
-  //       return isEmpty;
-  //     } else {
-  //       const isEmpty = !value;
-  //       console.log(`Field ${field} is primitive and is empty: ${isEmpty}`);
-  //       return isEmpty;
-  //     }
-  //   });
-  
-  //   console.log('All fields empty:', allFieldsEmpty);
-  //   return allFieldsEmpty;
-  // };
-
-  const handleNext = (errors, values) => {
-    let modifiedErrors = { ...errors };
-    // console.log('value top', errors)
-    setNextClicked(true)
-    //setFormEmpty(false)
-    // console.log('values',values )
-    // Retirer la clé 'reb_info' si activeStep n'est pas 2
+  function cleanModifiedErrors(modifiedErrors) {
     if(!isExperiment){
-      if (activeStep !== 2) {
-        if(modifiedErrors['reb_info']){
-          delete modifiedErrors['reb_info'];
+      const fieldsToRemove = {
+        1: ['size', 'access', 'files', 'conpStatus'],
+        2: ['reb_info', 'contact', 'primaryPublications', 'subjects']
+      };
+      
+      Object.entries(fieldsToRemove).forEach(([step, fields]) => {
+        if (activeStep !== parseInt(step)) {
+          fields.forEach(field => {
+            if (modifiedErrors[field]) {
+              delete modifiedErrors[field];
+            }
+          });
         }
-        if(modifiedErrors['contact']){
-          delete modifiedErrors['contact'];
+      });
+    } else if (isExperiment) {
+      const fieldsToRemove = {
+        1: ['size', 'access', 'files', 'conpStatus'],
+        2: ['contact', 'registrationPageURL', 'reb_info', 'primaryPublications', 'subjects'],
+        3: ['types', 'experimentsRequiredSoftware', 'experimentsFunctionAssessed', 'experimentsLanguages', 'experimentsModalities']
+      };
+      
+      Object.entries(fieldsToRemove).forEach(([step, fields]) => {
+        if (activeStep !== parseInt(step)) {
+          fields.forEach(field => {
+            if (modifiedErrors[field]) {
+              delete modifiedErrors[field];
+            }
+          });
         }
-        if(modifiedErrors['primaryPublications']){
-          delete modifiedErrors['primaryPublications'];
-        }
-      }
-      if(activeStep !== 1){
-        if(modifiedErrors['size']){
-          delete modifiedErrors['size'];
-        }
-        if(modifiedErrors['access']){
-          delete modifiedErrors['access'];
-        }
-        if(modifiedErrors['files']){
-          delete modifiedErrors['files'];
-        }
-        if(modifiedErrors['conpStatus']){
-          delete modifiedErrors['conpStatus'];
-        }
-      }
+      });
     }
-    if (isExperiment) {
-      if(activeStep !== 1){
-        if(modifiedErrors['size']){
-          delete modifiedErrors['size'];
-        }
-        if(modifiedErrors['access']){
-          delete modifiedErrors['access'];
-        }
-        if(modifiedErrors['files']){
-          delete modifiedErrors['files'];
-        }
-        if(modifiedErrors['conpStatus']){
-          delete modifiedErrors['conpStatus'];
-        }
-      }
-      if (activeStep !== 2) {
-        if(modifiedErrors['contact']){
-          delete modifiedErrors['contact'];
-        }
-        if(delete modifiedErrors['registrationPageURL']){
-          delete modifiedErrors['registrationPageURL'];
-        }
-        if(modifiedErrors['reb_info']){
-          delete modifiedErrors['reb_info'];
-        }
-        if(modifiedErrors['primaryPublications']){
-          delete modifiedErrors['primaryPublications'];
-        }
-      }
-      if(activeStep !== 3){
-        if(modifiedErrors['types']){
-          delete modifiedErrors['types'];
-        }
-        if(modifiedErrors['experimentsRequiredSoftware']){
-          delete modifiedErrors['experimentsRequiredSoftware'];
-        }
-        if(modifiedErrors['experimentsFunctionAssessed']){
-          delete modifiedErrors['experimentsFunctionAssessed'];
-        }
-        if(modifiedErrors['experimentsLanguages']){
-          delete modifiedErrors['experimentsLanguages'];
-        }
-        if(modifiedErrors['experimentsModalities']){
-          delete modifiedErrors['experimentsModalities'];
-        }
-      }
-    }
-    //console.log(Object.keys(modifiedErrors).length, modifiedErrors)
+
+    return modifiedErrors;
+  }
+
+  const handleNext = (errors, values, setFieldTouched) => {
+    let modifiedErrors = { ...errors };
+    //console.log('value top', values)
+    setNextClicked(true)
+    modifiedErrors = cleanModifiedErrors(modifiedErrors)
+
     if (Object.keys(modifiedErrors).length === 0) {
       setTimeout(() => {
-        // const hasEmptyField = checkRequiredFields(values);
-        // console.log('apres check')
-        // if (hasEmptyField) {
-        //   console.log('tout est vide')
-        //   setFormEmpty(true)
-        //   return; // Retourner immédiatement si l'un des champs spécifiques est vide
-        // }
         setActiveStep(activeStep + 1)
         window.scrollTo(0, 0)
       }, 200)
     }
     else {
-      // Logique pour défiler jusqu'au premier champ d'erreur
+      // Scroll to the first field with an error
       var firstErrorKey = Object.keys(modifiedErrors)[0];
       var errorFieldSelector = `[name="${firstErrorKey}"]`;
       var errorFieldElement = document.querySelector(errorFieldSelector);
-      //console.log('primaryPublications', errors.primaryPublications[0], errors.primaryPublications[0].identifier.identifier)
-      // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
       if (firstErrorKey === 'access') {
         firstErrorKey = firstErrorKey + '.landingPage';
       } else if (firstErrorKey === 'creators') {
         firstErrorKey = firstErrorKey + '.0.name';
       } else if (firstErrorKey === 'size') {
         firstErrorKey = firstErrorKey + '.value';
-      } else if (firstErrorKey === 'conpStatus') {
-        // Pas besoin de modification pour 'conpStatus'
       } else if (firstErrorKey === 'contact') {
         firstErrorKey = firstErrorKey + '.name';
       }
@@ -381,17 +302,14 @@ export function DatsEditorForm(props) {
           errorFieldElement = document.querySelector(errorFieldSelector);
         }
         else{
-          firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
+          firstErrorKey += '.0';
           errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
           errorFieldElement = document.querySelector(errorFieldSelector);
         }
       }
-      // console.log('firstErrorKey', firstErrorKey, errorFieldElement)
       if (firstErrorKey === 'conpStatus' && errorFieldElement) {
-        // Pour 'conpStatus', accéder au div parent
         let parentDivElement = errorFieldElement.parentNode;
-        // Ensuite, accéder au premier div enfant du div parent
-        let childDivElement = parentDivElement.querySelector('div'); // Assurez-vous que c'est bien un div que vous voulez sélectionner
+        let childDivElement = parentDivElement.querySelector('div');
     
         childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         if (childDivElement.focus) {
@@ -400,11 +318,9 @@ export function DatsEditorForm(props) {
           childDivElement.focus();
         }
       } else if (firstErrorKey === 'privacy' && errorFieldElement) {
-          // Pour 'conpStatus', accéder au div parent
           let parentDivElement = errorFieldElement.parentNode;
-          // Ensuite, accéder au premier div enfant du div parent
-          let childDivElement = parentDivElement.querySelector('div'); // Assurez-vous que c'est bien un div que vous voulez sélectionner
-      
+          let childDivElement = parentDivElement.querySelector('div');
+   
           childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           if (childDivElement.focus) {
             childDivElement.focus();
@@ -412,8 +328,8 @@ export function DatsEditorForm(props) {
             childDivElement.focus();
           }
       } else if (firstErrorKey === 'licenses.0' && errorFieldElement) {
-        // Traiter spécifiquement pour 'licenses'
-        let childDivElement = errorFieldElement.querySelector('div'); // Sélectionner le premier div enfant
+        setFieldTouched('licenses', true, false);
+        let childDivElement = errorFieldElement.querySelector('div');
         if (childDivElement) {
           childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           if (childDivElement.focus) {
@@ -422,20 +338,30 @@ export function DatsEditorForm(props) {
             childDivElement.focus();
           }
         }
+      } else if (firstErrorKey === 'reb_info'){
+        let childDivElement = document.querySelector('#mui-component-select-reb_info');
+        if (childDivElement) {
+          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (childDivElement.focus) {
+            childDivElement.focus();
+            childDivElement.blur();
+            childDivElement.focus();
+          }
+        }
+
       } else if (errorFieldElement) {
         errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Optionnel: focus sur le champ pour accessibilité
         if (errorFieldElement.focus) {
           errorFieldElement.focus();
           errorFieldElement.blur();
           errorFieldElement.focus();
         }
-      }
+      } 
     }
   }
 
-  const handleConfirm = (errors) => {
-    //console.log('errors', errors)
+  const handleConfirm = (errors, values) => {
+    //console.log('valuesConfirm', values)
     setNextClicked(true); // Set when 'Confirm' is clicked
     setValidateOnChange(true);
 
@@ -443,23 +369,16 @@ export function DatsEditorForm(props) {
       //console.log('no error')
     }
     else {
-      // Logique pour défiler jusqu'au premier champ d'erreur
       var firstErrorKey = Object.keys(errors)[0];
       var errorFieldSelector = `[name="${firstErrorKey}"]`;
       var errorFieldElement = document.querySelector(errorFieldSelector);
-      // console.log('firstErrorKeyTop', firstErrorKey, errorFieldElement, Object.keys(errors)[0], errors)
-      // Définir la clé pour accéder à des sous-éléments spécifiques, si nécessaire
       if (firstErrorKey === 'experimentsRequiredSoftware') {
         firstErrorKey = firstErrorKey + '.0.software';
       } else if (firstErrorKey === 'creators') {
         firstErrorKey = firstErrorKey + '.0.name';
       } else if (firstErrorKey === 'size') {
         firstErrorKey = firstErrorKey + '.value';
-      } else if (firstErrorKey === 'conpStatus') {
-        // Pas besoin de modification pour 'conpStatus'
-      }
-      else if (firstErrorKey === 'primaryPublications') {
-        // console.log('firstErrorKey', firstErrorKey, errors.primaryPublications)
+      } else if (firstErrorKey === 'primaryPublications') {
         for (let i = 0; i < 20; i++) {
           if (errors.primaryPublications[i] && errors.primaryPublications[i].title) {
             firstErrorKey = `primaryPublications.${i}.title`;
@@ -486,18 +405,13 @@ export function DatsEditorForm(props) {
         errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
       }
       errorFieldElement = document.querySelector(errorFieldSelector);
-      // console.log('id to go', errorFieldElement, errorFieldSelector)
       if (errorFieldElement === null) {
-        firstErrorKey += '.0'; // Accéder au premier élément d'un tableau, si applicable
+        firstErrorKey += '.0';
         errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
         errorFieldElement = document.querySelector(errorFieldSelector);
       }
-      //console.log('firstErrorKey', firstErrorKey, errorFieldElement)
       if ((firstErrorKey === 'experimentsRequiredSoftware.0.software' || firstErrorKey === 'experimentsFunctionAssessed.0' || firstErrorKey === 'experimentsModalities.0') && errorFieldElement) {
-          // Pour 'conpStatus', accéder au div parent
           let childDivElement = errorFieldElement.querySelector('div');
-
-          // Ensuite, accéder au premier div enfant du div parent
           childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           if (childDivElement.focus) {
             childDivElement.focus();
@@ -513,9 +427,6 @@ export function DatsEditorForm(props) {
         }
       }
     }
-
-
-    // setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
@@ -584,7 +495,8 @@ export function DatsEditorForm(props) {
             validationSchema={validationSchema || defaultDatsValidationSchema}
             context={{ isExperiment: isExperiment }} 
           >
-            {({ values, errors, touched, isSubmitting, handleReset }) => (
+            {({ values, errors, touched, isSubmitting, handleReset, setFieldTouched }) => (
+              
               <Form>
                 {shouldShowUploader(activeStep) ? (
                   <React.Fragment>
@@ -643,7 +555,6 @@ export function DatsEditorForm(props) {
                     className={classes.button}
                     style={{ backgroundColor: '#3f51b5', color: 'white', marginRight: 'auto' }} 
                     onClick={() => downloadDats(values)}
-                    // onClick={console.log('pressed')}
                     variant="contained"
                   >
                     Save partial DATS
@@ -682,7 +593,7 @@ export function DatsEditorForm(props) {
                         type='submit'
                         variant='contained'
                         //onClick={handleConfirm}
-                        onClick={() => handleConfirm(errors)} 
+                        onClick={() => handleConfirm(errors ,values)} 
                       >
                         Confirm
                       </Button>
@@ -690,7 +601,7 @@ export function DatsEditorForm(props) {
                       <Button
                         className={classes.button}
                         color='primary'
-                        onClick={() => handleNext(errors, values)}  
+                        onClick={() => handleNext(errors, values, setFieldTouched)}  
                         variant='contained'
                       >
                         Next

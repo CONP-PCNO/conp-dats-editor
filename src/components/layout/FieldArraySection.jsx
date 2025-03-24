@@ -20,12 +20,8 @@ export default function FieldArraySection(props) {
   const { name, description, fieldName } = parseValues(setupProps, selfString)
   const requiredStar = isRequired ? ' *' : ''
   const JsonField = jsonField
-  //const [initialized, setInitialized] = React.useState(false); 
-  // Utiliser FormikContext pour accéder aux erreurs et au statut touched de Formik
   const { errors, touched, setFieldValue } = useFormikContext();
-  // console.log('bigger values', values, fieldName)
 
-  // Utilisez useEffect pour initialiser les valeurs si nécessaire
   useEffect(() => {
     if ((nameAttr === 'types' || nameAttr === 'keywords' || nameAttr === 'licenses' || nameAttr === 'experimentsFunctionAssessed' || nameAttr === 'experimentsModalities' || nameAttr === 'experimentsLanguages') && values.length === 0) {
       setFieldValue(nameAttr, ['']);

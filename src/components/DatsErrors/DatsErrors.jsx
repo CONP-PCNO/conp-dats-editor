@@ -41,12 +41,8 @@ export default function DatsErrors(props) {
   if (Object.keys(errors).length === 0) {
     return null
   }
-  
-  //console.log(errors)
-
-  // Calculer les warnings à partir des erreurs
+ 
   const warnings = Object.keys(errors).map(key => warningFromKey(key, errors, touched)).filter(x => x !== null);
-  // Si aucun warning valide n'est généré, ne rien rendre
   if (warnings.length === 0) {
     return null;
   }
@@ -57,7 +53,6 @@ export default function DatsErrors(props) {
         with the following fields:
       </Typography>
 
-      {/* {Object.keys(errors).map((key) => warningFromKey(key, errors, touched))} */}
       {warnings}
 
       {formEmpty && <Typography gutterBottom variant='subtitle1'>All fields are empty</Typography>}

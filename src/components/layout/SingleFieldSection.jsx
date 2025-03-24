@@ -19,18 +19,6 @@ export default function SingleFieldSection(props) {
   const { description, name } = parseValues(setupProps, selfString)
   const requiredStar = isRequired ? ' *' : ''
   const JsonField = jsonField
-  var isNextClicked = nextClicked
-
-  // Utiliser FormikContext pour accéder aux valeurs de Formik
-  // const { touched, errors, values } = useFormikContext();
-  // const value = getIn(values, nameAttr);
-  // const errorText = getIn(errors, nameAttr);
-  // const isError = !!errorText && (!value || value === "") && isNextClicked;
-  // // const isError = !!errorText && (!value || value === "");
-  // if(name === 'name'){
-  //   console.log('isError', name, values, isError, isNextClicked)
-  // }
-  
 
   return (
     <Section>

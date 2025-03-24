@@ -12,6 +12,10 @@ class DatsToForm {
   }
 
   getJson() {
+    const subjectsProperty = this.data.extraProperties?.find((p) => p.category === 'subjects') || {
+      values: [{ value: "N/A" }]
+    };
+    
     const json = {
       title: this.data.title || '',
       creators:
@@ -51,7 +55,7 @@ class DatsToForm {
         units: this.data.distributions[0]?.unit?.value.toUpperCase() || ''
       },
       access: {
-        landingPage: this.data.distributions[0]?.access?.landingPage || '',
+        landingPage: this.data.distributions[0]?.access?.landingPage || 'N/A',
         authorization:
           this.data.distributions[0]?.access?.authorizations?.[0]?.value ||
           'public'
@@ -62,13 +66,11 @@ class DatsToForm {
           ?.filter((p) => p.category === 'files')[0]
           ?.values.map((a) => a.value)[0] || '',
       subjects: {
-        applicable: this.data.extraProperties
-          ?.filter((p) => p.category === 'subjects')[0]
-          ? (readExtraProperties(this.data, 'experimentLanguages') === null || readExtraProperties(this.data, 'experimentLanguages').length === 0)
-          : false,
-        value: this.data.extraProperties
-          ?.filter((p) => p.category === 'subjects')[0]
-          ?.values.map((a) => a.value === 'N/A' ? null : parseInt(a.value, 10))[0] || null,
+        applicable: subjectsProperty.values.length > 0,
+        value: subjectsProperty.values.map((a) => {
+          const parsedValue = parseInt(a.value, 10);
+          return isNaN(parsedValue) || parsedValue <= 0 ? null : parsedValue;
+        })[0] || null
       },
       conpStatus:
         this.data.extraProperties

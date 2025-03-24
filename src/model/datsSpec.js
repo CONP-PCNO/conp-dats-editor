@@ -1,6 +1,5 @@
 import * as yup from 'yup'
 
-// const doiRegex = /^https:\/\/dx\.doi\.org\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
 const doiRegex = /^https:\/\/.+\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
 const arkRegex = /^https:\/\/[a-zA-Z0-9.-]+\/ark:\/\d{5}\/[\w.-]+$/i;
 
@@ -10,7 +9,7 @@ const publicationSchema = yup.object().shape({
   authors: yup.array()
     .nullable()
     .when('title', {
-      is: (title) => !!title, // Si le titre est fourni
+      is: (title) => !!title,
       then: yup.array()
         .of(
           yup.object().shape({
@@ -21,8 +20,8 @@ const publicationSchema = yup.object().shape({
             affiliations: yup.array().of(yup.string().nullable()).nullable(),
           })
         )
-        .min(1, 'At least one author is required if title is provided'), // Au moins un auteur requis
-      otherwise: yup.array().nullable(), // Sinon, les auteurs ne sont pas requis
+        .min(1, 'At least one author is required if title is provided'), 
+      otherwise: yup.array().nullable(),
     }),
   dates: yup.array().of(
     yup.object().shape({
@@ -64,7 +63,7 @@ const defaultDatsValidationSchema = yup.object({
       name: yup.string().when('type', {
         is: 'Organization',
         then: yup.string().required('Name/Institution is required'),
-        otherwise: yup.string().nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
+        otherwise: yup.string().nullable(),
       }),
       fullName: yup.string().when('type', {
         is: 'Person',
@@ -81,7 +80,7 @@ const defaultDatsValidationSchema = yup.object({
         then: yup.string().required('Last name is required'),
         otherwise: yup.string().nullable()
       }),
-      email: yup.string().email('Invalid email format').nullable(), // Ajoutez nullable pour éviter les erreurs sur des champs optionnels
+      email: yup.string().email('Invalid email format').nullable(),
       orcid: yup.string().when('type', {
         is: 'Person',
         then: yup.string().matches(
@@ -135,7 +134,6 @@ const defaultDatsValidationSchema = yup.object({
     .required(),
   derivedFrom: yup.string(),
   parentDatasetId: yup.string(),
-  // primaryPublications: yup.array().of(yup.string()),
   primaryPublications: yup.array().of(
     publicationSchema
   ),
@@ -151,12 +149,9 @@ const defaultDatsValidationSchema = yup.object({
   }),
   registrationPageURL: yup.string().when(['privacy', 'isExperiment'], {
     is: (privacy, isExperiment) => {
-      // Le champ est non requis si isExperiment est true, 
-      // ou si la privacy n'est pas dans ['registered', 'controlled', 'private']
-      //console.log('isExperimentURL:', isExperiment); 
       return isExperiment || !['registered', 'controlled', 'private'].includes(privacy);
     },
-    then: yup.string(), // Ici, le champ n'est pas requis
+    then: yup.string(),
     otherwise: yup.string()
       .required('Registration page is required when privacy is set to registered, controlled, or private.')
       .test('is-url-or-email', 'Registration page must be a valid URL or email address', (value) => {
@@ -240,7 +235,6 @@ const defaultDatsValues = {
   description: '',
   types: [],
   version: '',
-  // licenses: [''],
   licenses: [],
   keywords: [],
   formats: [],
