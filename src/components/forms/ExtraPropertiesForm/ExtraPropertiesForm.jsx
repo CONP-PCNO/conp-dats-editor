@@ -1,177 +1,303 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Button,
   Divider,
   FormControlLabel,
   Radio,
   Box,
-  MenuItem
+  MenuItem,
+  Select,
+  FormControl, 
+  InputLabel, 
+  makeStyles
 } from '@material-ui/core'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { FieldArray, Field } from 'formik'
+import { FieldArray, Field, useFormikContext } from 'formik'
 import Section from '../../layout/Section'
 import SectionTitle from '../../layout/SectionTitle'
+import JsonSectionTitle from '../../layout/JsonSectionTitle'
+import JsonTextField from '../../fields/JsonTextField'
+import JsonOtherSelectField from '../../fields/JsonOtherSelectField'
 import FieldGroup from '../../layout/FieldGroup'
 import CustomTextField from '../../fields/CustomTextField'
 import CustomRadioGroup from '../../fields/CustomRadioGroup'
 import CustomSelectField from '../../fields/CustomSelectField'
+import fieldDescriptions from '../../../model/fieldDescriptions.json'
+
+const useStyles = makeStyles((theme) => ({
+  select: {
+    minWidth: 200, // Ajustez cette valeur pour définir la largeur du menu déroulant
+  },
+  menuItem: {
+    minWidth: 207, // Ajustez cette valeur pour définir la largeur des éléments du menu
+  }
+}));
 
 export default function ExtraPropertiesForm(props) {
-  const { values } = props
+  const { values, setFieldValue } = useFormikContext();
+  const { isExperiment } = props
+  const isPrivacyOpen = values.privacy === 'registered' || values.privacy === 'controlled' || values.privacy === 'private';
+  const currentYear = new Date().getFullYear();
+  const years = Array.from(new Array(currentYear - 1899), (val, index) => currentYear - index);
+  const classes = useStyles();
+
+  useEffect(() => {
+    values.primaryPublications.forEach((publication, index) => {
+      if (!publication.authors || publication.authors.length === 0) {
+        setFieldValue(`primaryPublications.${index}.authors`, [{
+          fullName: '',
+          firstName: '',
+          middleInitial: '',
+          lastName: '',
+          affiliations: []
+        }]);
+      }
+      if (!publication.dates || publication.dates.length === 0) {
+        setFieldValue(`primaryPublications.${index}.dates`, [{
+          date: '',
+          description: ''
+        }]);
+      }
+    });
+  }, [values.primaryPublications, setFieldValue]);
+
   return (
     <React.Fragment>
       <Section>
-        <SectionTitle
-          name='Origin *'
-          tooltip='Name of the institution or consortium that generated the dataset. Both an institution and a consortium can be specified, e.g. in the case of a named collaboration between different labs at the same institution.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.origin}
         />
-        <SectionTitle
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.institution']}
           subsection
-          name='Institution'
-          tooltip='Name of the institution where this dataset was created (if applicable).'
         />
-        <CustomTextField label='Institution' name='origin.institution' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.institution'
+          setupProps={fieldDescriptions['origin.institution']}
+          value={values.origin.institution}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.consortium']}
           subsection
-          name='Consortium'
-          tooltip='Name of the consortium where this dataset was created (if applicable).'
         />
-        <CustomTextField label='Consortium' name='origin.consortium' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.consortium'
+          setupProps={fieldDescriptions['origin.consortium']}
+          value={values.origin.consortium}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.city']}
           subsection
-          name='City'
-          tooltip='(Principal) city where this dataset was created.'
         />
-        <CustomTextField label='City' name='origin.city' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.city'
+          setupProps={fieldDescriptions['origin.city']}
+          value={values.origin.city}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.province']}
           subsection
-          name='Province'
-          tooltip='(Principal) province where this dataset was created.'
         />
-        <CustomTextField label='Province' name='origin.province' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.province'
+          setupProps={fieldDescriptions['origin.province']}
+          value={values.origin.province}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['origin.country']}
           subsection
-          name='Country'
-          tooltip='(Principal) country where this dataset was created.'
         />
-        <CustomTextField label='Country' name='origin.country' />
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='origin.country'
+          setupProps={fieldDescriptions['origin.country']}
+          value={values.origin.province}
+        />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Derived From (For Derived Datasets Only)'
-          tooltip='Required for derived datasets only. Provide information about the source dataset this dataset has been derived from.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.derivedFromTitle}
         />
-        <SectionTitle
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.derivedFrom}
           subsection
-          name='Derived From'
-          tooltip='Name of the source dataset used to generate this dataset.'
         />
-        <CustomTextField label='Derived From' name='derivedFrom' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='derivedFrom'
+          setupProps={fieldDescriptions.derivedFrom}
+          value={values.derivedFrom}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.parentId}
           subsection
-          name='Parent dataset ID'
-          tooltip='Identifier (DOI) of the source dataset used to generate this dataset.'
         />
-        <CustomTextField label='Parent dataset ID' name='parentDatasetId' />
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='parentDatasetId'
+          setupProps={fieldDescriptions.parentId}
+          value={values.parentDatasetId}
+        />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Primary Publications'
-          tooltip='The primary publication(s) associated with the dataset, usually describing how the dataset was produced.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.primaryPublications}
         />
+
         <FieldArray name='primaryPublications'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.primaryPublications.map((primaryPublication, index) => {
                 return (
                   <FieldGroup
-                    column
-                    indexed
-                    key={'primaryPublication_' + index}
-                    name={'primaryPublication_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    column
+                    index={index}
+                    indexed
+                    key={`primaryPublication_${index}`}
+                    name={`primaryPublication_${index}`}
                   >
-                    <SectionTitle
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions['primaryPublications.title']
+                      }
                       subsection
-                      name='Title'
-                      tooltip='The name of the publication.'
                     />
-                    <CustomTextField
-                      label='Title'
-                      name={`primaryPublications.${index}.title`}
+
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.title`}
+                      setupProps={
+                        fieldDescriptions['primaryPublications.title']
+                      }
+                      value={values.primaryPublications[index].title}
                     />
-                    <SectionTitle
+
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.publicationVenue'
+                        ]
+                      }
                       subsection
-                      name='Publication Venue'
-                      tooltip='The name of the publication venue where the document is published (if applicable).'
                     />
-                    <CustomTextField
-                      label='Publication Venue'
-                      name={`primaryPublications.${index}.publicationVenue`}
+
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.publicationVenue`}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.publicationVenue'
+                        ]
+                      }
+                      value={values.primaryPublications[index].publicationVenue}
                     />
+
                     <FieldArray name={`primaryPublications.${index}.authors`}>
                       {(arrayHelpers) => (
                         <Section subsection>
                           <SectionTitle
-                            subsection
                             name='Authors'
+                            subsection
                             tooltip='Authors of the publication.'
                           />
+
                           {(
                             values.primaryPublications[index]?.authors || []
+                            // authors.length === 0 ? [{}] : authors
                           ).map((author, idx) => {
                             return (
                               <FieldGroup
-                                column
-                                indexed
-                                key={'author_' + idx}
-                                name={'author_' + idx}
-                                index={idx}
                                 arrayHelpers={arrayHelpers}
+                                column
+                                index={idx}
+                                indexed
+                                key={`author_${idx}`}
+                                name={`author_${idx}`}
                               >
                                 <CustomTextField
                                   label='Full Name'
                                   name={`primaryPublications.${index}.authors.${idx}.fullName`}
                                 />
+
                                 <CustomTextField
                                   label='First Name'
                                   name={`primaryPublications.${index}.authors.${idx}.firstName`}
                                 />
+
                                 <CustomTextField
                                   label='Middle Initial'
                                   name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
                                 />
+
                                 <CustomTextField
                                   label='Last Name'
                                   name={`primaryPublications.${index}.authors.${idx}.lastName`}
                                 />
+
                                 <FieldArray
                                   name={`primaryPublications.${index}.authors.${idx}.affiliations`}
                                 >
                                   {(arrayHelpers) => (
                                     <Section subsection>
                                       <SectionTitle
-                                        subsection
                                         name='Affiliations'
+                                        subsection
                                         tooltip='Author affiliations.'
                                       />
+
                                       {(
                                         values.primaryPublications[index]
                                           ?.authors[idx]?.affiliations || []
+                                        // author.affiliations || []
                                       ).map((affiliation, i) => {
                                         return (
                                           <FieldGroup
-                                            column
-                                            indexed
-                                            key={'affiliation_' + i}
-                                            name={'affiliation_' + i}
-                                            index={i}
                                             arrayHelpers={arrayHelpers}
+                                            column
+                                            index={i}
+                                            indexed
+                                            key={`affiliation_${i}`}
+                                            name={`affiliation_${i}`}
                                           >
                                             <CustomTextField
                                               label='Affiliation'
@@ -180,13 +306,14 @@ export default function ExtraPropertiesForm(props) {
                                           </FieldGroup>
                                         )
                                       })}
+
                                       <Box py={1}>
                                         <Button
-                                          variant='outlined'
                                           color='secondary'
                                           onClick={() => {
                                             arrayHelpers.push('')
                                           }}
+                                          variant='outlined'
                                         >
                                           {(
                                             values.primaryPublications[index]
@@ -202,9 +329,9 @@ export default function ExtraPropertiesForm(props) {
                               </FieldGroup>
                             )
                           })}
+
                           <Box py={1}>
                             <Button
-                              variant='outlined'
                               color='secondary'
                               onClick={() => {
                                 arrayHelpers.push({
@@ -215,6 +342,7 @@ export default function ExtraPropertiesForm(props) {
                                   affiliations: []
                                 })
                               }}
+                              variant='outlined'
                             >
                               {(
                                 values.primaryPublications[index]?.authors || []
@@ -226,12 +354,14 @@ export default function ExtraPropertiesForm(props) {
                         </Section>
                       )}
                     </FieldArray>
+
                     <Section subsection>
                       <SectionTitle
-                        subsection
                         name='Dates'
+                        subsection
                         tooltip='Relevant dates for the publication. If you provide a date, it must come with a description of the date (i.e.: first submission, final approval, date of publication, ...).'
                       />
+
                       <FieldArray name={`primaryPublications.${index}.dates`}>
                         {(arrayHelpers) => (
                           <Box display='flex flex-column'>
@@ -239,21 +369,63 @@ export default function ExtraPropertiesForm(props) {
                               (date, idx) => {
                                 return (
                                   <FieldGroup
-                                    key={'date_' + index}
-                                    name={'date_' + index}
-                                    index={index}
                                     arrayHelpers={arrayHelpers}
+                                    index={index}
+                                    key={`date_${idx}`}
+                                    name={`date_${idx}`}
                                   >
-                                    <MuiPickersUtilsProvider
+                                    {/* <MuiPickersUtilsProvider
                                       utils={DateFnsUtils}
                                     >
                                       <Field
                                         component={DatePicker}
-                                        name={`primaryPublications.${index}.dates.${idx}.date`}
-                                        label='Date'
                                         format='MM/dd/yyyy'
+                                        label='Date'
+                                        name={`primaryPublications.${index}.dates.${idx}.date`}
                                       />
-                                    </MuiPickersUtilsProvider>
+                                    </MuiPickersUtilsProvider> */}
+
+                                    {/* <Field
+                                      as={Select}
+                                      label='Year'
+                                      name={`primaryPublications.${index}.dates.${idx}.date`}
+                                    >
+                                      {years.map((year) => (
+                                        <MenuItem key={year} value={year}>
+                                          {year}
+                                        </MenuItem>
+                                      ))}
+                                    </Field> */}
+
+                                    <FormControl fullWidth>
+                                      <InputLabel id={`date-${idx}-label`}>Year</InputLabel>
+                                      <Field
+                                        as={Select}
+                                        labelId={`date-${idx}-label`}
+                                        label='Year'
+                                        name={`primaryPublications.${index}.dates.${idx}.date`}
+                                        value={date.date || ''}
+                                        className={classes.select}
+                                        MenuProps={{
+                                          PaperProps: {
+                                            style: {
+                                              width: 207 // Ajustez cette valeur pour définir la largeur du menu déroulant
+                                            }
+                                          }
+                                        }}
+                                      >
+                                        <MenuItem value="" className={classes.menuItem}>
+                                          {/* Cette option représente une chaîne vide */}
+                                          <em>None</em>
+                                        </MenuItem>
+                                        {years.map((year) => (
+                                          <MenuItem key={year} value={year} className={classes.menuItem}>
+                                            {year}
+                                          </MenuItem>
+                                        ))}
+                                      </Field>
+                                    </FormControl>
+
                                     <CustomTextField
                                       label='Description'
                                       name={`primaryPublications.${index}.dates.${idx}.type.value`}
@@ -262,17 +434,20 @@ export default function ExtraPropertiesForm(props) {
                                 )
                               }
                             )}
+
                             <Box py={1}>
                               <Button
-                                variant='outlined'
                                 color='secondary'
                                 onClick={() => {
                                   arrayHelpers.push({
-                                    date: new Date(
-                                      new Date().setHours(0, 0, 0, 0)
-                                    )
+                                    date: new Date().toISOString(),
+                                    // date: new Date(
+                                    //   new Date().setHours(0, 0, 0, 0)
+                                    // ),
+                                    description: ''
                                   })
                                 }}
+                                variant='outlined'
                               >
                                 {values.dates.length > 0
                                   ? 'Add another Date'
@@ -283,28 +458,60 @@ export default function ExtraPropertiesForm(props) {
                         )}
                       </FieldArray>
                     </Section>
-                    <SectionTitle
-                      name='Identifier'
-                      tooltip='A code uniquely identifying the publication locally to a system or globally. Provide a Document Object Identifier (DOI) if you have one.'
+
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifier'
+                        ]
+                      }
+                      subsection
                     />
-                    <CustomTextField
-                      label='Identifier'
-                      name={`primaryPublications.${index}.identifier.identifier`}
+
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      label='DOI (https://dx.doi.org/10.xxxx/xxxxxx) or ARK (https://example.org/ark:/12345/abc12345)'
+                      nameAttr={`primaryPublications.${index}.identifier.identifier`}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifier'
+                        ]
+                      }
+                      value={
+                        values.primaryPublications[index].identifier.identifier
+                      }
                     />
-                    <SectionTitle
-                      name='Identifier Source'
-                      tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
+
+                    <JsonSectionTitle
+                      isExperiment={isExperiment}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifierSource'
+                        ]
+                      }
+                      subsection
                     />
-                    <CustomTextField
-                      label='Identifier Source'
-                      name={`primaryPublications.${index}.identifier.identifierSource`}
+
+                    <JsonTextField
+                      isExperiment={isExperiment}
+                      nameAttr={`primaryPublications.${index}.identifier.identifierSource`}
+                      setupProps={
+                        fieldDescriptions[
+                          'primaryPublications.identifier.identifierSource'
+                        ]
+                      }
+                      value={
+                        values.primaryPublications[index].identifier
+                          .identifierSource
+                      }
                     />
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -318,6 +525,7 @@ export default function ExtraPropertiesForm(props) {
                       }
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.primaryPublications.length > 0
                     ? 'Add another Primary Publication'
@@ -328,132 +536,129 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Dimensions'
-          tooltip='The different dimensions (granular components) making up a dataset. Providing dimensions give more details about the data types.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['identifier.identifier']}
         />
-        <FieldArray name='dimensions'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.dimensions.map((dimension, index) => {
-                return (
-                  <FieldGroup
-                    key={'dimension_' + index}
-                    name={'dimension_' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      label='Name'
-                      name={`dimensions.${index}.name`}
-                    />
-                    <CustomTextField
-                      label='Description'
-                      name={`dimensions.${index}.description`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push({
-                      name: '',
-                      description: ''
-                    })
-                  }}
-                >
-                  {values.dimensions.length > 0
-                    ? 'Add another Dimension'
-                    : 'Add a Dimension'}
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Identifier'
-          tooltip='A code uniquely identifying the dataset locally to a system or globally.'
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='identifier.identifier'
+          setupProps={fieldDescriptions['identifier.identifier']}
+          value={values.identifier.identifier}
         />
-        <CustomTextField label='Identifier' name='identifier.identifier' />
-        <SectionTitle
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions['identifier.identifierSource']}
           subsection
-          name='Identifier Source'
-          tooltip='Information about the organisation/namespace responsible for minting the identifier. It must be provided if the identifier is provided.'
         />
-        <CustomTextField label='Source' name='identifier.identifierSource' />
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          nameAttr='identifier.identifierSource'
+          setupProps={fieldDescriptions['identifier.identifierSource']}
+          value={values.identifier.identifierSource}
+        />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Contact *'
-          tooltip='Provide contact information (name and email address) of the person responsible for the dataset.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.contact}
         />
-        <CustomTextField required label='Name' name='contact.name' />
-        <CustomTextField required label='Email' name='contact.email' />
+
+        <CustomTextField label='Name' name='contact.name' required />
+
+        <CustomTextField label='Email' name='contact.email' required />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Logo'
-          tooltip='Link to a URL for the logo or local filename containing the logo.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.logo}
         />
-        <CustomRadioGroup name='logo.type' label='Type'>
-          <FormControlLabel value='url' control={<Radio />} label='URL' />
+
+        <CustomRadioGroup label='Type' name='logo.type'>
+          <FormControlLabel control={<Radio />} label='URL' value='url' />
+
           <FormControlLabel
-            value='fileName'
             control={<Radio />}
             label='Filename'
+            value='fileName'
           />
         </CustomRadioGroup>
+
         {values.logo.type === 'url' ? (
           <CustomTextField label='URL' name='logo.url' />
         ) : (
           <CustomTextField label='Path to File' name='logo.fileName' />
         )}
       </Section>
+
       <Divider variant='middle' />
+
+      {/* {!isExperiment && (
+        <Section>
+          <JsonSectionTitle
+            isExperiment={isExperiment}
+            isRequired
+            setupProps={fieldDescriptions.registrationPage}
+          />
+
+          <CustomTextField label='registrationPage' name='registrationPageURL' required />
+        </Section>
+      )}
+
+      <Divider variant='middle' /> */}
+
       <Section>
-        <SectionTitle
-          name='Dates'
-          tooltip='Relevant dates for the dataset. If you provide a date, it must come with a description of the date (i.e.: first data collection, last data collection, date of first publication, ...).'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.dates}
         />
+
         <FieldArray name='dates'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.dates.map((date, index) => {
                 return (
                   <FieldGroup
-                    key={'date_' + index}
-                    name={'date_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`date_${index}`}
+                    name={`date_${index}`}
                   >
+                    <JsonOtherSelectField
+                      isExperiment={isExperiment}
+                      nameAttr={`dates.${index}.description`}
+                      setupProps={fieldDescriptions.dateDescriptions}
+                      value={date.description}
+                    />
+
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Field
                         component={DatePicker}
-                        name={`dates.${index}.date`}
-                        label='Date'
                         format='MM/dd/yyyy'
+                        label='Date'
+                        name={`dates.${index}.date`}
                       />
                     </MuiPickersUtilsProvider>
-                    <CustomTextField
-                      label='Description'
-                      name={`dates.${index}.type.value`}
-                    />
                   </FieldGroup>
                 )
               })}
-              <Box item xs={6}>
+
+              <Box xs={6}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -461,6 +666,7 @@ export default function ExtraPropertiesForm(props) {
                       date: new Date(new Date().setHours(0, 0, 0, 0))
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.dates.length > 0 ? 'Add another Date' : 'Add a Date'}
                 </Button>
@@ -469,61 +675,78 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
+      {isExperiment ? null : (
+        <React.Fragment>
+          <Section>
+            <JsonSectionTitle
+              isExperiment={isExperiment}
+              setupProps={fieldDescriptions.producedBy}
+            />
+
+            <CustomTextField label='Produced By' name='producedBy' />
+          </Section>
+
+          <Divider variant='middle' />
+        </React.Fragment>
+      )}
+
       <Section>
-        <SectionTitle
-          name='Produced By'
-          tooltip='Process which generated a given dataset.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.isAbout}
         />
-        <CustomTextField label='Produced By' name='producedBy' />
-      </Section>
-      <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Is About *'
-          tooltip='Entities (biological entity, taxonomic information, disease, molecular entity, anatomical part, treatment) associated with this dataset. You must provide a species, and other entities are optional.'
-        />
+
         <FieldArray name='isAbout'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.isAbout.map((isAbout, index) => {
                 return (
                   <FieldGroup
-                    key={'isAbout_' + index}
-                    name={'isAbout_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`isAbout_${index}`}
+                    name={`isAbout_${index}`}
                   >
                     <CustomRadioGroup
-                      name={`isAbout.${index}.type`}
                       label='Type'
+                      name={`isAbout.${index}.type`}
                     >
                       <FormControlLabel
-                        value='Species'
                         control={<Radio />}
                         label='Species'
+                        value='Species'
                       />
+
                       <FormControlLabel
-                        value='Other Entity'
                         control={<Radio />}
                         label='Other Entity'
+                        value='Other Entity'
                       />
                     </CustomRadioGroup>
+
                     {isAbout.type === 'Species' ? (
                       <Section>
                         <CustomSelectField
-                          name={`isAbout.${index}.name`}
                           label='Species Name'
+                          name={`isAbout.${index}.name`}
                           required
                         >
                           <MenuItem value='Homo sapiens'>Homo Sapiens</MenuItem>
+
                           <MenuItem value='Mus musculus'>Mus musculus</MenuItem>
+
                           <MenuItem value='Callithrix jacchus'>
                             Callithrix jacchus
                           </MenuItem>
+
                           <MenuItem value='Ondatra zibethicus'>
                             Ondatra zibethicus
                           </MenuItem>
+
                           <MenuItem value='Macaca mulatta'>
                             Macaca mulatta
                           </MenuItem>
@@ -540,13 +763,14 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({ type: 'Species' })
                   }}
+                  variant='outlined'
                 >
                   {values.isAbout.length > 0
                     ? 'Add another Entity'
@@ -557,27 +781,31 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Acknowledges'
-          tooltip='Grant(s) which funded and supported the work reported by the dataset.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.acknowledges}
         />
+
         <FieldArray name='acknowledges'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.acknowledges.map((s, index) => {
                 return (
                   <FieldGroup
-                    key={'acknowledges_' + index}
-                    name={'acknowledges_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`acknowledges_${index}`}
+                    name={`acknowledges_${index}`}
                   >
                     <CustomTextField
                       label='Name'
                       name={`acknowledges.${index}.name`}
                     />
+
                     <CustomTextField
                       label='Abbreviation'
                       name={`acknowledges.${index}.abbreviation`}
@@ -585,9 +813,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -595,6 +823,7 @@ export default function ExtraPropertiesForm(props) {
                       abbreviation: ''
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.acknowledges.length > 0
                     ? 'Add another Acknowledgement'
@@ -605,27 +834,31 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Spatial Coverage'
-          tooltip='The geographical extension and span (i.e.: city, province, administrative region, ...) covered by the dataset.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          setupProps={fieldDescriptions.spatialCoverage}
         />
+
         <FieldArray name='spatialCoverage'>
           {(arrayHelpers) => (
             <Box display='flex flex-column'>
               {values.spatialCoverage.map((s, index) => {
                 return (
                   <FieldGroup
-                    key={'spatialCoverage_' + index}
-                    name={'spatialCoverage_' + index}
-                    index={index}
                     arrayHelpers={arrayHelpers}
+                    index={index}
+                    key={`spatialCoverage_${index}`}
+                    name={`spatialCoverage_${index}`}
                   >
                     <CustomTextField
                       label='Name'
                       name={`spatialCoverage.${index}.name`}
                     />
+
                     <CustomTextField
                       label='Description'
                       name={`spatialCoverage.${index}.description`}
@@ -633,9 +866,9 @@ export default function ExtraPropertiesForm(props) {
                   </FieldGroup>
                 )
               })}
+
               <Box py={1}>
                 <Button
-                  variant='outlined'
                   color='secondary'
                   onClick={() => {
                     arrayHelpers.push({
@@ -643,6 +876,7 @@ export default function ExtraPropertiesForm(props) {
                       description: ''
                     })
                   }}
+                  variant='outlined'
                 >
                   {values.spatialCoverage.length > 0
                     ? 'Add another Spatial Coverage'
@@ -653,70 +887,87 @@ export default function ExtraPropertiesForm(props) {
           )}
         </FieldArray>
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Ethical Information *'
-          tooltip='In submitting this dataset for inclusion, I declare that *'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired={!isPrivacyOpen} // isRequired basé sur la condition
+          setupProps={fieldDescriptions.reb_info}
+          isDisabled={isPrivacyOpen} // isRequired basé sur la condition 
         />
+
         <CustomSelectField
           label='Select a statement *'
           name='reb_info'
+          disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           style={{
             minWidth: 200,
             maxWidth: 700
           }}
         >
           <MenuItem
-            value='option_1'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_1'
+            disabled={isPrivacyOpen}
           >
             Participants have provided a valid informed consent to the
             de-identification and deposit of their data in an open-access
             portal.
           </MenuItem>
+
           <MenuItem
-            value='option_2'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_2'
+            disabled={isPrivacyOpen}
           >
             A waiver or other authorization to deposit these de-identified data
             in an open-access portal was obtained from a research ethics body
             (REB, IRB, REC, etc.).
           </MenuItem>
+
           <MenuItem
-            value='option_3'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_3'
+            disabled={isPrivacyOpen}
           >
             Local law or a relevant institutional authorization otherwise
             enables the deposit of these data in an open-access portal.
           </MenuItem>
+
           <MenuItem
-            value='option_4'
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
+            value='option_4'
+            disabled={isPrivacyOpen}
           >
             These data are not derived from human participants.
           </MenuItem>
         </CustomSelectField>
-        <CustomTextField
-          label='Ethics committee approval number'
-          name='reb_number'
-        />
+
+        {isExperiment ? null : (
+          <CustomTextField
+            label='Ethics committee approval number'
+            name='reb_number'
+            disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
+          />
+        )}
       </Section>
     </React.Fragment>
   )

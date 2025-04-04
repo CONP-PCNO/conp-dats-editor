@@ -1,9 +1,21 @@
+function readExtraProperties(data, category) {
+  return (
+    data.extraProperties
+      ?.filter((property) => property.category === category)[0]
+      ?.values.map((val) => val.value) || []
+  )
+}
+
 class DatsToForm {
   constructor(data) {
     this.data = data
   }
 
   getJson() {
+    const subjectsProperty = this.data.extraProperties?.find((p) => p.category === 'subjects') || {
+      values: [{ value: "N/A" }]
+    };
+    
     const json = {
       title: this.data.title || '',
       creators:
@@ -36,14 +48,14 @@ class DatsToForm {
       types: this.data.types.map((a) => a?.information?.value) || [],
       version: this.data.version || '',
       licenses: this.data.licenses.map((a) => a?.name) || [],
-      keywords: this.data.keywords.map((a) => a?.value) || [],
+      keywords: this.data.keywords?.map((a) => a?.value) || [],
       formats: this.data.distributions[0]?.formats || [],
       size: {
         value: this.data.distributions[0]?.size || '',
         units: this.data.distributions[0]?.unit?.value.toUpperCase() || ''
       },
       access: {
-        landingPage: this.data.distributions[0]?.access?.landingPage || '',
+        landingPage: this.data.distributions[0]?.access?.landingPage || 'N/A',
         authorization:
           this.data.distributions[0]?.access?.authorizations?.[0]?.value ||
           'public'
@@ -53,10 +65,13 @@ class DatsToForm {
         this.data.extraProperties
           ?.filter((p) => p.category === 'files')[0]
           ?.values.map((a) => a.value)[0] || '',
-      subjects:
-        this.data.extraProperties
-          ?.filter((p) => p.category === 'subjects')[0]
-          ?.values.map((a) => a.value)[0] || '',
+      subjects: {
+        applicable: subjectsProperty.values.length > 0,
+        value: subjectsProperty.values.map((a) => {
+          const parsedValue = parseInt(a.value, 10);
+          return isNaN(parsedValue) || parsedValue <= 0 ? null : parsedValue;
+        })[0] || null
+      },
       conpStatus:
         this.data.extraProperties
           ?.filter((p) => p.category === 'CONP_status')[0]
@@ -107,7 +122,16 @@ class DatsToForm {
         this.data.extraProperties
           ?.filter((p) => p.category === 'logo')[0]
           ?.values.map((a) => a.value)[0] || '',
-      dates: this.data.dates || [],
+      registrationPageURL: 
+        this.data.extraProperties
+          .filter((prop) => prop.category === 'registrationPage')
+          .flatMap((prop) => prop.values)
+          .map((val) => val.value)[0] || '',
+      dates:
+        this.data.dates?.map((dateVal) => ({
+          date: dateVal.date,
+          description: dateVal.type.value
+        })) || [],
       citations: [],
       producedBy: '',
       isAbout:
@@ -127,8 +151,36 @@ class DatsToForm {
       refinement: '',
       aggregation: this.data.aggregation || '',
       spatialCoverage: this.data.spatialCoverage || [],
-      reb_info: this.data.reb_info || '',
-      reb_number: this.data.reb_number || ''
+      reb_info:
+        this.data.extraProperties
+          ?.filter((p) => p.category === 'REB_statement')[0]
+          ?.values.map((a) => a.value) || '',
+      reb_number: this.data.reb_number || '',
+      experimentsFunctionAssessed:
+        readExtraProperties(this.data, 'experimentFunctionAssessed') || [],
+      experimentsLanguages:
+        readExtraProperties(this.data, 'experimentLanguages') || [],
+      experimentsValidationMeasures:
+        readExtraProperties(this.data, 'experimentValidationMeasures') || [],
+      experimentsValidationPopulations:
+        readExtraProperties(this.data, 'experimentValidationPopulations') || [],
+      experimentsAccessibility:
+        readExtraProperties(this.data, 'experimentAccessibility') || [],
+      experimentsModalities:
+        readExtraProperties(this.data, 'experimentModalities') || [],
+      experimentsRequiredDevices:
+        readExtraProperties(this.data, 'experimentRequiredDevices') || [],
+      experimentsRequiredSoftware:
+        readExtraProperties(this.data, 'experimentRequiredSoftware')?.map(
+          (val) => {
+            const match = val.match(/^(?<software>.*)version (?<version>.*)$/u)
+            return { software: match[1], version: match[2] }
+          }
+        ) || [],
+      experimentsStimuli:
+        readExtraProperties(this.data, 'experimentStimuli') || [],
+      experimentsAdditionalRequirements:
+        readExtraProperties(this.data, 'experimentAdditionalRequirements') || []
     }
 
     if (json.logo.includes('www')) {
@@ -152,37 +204,12 @@ class DatsToForm {
     json.primaryPublications = json.primaryPublications.map((pp) => {
       return Object.assign(pp, {
         dates: (pp?.dates || []).map((date) => {
-          return Object.assign(date, { date: new Date(date.date) })
+          // return Object.assign(date, { date: new Date(date.date) })
+          // return Object.assign(date, { date: date.date }); 
+          return Object.assign(date, { date: date.date.split('-')[0] });
         })
       })
     })
-
-    json.licenses.forEach((license, index) => {
-      if (
-        [
-          'CC BY',
-          'CC BY-SA',
-          'CC BY-NC',
-          'CC BY-NC-SA',
-          'CC BY-ND',
-          'CC BY-NC-ND',
-          'ODbL',
-          'ODC-By',
-          'PDDL'
-        ].includes('license')
-      ) {
-        json.licenses[index] = {
-          value: license,
-          valueOther: ''
-        }
-      } else {
-        json.licenses[index] = {
-          value: 'other',
-          valueOther: license
-        }
-      }
-    })
-
     return json
   }
 }

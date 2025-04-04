@@ -1,14 +1,17 @@
 {
   "parser": "babel-eslint",
   "extends": [
+    "eslint:all",
     "standard",
     "standard-react",
     "plugin:prettier/recommended",
+    "plugin:react/all",
     "prettier/standard",
     "prettier/react"
   ],
   "env": {
-    "node": true
+    "node": true,
+    "browser": true
   },
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -19,15 +22,18 @@
   },
   "settings": {
     "react": {
-      "version": "16"
+      "version": "16.14"
     }
   },
   "rules": {
-    "space-before-function-paren": 0,
-    "react/prop-types": 0,
-    "react/jsx-handler-names": 0,
+    "sort-imports": 0,
+    "sort-keys": 0,
+    "no-magic-numbers": 0,
+    "max-lines-per-function": 0,
+    "max-params": 0,
+    "func-style": 0,
     "react/jsx-fragments": 0,
-    "react/no-unused-prop-types": 0,
-    "import/export": 0
+    "react/jsx-no-literals": 0,
+    "react/prop-types": 0
   }
 }

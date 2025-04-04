@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, parseISO, isValid } from 'date-fns'
 
 class FormToDats {
   constructor(data) {
@@ -12,9 +12,9 @@ class FormToDats {
       identifier: this.data.identifier,
       dates: this.data.dates.map((date) => {
         return {
-          date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
+          date: `${format(date.date, 'yyyy-MM-dd')} 00:00:00`,
           type: {
-            value: date.type.value.toLowerCase()
+            value: date.description.toLowerCase()
           }
         }
       }),
@@ -64,7 +64,7 @@ class FormToDats {
       privacy: this.data.privacy,
       licenses: this.data.licenses.map((license) => {
         return {
-          name: license.value !== 'other' ? license.value : license.valueOther
+          name: license
         }
       }),
       distributions: [
@@ -101,10 +101,19 @@ class FormToDats {
       primaryPublications: this.data.primaryPublications.map((pp) => {
         return Object.assign(pp, {
           dates: pp.dates.map((date) => {
+            // let parsedDate;
+            // if (Date.parse(date.date)) { // Vérifier si date.date est déjà une date valide
+            //   parsedDate = new Date(date.date);
+            // } else {
+            //   parsedDate = parseISO(date.date); // Essayer de parser comme ISO si ce n'est pas une date valide
+            // }
+  
             return Object.assign(date, {
-              date: format(date.date, 'yyyy-MM-dd') + ' 00:00:00',
+              // date: isValid(parsedDate) ? `${format(parsedDate, 'yyyy-MM-dd')} 00:00:00` : "Date invalide",
+              date: `${date.date}`,
               type: {
-                value: date.type.value.toLowerCase()
+                // value: date.type.value.toLowerCase()
+                value: date.type && date.type.value ? date.type.value.toLowerCase() : " "
               }
             })
           })
@@ -121,8 +130,9 @@ class FormToDats {
         }
         if (i.type === 'Species' && Object.keys(species).includes(i.name)) {
           i.identifier = {
-            identifier:
-              'https://www.ncbi.nlm.nih.gov/taxonomy/' + species[i.name],
+            identifier: `https://www.ncbi.nlm.nih.gov/taxonomy/${
+              species[i.name]
+            }`,
             identifierSource: 'NCBI Taxonomy Database'
           }
         }
@@ -160,7 +170,8 @@ class FormToDats {
         category: 'subjects',
         values: [
           {
-            value: this.data.subjects
+            // value: this.data.subjects.applicable ? this.data.subjects.value : 'N/A'
+            value: this.data.subjects.applicable && this.data.subjects.value != null ? this.data.subjects.value : 'N/A'
           }
         ]
       },
@@ -216,6 +227,14 @@ class FormToDats {
         ]
       },
       {
+        category: 'registrationPage',
+        values: [
+          {
+            value: this.data.registrationPageURL
+          }
+        ]
+      },
+      {
         category: 'contact',
         values: [
           {
@@ -238,6 +257,80 @@ class FormToDats {
             value: this.data.parentDatasetId
           }
         ]
+      },
+      {
+        category: 'experimentFunctionAssessed',
+        values: this.data.experimentsFunctionAssessed.map((val) => {
+          return { value: val }
+        })
+      },
+      {
+        category: 'experimentLanguages',
+        values: this.data.experimentsLanguages.map((language) => {
+          return {
+            value: language
+          }
+        })
+      },
+      {
+        category: 'experimentValidationMeasures',
+        values: this.data.experimentsValidationMeasures.map((validation) => {
+          return {
+            value: validation
+          }
+        })
+      },
+      {
+        category: 'experimentValidationPopulations',
+        values: this.data.experimentsValidationPopulations.map((validation) => {
+          return {
+            value: validation
+          }
+        })
+      },
+      {
+        category: 'experimentAccessibility',
+        values: this.data.experimentsAccessibility.map((accessibility) => {
+          return {
+            value: accessibility
+          }
+        })
+      },
+      {
+        category: 'experimentModalities',
+        values: this.data.experimentsModalities.map((modality) => {
+          return {
+            value: modality
+          }
+        })
+      },
+      {
+        category: 'experimentRequiredDevices',
+        values: this.data.experimentsRequiredDevices.map((device) => {
+          return {
+            value: device
+          }
+        })
+      },
+      {
+        category: 'experimentRequiredSoftware',
+        values: this.data.experimentsRequiredSoftware.map((software) => {
+          return {
+            value: `${software.software} version ${software.version}`
+          }
+        })
+      },
+      {
+        category: 'experimentStimuli',
+        values: this.data.experimentsStimuli.map((stimulus) => {
+          return {
+            value: stimulus
+          }
+        })
+      },
+      {
+        category: 'experimentAdditionalRequirements',
+        values: [{ value: this.data.experimentsAdditionalRequirements }]
       }
     ]
 
@@ -259,10 +352,9 @@ class FormToDats {
           values: [
             {
               value:
-                ethicsStatement +
-                'participants have provided a valid informed consent to' +
-                ' the de-identification and deposit of their data' +
-                ' in an open-access portal.'
+                `${ethicsStatement}participants have provided a valid informed consent to` +
+                ` the de-identification and deposit of their data` +
+                ` in an open-access portal.`
             }
           ]
         },
@@ -275,11 +367,10 @@ class FormToDats {
           values: [
             {
               value:
-                ethicsStatement +
-                'a waiver or other authorization to deposit these' +
-                ' de-identified data in an open-access portal was' +
-                ' obtained from a research ethics body' +
-                ' (REB, IRB, REC, etc.).'
+                `${ethicsStatement}a waiver or other authorization to deposit these` +
+                ` de-identified data in an open-access portal was` +
+                ` obtained from a research ethics body` +
+                ` (REB, IRB, REC, etc.).`
             }
           ]
         },
@@ -292,10 +383,9 @@ class FormToDats {
           values: [
             {
               value:
-                ethicsStatement +
-                'local law or a relevant institutional authorization' +
-                ' otherwise enables the deposit of these data in an' +
-                ' open-access portal.'
+                `${ethicsStatement}local law or a relevant institutional authorization` +
+                ` otherwise enables the deposit of these data in an` +
+                ` open-access portal.`
             }
           ]
         },
@@ -307,9 +397,7 @@ class FormToDats {
           category: 'REB_statement',
           values: [
             {
-              value:
-                ethicsStatement +
-                'these data are not derived from human participants.'
+              value: `${ethicsStatement}these data are not derived from human participants.`
             }
           ]
         },
@@ -318,7 +406,7 @@ class FormToDats {
     }
 
     extraProperties.forEach((p) => {
-      if (p.values[0].value) {
+      if (p.values.length > 0 && p.values[0].value) {
         json.extraProperties.push(p)
       }
     })

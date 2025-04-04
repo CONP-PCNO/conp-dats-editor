@@ -1,128 +1,163 @@
-import React from 'react'
-import { Grid, Button, MenuItem, Divider, Box } from '@material-ui/core'
-import { FieldArray } from 'formik'
+import React, { useEffect } from 'react'
+import { Divider } from '@material-ui/core'
+import { Field } from 'formik'
+import { Checkbox } from 'formik-material-ui'
 import Section from '../../layout/Section'
-import SectionTitle from '../../layout/SectionTitle'
-import FieldGroup from '../../layout/FieldGroup'
-import CustomTextField from '../../fields/CustomTextField'
-import CustomSelectField from '../../fields/CustomSelectField'
+import FieldArraySection from '../../layout/FieldArraySection'
+import SingleFieldSection from '../../layout/SingleFieldSection'
+import JsonSectionTitle from '../../layout/JsonSectionTitle'
+import JsonSelectField from '../../fields/JsonSelectField'
+import JsonTextField from '../../fields/JsonTextField'
+import fieldDescriptions from '../../../model/fieldDescriptions.json'
+import { useFormikContext } from 'formik';
 
 export default function DistributionForm(props) {
-  const { values } = props
+  const { values, isExperiment } = props
+  const { values : formikValues, setFieldValue, validateForm } = useFormikContext();
+  useEffect(() => {
+    if (formikValues.privacy === 'open') {
+      setFieldValue('reb_info', '').then(() => {
+        validateForm();
+      });
+    } 
+  }, [formikValues.privacy, setFieldValue, validateForm]);
+
   return (
     <React.Fragment>
-      <Section>
-        <SectionTitle
-          name='Formats *'
-          tooltip='The technical format of the dataset distribution. Use the file extension or MIME type when possible. (Definition adapted from DataCite).'
-        />
-        <FieldArray name='formats'>
-          {(arrayHelpers) => (
-            <Box display='flex flex-column'>
-              {values.formats.map((format, index) => {
-                return (
-                  <FieldGroup
-                    key={'format_' + index}
-                    name={'format_' + index}
-                    index={index}
-                    arrayHelpers={arrayHelpers}
-                  >
-                    <CustomTextField
-                      required
-                      fullWidth
-                      label='Format'
-                      name={`formats.${index}`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Grid item xs={6}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={() => {
-                    arrayHelpers.push('')
-                  }}
-                >
-                  {values.formats.length > 0
-                    ? 'Add another Format'
-                    : 'Add a Format'}
-                </Button>
-              </Grid>
-            </Box>
-          )}
-        </FieldArray>
-      </Section>
+      <FieldArraySection
+        isExperiment={isExperiment}
+        isRequired={!isExperiment}
+        jsonField={JsonTextField}
+        nameAttr='formats'
+        setupProps={fieldDescriptions.formats}
+        values={values.formats}
+      />
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Size *'
-          tooltip='The quantity of space required on disk (or other medium) for this dataset.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.size}
         />
-        <CustomTextField required label='Size' name='size.value' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='size.value'
+          setupProps={fieldDescriptions.size}
+          value={values.size.value}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.units}
           subsection
-          name='Units *'
-          tooltip='Unit in which the size is measured.(KB -> KiloByte, MB -> MegaByte, GB -> GigaByte, TB -> TeraByte and PB -> PetaByte).'
         />
-        <CustomSelectField required name='size.units' label='Units'>
-          <MenuItem value='MB'>MB</MenuItem>
-          <MenuItem value='GB'>GB</MenuItem>
-          <MenuItem value='TB'>TB</MenuItem>
-          <MenuItem value='PB'>PB</MenuItem>
-        </CustomSelectField>
+
+        <JsonSelectField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='size.units'
+          setupProps={fieldDescriptions.units}
+          value={values.size.units}
+        />
       </Section>
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Access *'
-          tooltip='The information about access modality for the dataset distribution.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.access}
         />
-        <SectionTitle
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.landingPage}
           subsection
-          name='Landing Page *'
-          tooltip='A URL (Web page) that contains information about the associated dataset (with a link to the dataset) or a direct link to the dataset itself. When none exists yet, please provide the link to the README.md file of the dataset.'
         />
-        <CustomTextField required label='Landing Page' name='access.landingPage' />
-        <SectionTitle
+
+        <JsonTextField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='access.landingPage'
+          setupProps={fieldDescriptions.landingPage}
+          value={values.access.landingPage}
+        />
+
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.authorizations}
           subsection
-          name='Authorizations *'
-          tooltip='This must be one of "Public", "Registered" or "Private". When this field is absent the value will be treated as "Public". "Public" = available to anyone; "Registered" = available to user authorized by the creator; "Private" = available only to the creator.'
         />
-        <CustomSelectField required label='Authorization' name='access.authorization'>
-          <MenuItem value='public'>Public</MenuItem>
-          <MenuItem value='registered'>Registered</MenuItem>
-          <MenuItem value='private'>Private</MenuItem>
-        </CustomSelectField>
+
+        <JsonSelectField
+          isExperiment={isExperiment}
+          isRequired
+          nameAttr='access.authorization'
+          setupProps={fieldDescriptions.authorizations}
+          value={values.access.authorizations}
+        />
       </Section>
+
       <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='Number of Files *'
-          tooltip='Total number of files in the dataset.'
-        />
-        <CustomTextField required label='Files' name='files' />
-      </Section>
+
+      <SingleFieldSection
+        fullWidth
+        isExperiment={isExperiment}
+        isRequired
+        jsonField={JsonTextField}
+        nameAttr='files'
+        setupProps={fieldDescriptions.files}
+      />
+
       <Divider variant='middle' />
+
       <Section>
-        <SectionTitle
-          name='Number of Subjects *'
-          tooltip='Total number of subjects constituting the dataset.'
+        <JsonSectionTitle
+          isExperiment={isExperiment}
+          isRequired
+          setupProps={fieldDescriptions.subjects}
         />
-        <CustomTextField required label='Subjects' name='subjects' />
+
+        {isExperiment ? (
+          <label>
+            <Field
+              component={Checkbox}
+              name='subjects.applicable'
+              type='checkbox'
+            />
+            Applicable to this experiment
+          </label>
+        ) : null}
+
+        {values.subjects.applicable ? (
+          <JsonTextField
+            fullWidth
+            isExperiment={isExperiment}
+            isRequired
+            nameAttr='subjects.value'
+            setupProps={fieldDescriptions.subjects}
+            value={values.subjects.value}
+          />
+        ) : null}
       </Section>
+
       <Divider variant='middle' />
-      <Section>
-        <SectionTitle
-          name='CONP Status *'
-          tooltip='The CONP status is used to add the CONP logo or Canadian flag on the left of the dataset and sorting in the data search. Valid values are "CONP" = created using funding from the CONP; "Canadian" = created in Canada without CONP funding; "external" = created outside of Canada.'
-        />
-        <CustomSelectField required name='conpStatus' label='CONP Status *'>
-          <MenuItem value='CONP'>CONP</MenuItem>
-          <MenuItem value='Canadian'>Canadian</MenuItem>
-          <MenuItem value='external'>External</MenuItem>
-        </CustomSelectField>
-      </Section>
+
+      <SingleFieldSection
+        isExperiment={isExperiment}
+        isRequired
+        jsonField={JsonSelectField}
+        nameAttr='conpStatus'
+        setupProps={fieldDescriptions.conpStatus}
+      />
     </React.Fragment>
   )
 }
