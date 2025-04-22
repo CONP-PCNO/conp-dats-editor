@@ -10,11 +10,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const CustomRadioGroup = ({ ...props }) => {
+function CustomRadioGroup({ ...props }) {
   const classes = useStyles()
   return (
     <FormControl component='fieldset'>
       <FormLabel component='legend'>{props.label}</FormLabel>
+
       <FastField component={RadioGroup} {...props}>
         {props.children}
       </FastField>

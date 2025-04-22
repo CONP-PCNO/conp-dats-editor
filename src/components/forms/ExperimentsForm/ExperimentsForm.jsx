@@ -115,68 +115,75 @@ export default function ExperimentsForm(props) {
 
         <FieldArray name='experimentsRequiredSoftware'>
           {(arrayHelpers) => {
-
             // Vérifier si le tableau est vide et initialiser si nécessaire
-            if (arrayHelpers.form.values.experimentsRequiredSoftware.length === 0) {
-              arrayHelpers.push({ software: '', version: '' });  // Assurez-vous que la structure ajoutée correspond à vos champs attendus
+            if (
+              arrayHelpers.form.values.experimentsRequiredSoftware.length === 0
+            ) {
+              arrayHelpers.push({ software: '', version: '' }) // Assurez-vous que la structure ajoutée correspond à vos champs attendus
             }
 
             return (
-            <Box display='flex flex-column'>
-              {' '}
-              {values.experimentsRequiredSoftware.map((software, index) => {
-                return (
-                  <FieldGroup
-                    arrayHelpers={arrayHelpers}
-                    index={index}
-                    key={`software${index}`}
-                    name={`software${index}`}
+              <Box display='flex flex-column'>
+                {' '}
+                {values.experimentsRequiredSoftware.map((software, index) => {
+                  return (
+                    <FieldGroup
+                      arrayHelpers={arrayHelpers}
+                      index={index}
+                      key={`software${index}`}
+                      name={`software${index}`}
+                    >
+                      <JsonSectionTitle
+                        isExperiment
+                        setupProps={
+                          fieldDescriptions.experimentsRequiredSoftware
+                        }
+                        subsection
+                      />
+
+                      <JsonOtherSelectField
+                        isExperiment
+                        nameAttr={`experimentsRequiredSoftware.${index}.software`}
+                        setupProps={
+                          fieldDescriptions.experimentsRequiredSoftware
+                        }
+                        value={
+                          values.experimentsRequiredSoftware[index].software
+                        }
+                      />
+
+                      <JsonSectionTitle
+                        isExperiment
+                        setupProps={
+                          fieldDescriptions.experimentsRequiredSoftwareVersion
+                        }
+                        subsection
+                      />
+
+                      <CustomTextField
+                        label={
+                          fieldDescriptions.experimentsRequiredSoftwareVersion
+                            .name
+                        }
+                        name={`experimentsRequiredSoftware.${index}.version`}
+                      />
+                    </FieldGroup>
+                  )
+                })}
+                <Box py={1}>
+                  <Button
+                    color='secondary'
+                    onClick={() => arrayHelpers.push('')}
+                    variant='outlined'
                   >
-                    <JsonSectionTitle
-                      isExperiment
-                      setupProps={fieldDescriptions.experimentsRequiredSoftware}
-                      subsection
-                    />
-
-                    <JsonOtherSelectField
-                      isExperiment
-                      nameAttr={`experimentsRequiredSoftware.${index}.software`}
-                      setupProps={fieldDescriptions.experimentsRequiredSoftware}
-                      value={values.experimentsRequiredSoftware[index].software}
-                    />
-
-                    <JsonSectionTitle
-                      isExperiment
-                      setupProps={
-                        fieldDescriptions.experimentsRequiredSoftwareVersion
-                      }
-                      subsection
-                    />
-
-                    <CustomTextField
-                      label={
-                        fieldDescriptions.experimentsRequiredSoftwareVersion
-                          .name
-                      }
-                      name={`experimentsRequiredSoftware.${index}.version`}
-                    />
-                  </FieldGroup>
-                )
-              })}
-              <Box py={1}>
-                <Button
-                  color='secondary'
-                  onClick={() => arrayHelpers.push('')}
-                  variant='outlined'
-                >
-                  {values.experimentsRequiredSoftware.length > 0
-                    ? 'Add another software/version'
-                    : 'Add a software/version'}
-                </Button>
+                    {values.experimentsRequiredSoftware.length > 0
+                      ? 'Add another software/version'
+                      : 'Add a software/version'}
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-
-          )}}
+            )
+          }}
         </FieldArray>
       </Section>
 

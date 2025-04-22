@@ -101,19 +101,24 @@ class FormToDats {
       primaryPublications: this.data.primaryPublications.map((pp) => {
         return Object.assign(pp, {
           dates: pp.dates.map((date) => {
-            // let parsedDate;
-            // if (Date.parse(date.date)) { // Vérifier si date.date est déjà une date valide
-            //   parsedDate = new Date(date.date);
-            // } else {
-            //   parsedDate = parseISO(date.date); // Essayer de parser comme ISO si ce n'est pas une date valide
-            // }
-  
+            /*
+             * Let parsedDate;
+             * if (Date.parse(date.date)) { // Vérifier si date.date est déjà une date valide
+             *   parsedDate = new Date(date.date);
+             * } else {
+             *   parsedDate = parseISO(date.date); // Essayer de parser comme ISO si ce n'est pas une date valide
+             * }
+             */
+
             return Object.assign(date, {
-              // date: isValid(parsedDate) ? `${format(parsedDate, 'yyyy-MM-dd')} 00:00:00` : "Date invalide",
+              // Date: isValid(parsedDate) ? `${format(parsedDate, 'yyyy-MM-dd')} 00:00:00` : "Date invalide",
               date: `${date.date}`,
               type: {
-                // value: date.type.value.toLowerCase()
-                value: date.type && date.type.value ? date.type.value.toLowerCase() : " "
+                // Value: date.type.value.toLowerCase()
+                value:
+                  date.type && date.type.value
+                    ? date.type.value.toLowerCase()
+                    : ' '
               }
             })
           })
@@ -170,8 +175,11 @@ class FormToDats {
         category: 'subjects',
         values: [
           {
-            // value: this.data.subjects.applicable ? this.data.subjects.value : 'N/A'
-            value: this.data.subjects.applicable && this.data.subjects.value != null ? this.data.subjects.value : 'N/A'
+            // Value: this.data.subjects.applicable ? this.data.subjects.value : 'N/A'
+            value:
+              this.data.subjects.applicable && this.data.subjects.value !== null
+                ? this.data.subjects.value
+                : 'N/A'
           }
         ]
       },
@@ -466,7 +474,7 @@ class FormToDats {
       delete json.primaryPublications
     }
 
-    Object.keys(json).forEach((key) => json[key] == null && delete json[key])
+    Object.keys(json).forEach((key) => json[key] === null && delete json[key])
 
     return json
   }

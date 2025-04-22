@@ -52,13 +52,17 @@ describe('Distribution Form: field values and errors', () => {
       })
     })
 
-    // const errorText = await waitFor(() =>
-    //   screen.findByText('must be a `number` type', { exact: false })
-    // )
+    /*
+     * Const errorText = await waitFor(() =>
+     *   screen.findByText('must be a `number` type', { exact: false })
+     * )
+     */
 
-    // await waitFor(() => {
-    //   expect(errorText).toBeInTheDocument()
-    // })
+    /*
+     * Await waitFor(() => {
+     *   expect(errorText).toBeInTheDocument()
+     * })
+     */
   })
   it('size handles correct values', async () => {
     const testId = 'size.value'

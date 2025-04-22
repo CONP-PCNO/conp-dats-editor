@@ -7,12 +7,12 @@ function CustomTextField({ disabled, ...props }) {
     <FastField
       component={TextField}
       {...props}
-      variant='outlined'
-      fullWidth
       disabled={disabled}
+      fullWidth
       inputProps={{
         'data-testid': `${props.name}`
       }}
+      variant='outlined'
     />
   )
 }
