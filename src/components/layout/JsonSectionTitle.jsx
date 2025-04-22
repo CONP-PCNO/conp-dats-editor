@@ -10,10 +10,10 @@ export default function JsonSectionTitle(props) {
   const requiredStar = isRequired ? ' *' : ''
   return (
     <SectionTitle
+      isDisabled={isDisabled}
       name={`${name}${requiredStar}`}
       subsection={subsection}
       tooltip={description}
-      isDisabled={isDisabled}
     />
   )
 }

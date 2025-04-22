@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useField, useFormikContext, getIn } from 'formik';
+import React, { useCallback, useEffect, useState } from 'react'
+import { useField, useFormikContext, getIn } from 'formik'
 import {
   FormControl,
   Box,
@@ -8,53 +8,58 @@ import {
   Select,
   MenuItem,
   FormHelperText
-} from '@material-ui/core';
+} from '@material-ui/core'
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   formControl: {
     minWidth: 220
   }
-}));
+}))
 
 export default function HybridSelectTextField(props) {
-  const { field, label, options, inputProps } = props;
-  const { touched, errors, values } = useFormikContext();
-  const meta = useField(field.name)[1];
-  const { setValue, setTouched } = useField(field.name)[2];
-  const value = getIn(values, field.name);
-  const errorText = getIn(touched, field.name) && getIn(errors, field.name);
-  const showError = !!errorText && (!value || value === '');
-  const [useTextInput, setUseTextInput] = useState(value === 'other');
-  const classes = useStyles();
+  const { field, label, options, inputProps } = props
+  const { touched, errors, values } = useFormikContext()
+  const meta = useField(field.name)[1]
+  const { setValue, setTouched } = useField(field.name)[2]
+  const value = getIn(values, field.name)
+  const errorText = getIn(touched, field.name) && getIn(errors, field.name)
+  const showError = Boolean(errorText) && (!value || value === '')
+  const [useTextInput, setUseTextInput] = useState(value === 'other')
+  const classes = useStyles()
 
   const handleSelect = useCallback(
     (ev) => {
-      const newVal = ev.target.value;
-      setTouched(true);
+      const newVal = ev.target.value
+      setTouched(true)
       if (newVal === 'other') {
-        setUseTextInput(true);
-        setValue('');
+        setUseTextInput(true)
+        setValue('')
       } else {
-        setUseTextInput(false);
-        setValue(newVal);
+        setUseTextInput(false)
+        setValue(newVal)
       }
     },
     [setUseTextInput, setValue, setTouched]
-  );
+  )
 
   useEffect(() => {
     if (!Object.values(options).includes(value)) {
-      setUseTextInput(false);
+      setUseTextInput(false)
     }
-  }, [value, options]);
+  }, [value, options])
 
   return (
     <React.Fragment>
       <Box my={1}>
-        <FormControl className={classes.formControl} variant="outlined" error={showError}>
+        <FormControl
+          className={classes.formControl}
+          error={showError}
+          variant='outlined'
+        >
           <InputLabel>{label}</InputLabel>
+
           <Select
             {...field}
             {...inputProps}
@@ -67,28 +72,32 @@ export default function HybridSelectTextField(props) {
                 {optionLabel}
               </MenuItem>
             ))}
-            {!Object.values(options).includes("Other (Please Specify)") && (
-              <MenuItem key="other" value="other">Other (Please Specify)</MenuItem>
+
+            {!Object.values(options).includes('Other (Please Specify)') && (
+              <MenuItem key='other' value='other'>
+                Other (Please Specify)
+              </MenuItem>
             )}
           </Select>
-          {showError && <FormHelperText>{errorText}</FormHelperText>}
+
+          {showError ? <FormHelperText>{errorText}</FormHelperText> : null}
         </FormControl>
       </Box>
 
-      {useTextInput && (
+      {useTextInput ? (
         <Box my={1}>
           <TextField
             fullWidth
             onChange={(ev) => setValue(ev.target.value)}
             value={value || ''}
-            variant="outlined"
+            variant='outlined'
             {...inputProps}
-            name={field.name}
             error={showError}
             helperText={errorText}
+            name={field.name}
           />
         </Box>
-      )}
+      ) : null}
     </React.Fragment>
-  );
+  )
 }

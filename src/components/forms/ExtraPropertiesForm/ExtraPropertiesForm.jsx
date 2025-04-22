@@ -7,8 +7,8 @@ import {
   Box,
   MenuItem,
   Select,
-  FormControl, 
-  InputLabel, 
+  FormControl,
+  InputLabel,
   makeStyles
 } from '@material-ui/core'
 import { DatePicker } from 'formik-material-ui-pickers'
@@ -28,40 +28,50 @@ import fieldDescriptions from '../../../model/fieldDescriptions.json'
 
 const useStyles = makeStyles((theme) => ({
   select: {
-    minWidth: 200, // Ajustez cette valeur pour définir la largeur du menu déroulant
+    minWidth: 200 // Ajustez cette valeur pour définir la largeur du menu déroulant
   },
   menuItem: {
-    minWidth: 207, // Ajustez cette valeur pour définir la largeur des éléments du menu
+    minWidth: 207 // Ajustez cette valeur pour définir la largeur des éléments du menu
   }
-}));
+}))
 
 export default function ExtraPropertiesForm(props) {
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext()
   const { isExperiment } = props
-  const isPrivacyOpen = values.privacy === 'registered' || values.privacy === 'controlled' || values.privacy === 'private';
-  const currentYear = new Date().getFullYear();
-  const years = Array.from(new Array(currentYear - 1899), (val, index) => currentYear - index);
-  const classes = useStyles();
+  const isPrivacyOpen =
+    values.privacy === 'registered' ||
+    values.privacy === 'controlled' ||
+    values.privacy === 'private'
+  const currentYear = new Date().getFullYear()
+  const years = Array.from(
+    new Array(currentYear - 1899),
+    (val, index) => currentYear - index
+  )
+  const classes = useStyles()
 
   useEffect(() => {
     values.primaryPublications.forEach((publication, index) => {
       if (!publication.authors || publication.authors.length === 0) {
-        setFieldValue(`primaryPublications.${index}.authors`, [{
-          fullName: '',
-          firstName: '',
-          middleInitial: '',
-          lastName: '',
-          affiliations: []
-        }]);
+        setFieldValue(`primaryPublications.${index}.authors`, [
+          {
+            fullName: '',
+            firstName: '',
+            middleInitial: '',
+            lastName: '',
+            affiliations: []
+          }
+        ])
       }
       if (!publication.dates || publication.dates.length === 0) {
-        setFieldValue(`primaryPublications.${index}.dates`, [{
-          date: '',
-          description: ''
-        }]);
+        setFieldValue(`primaryPublications.${index}.dates`, [
+          {
+            date: '',
+            description: ''
+          }
+        ])
       }
-    });
-  }, [values.primaryPublications, setFieldValue]);
+    })
+  }, [values.primaryPublications, setFieldValue])
 
   return (
     <React.Fragment>
@@ -241,94 +251,95 @@ export default function ExtraPropertiesForm(props) {
                             tooltip='Authors of the publication.'
                           />
 
-                          {(
-                            values.primaryPublications[index]?.authors || []
-                            // authors.length === 0 ? [{}] : authors
-                          ).map((author, idx) => {
-                            return (
-                              <FieldGroup
-                                arrayHelpers={arrayHelpers}
-                                column
-                                index={idx}
-                                indexed
-                                key={`author_${idx}`}
-                                name={`author_${idx}`}
-                              >
-                                <CustomTextField
-                                  label='Full Name'
-                                  name={`primaryPublications.${index}.authors.${idx}.fullName`}
-                                />
-
-                                <CustomTextField
-                                  label='First Name'
-                                  name={`primaryPublications.${index}.authors.${idx}.firstName`}
-                                />
-
-                                <CustomTextField
-                                  label='Middle Initial'
-                                  name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
-                                />
-
-                                <CustomTextField
-                                  label='Last Name'
-                                  name={`primaryPublications.${index}.authors.${idx}.lastName`}
-                                />
-
-                                <FieldArray
-                                  name={`primaryPublications.${index}.authors.${idx}.affiliations`}
+                          {(values.primaryPublications[index]?.authors || [])
+                            // Authors.length === 0 ? [{}] : authors
+                            .map((author, idx) => {
+                              return (
+                                <FieldGroup
+                                  arrayHelpers={arrayHelpers}
+                                  column
+                                  index={idx}
+                                  indexed
+                                  key={`author_${idx}`}
+                                  name={`author_${idx}`}
                                 >
-                                  {(arrayHelpers) => (
-                                    <Section subsection>
-                                      <SectionTitle
-                                        name='Affiliations'
-                                        subsection
-                                        tooltip='Author affiliations.'
-                                      />
+                                  <CustomTextField
+                                    label='Full Name'
+                                    name={`primaryPublications.${index}.authors.${idx}.fullName`}
+                                  />
 
-                                      {(
-                                        values.primaryPublications[index]
-                                          ?.authors[idx]?.affiliations || []
-                                        // author.affiliations || []
-                                      ).map((affiliation, i) => {
-                                        return (
-                                          <FieldGroup
-                                            arrayHelpers={arrayHelpers}
-                                            column
-                                            index={i}
-                                            indexed
-                                            key={`affiliation_${i}`}
-                                            name={`affiliation_${i}`}
-                                          >
-                                            <CustomTextField
-                                              label='Affiliation'
-                                              name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
-                                            />
-                                          </FieldGroup>
+                                  <CustomTextField
+                                    label='First Name'
+                                    name={`primaryPublications.${index}.authors.${idx}.firstName`}
+                                  />
+
+                                  <CustomTextField
+                                    label='Middle Initial'
+                                    name={`primaryPublications.${index}.authors.${idx}.middleInitial`}
+                                  />
+
+                                  <CustomTextField
+                                    label='Last Name'
+                                    name={`primaryPublications.${index}.authors.${idx}.lastName`}
+                                  />
+
+                                  <FieldArray
+                                    name={`primaryPublications.${index}.authors.${idx}.affiliations`}
+                                  >
+                                    {(arrayHelpers) => (
+                                      <Section subsection>
+                                        <SectionTitle
+                                          name='Affiliations'
+                                          subsection
+                                          tooltip='Author affiliations.'
+                                        />
+
+                                        {(
+                                          values.primaryPublications[index]
+                                            ?.authors[idx]?.affiliations || []
                                         )
-                                      })}
+                                          // Author.affiliations || []
+                                          .map((affiliation, i) => {
+                                            return (
+                                              <FieldGroup
+                                                arrayHelpers={arrayHelpers}
+                                                column
+                                                index={i}
+                                                indexed
+                                                key={`affiliation_${i}`}
+                                                name={`affiliation_${i}`}
+                                              >
+                                                <CustomTextField
+                                                  label='Affiliation'
+                                                  name={`primaryPublications.${index}.authors.${idx}.affiliations.${i}.name`}
+                                                />
+                                              </FieldGroup>
+                                            )
+                                          })}
 
-                                      <Box py={1}>
-                                        <Button
-                                          color='secondary'
-                                          onClick={() => {
-                                            arrayHelpers.push('')
-                                          }}
-                                          variant='outlined'
-                                        >
-                                          {(
-                                            values.primaryPublications[index]
-                                              ?.authors[idx]?.affiliations || []
-                                          ).length > 0
-                                            ? 'Add another Affiliation'
-                                            : 'Add an Affiliation'}
-                                        </Button>
-                                      </Box>
-                                    </Section>
-                                  )}
-                                </FieldArray>
-                              </FieldGroup>
-                            )
-                          })}
+                                        <Box py={1}>
+                                          <Button
+                                            color='secondary'
+                                            onClick={() => {
+                                              arrayHelpers.push('')
+                                            }}
+                                            variant='outlined'
+                                          >
+                                            {(
+                                              values.primaryPublications[index]
+                                                ?.authors[idx]?.affiliations ||
+                                              []
+                                            ).length > 0
+                                              ? 'Add another Affiliation'
+                                              : 'Add an Affiliation'}
+                                          </Button>
+                                        </Box>
+                                      </Section>
+                                    )}
+                                  </FieldArray>
+                                </FieldGroup>
+                              )
+                            })}
 
                           <Box py={1}>
                             <Button
@@ -398,14 +409,11 @@ export default function ExtraPropertiesForm(props) {
                                     </Field> */}
 
                                     <FormControl fullWidth>
-                                      <InputLabel id={`date-${idx}-label`}>Year</InputLabel>
+                                      <InputLabel id={`date-${idx}-label`}>
+                                        Year
+                                      </InputLabel>
+
                                       <Field
-                                        as={Select}
-                                        labelId={`date-${idx}-label`}
-                                        label='Year'
-                                        name={`primaryPublications.${index}.dates.${idx}.date`}
-                                        value={date.date || ''}
-                                        className={classes.select}
                                         MenuProps={{
                                           PaperProps: {
                                             style: {
@@ -413,13 +421,27 @@ export default function ExtraPropertiesForm(props) {
                                             }
                                           }
                                         }}
+                                        as={Select}
+                                        className={classes.select}
+                                        label='Year'
+                                        labelId={`date-${idx}-label`}
+                                        name={`primaryPublications.${index}.dates.${idx}.date`}
+                                        value={date.date || ''}
                                       >
-                                        <MenuItem value="" className={classes.menuItem}>
+                                        <MenuItem
+                                          className={classes.menuItem}
+                                          value=''
+                                        >
                                           {/* Cette option représente une chaîne vide */}
                                           <em>None</em>
                                         </MenuItem>
+
                                         {years.map((year) => (
-                                          <MenuItem key={year} value={year} className={classes.menuItem}>
+                                          <MenuItem
+                                            className={classes.menuItem}
+                                            key={year}
+                                            value={year}
+                                          >
                                             {year}
                                           </MenuItem>
                                         ))}
@@ -441,9 +463,11 @@ export default function ExtraPropertiesForm(props) {
                                 onClick={() => {
                                   arrayHelpers.push({
                                     date: new Date().toISOString(),
-                                    // date: new Date(
-                                    //   new Date().setHours(0, 0, 0, 0)
-                                    // ),
+                                    /*
+                                     * Date: new Date(
+                                     *   new Date().setHours(0, 0, 0, 0)
+                                     * ),
+                                     */
                                     description: ''
                                   })
                                 }}
@@ -892,29 +916,29 @@ export default function ExtraPropertiesForm(props) {
 
       <Section>
         <JsonSectionTitle
+          isDisabled={isPrivacyOpen} // IsRequired basé sur la condition
           isExperiment={isExperiment}
-          isRequired={!isPrivacyOpen} // isRequired basé sur la condition
+          isRequired={!isPrivacyOpen} // IsRequired basé sur la condition
           setupProps={fieldDescriptions.reb_info}
-          isDisabled={isPrivacyOpen} // isRequired basé sur la condition 
         />
 
         <CustomSelectField
+          disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           label='Select a statement *'
           name='reb_info'
-          disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           style={{
             minWidth: 200,
             maxWidth: 700
           }}
         >
           <MenuItem
+            disabled={isPrivacyOpen}
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
             value='option_1'
-            disabled={isPrivacyOpen}
           >
             Participants have provided a valid informed consent to the
             de-identification and deposit of their data in an open-access
@@ -922,13 +946,13 @@ export default function ExtraPropertiesForm(props) {
           </MenuItem>
 
           <MenuItem
+            disabled={isPrivacyOpen}
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
             value='option_2'
-            disabled={isPrivacyOpen}
           >
             A waiver or other authorization to deposit these de-identified data
             in an open-access portal was obtained from a research ethics body
@@ -936,26 +960,26 @@ export default function ExtraPropertiesForm(props) {
           </MenuItem>
 
           <MenuItem
+            disabled={isPrivacyOpen}
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
             value='option_3'
-            disabled={isPrivacyOpen}
           >
             Local law or a relevant institutional authorization otherwise
             enables the deposit of these data in an open-access portal.
           </MenuItem>
 
           <MenuItem
+            disabled={isPrivacyOpen}
             style={{
               wordBreak: 'break-word',
               whiteSpace: 'unset',
               maxWidth: 700
             }}
             value='option_4'
-            disabled={isPrivacyOpen}
           >
             These data are not derived from human participants.
           </MenuItem>
@@ -963,9 +987,9 @@ export default function ExtraPropertiesForm(props) {
 
         {isExperiment ? null : (
           <CustomTextField
+            disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
             label='Ethics committee approval number'
             name='reb_number'
-            disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           />
         )}
       </Section>

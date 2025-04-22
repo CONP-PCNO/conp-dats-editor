@@ -12,14 +12,13 @@ import {
 } from '@material-ui/core'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Switch from '@material-ui/core/Switch'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
 
 import DatsErrors from './components/DatsErrors/DatsErrors'
 import DatsUploader from './components/DatsUploader/DatsUploader'
@@ -91,7 +90,7 @@ const datasetSteps = [
   'General Info',
   'Distribution',
   'Extra Properties',
-  'Review & Download', 
+  'Review & Download',
   'Readme Editor'
 ]
 
@@ -109,8 +108,8 @@ function renderStep(step, classes, values, dats, isExperiment, nextClicked) {
         <GeneralForm
           classes={classes}
           isExperiment={isExperiment}
+          nextClicked={nextClicked}
           values={values}
-          nextClicked = {nextClicked}
         />
       )
     case experimentSteps[1]:
@@ -169,27 +168,25 @@ export function DatsEditorForm(props) {
   const [isExperiment, setIsExperiment] = React.useState(false)
   const steps = isExperiment ? experimentSteps : datasetSteps
   const postDatsSteps = isExperiment ? 2 : 2
-  const [nextClicked, setNextClicked] = React.useState(false);
-  const [validateOnChange, setValidateOnChange] = React.useState(false);
-  const [formEmpty, setFormEmpty] = React.useState(false);
+  const [nextClicked, setNextClicked] = React.useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const [validateOnChange, setValidateOnChange] = React.useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const [formEmpty, setFormEmpty] = React.useState(false)
 
-  const isLastStep = (activeStep) =>
-    activeStep === steps.length - (postDatsSteps + 1)
-  const shouldShowClearButton = (activeStep) =>
-    activeStep <= steps.length - (postDatsSteps + 1)
-  const shouldShowNextButton = (activeStep) =>
-    activeStep <= steps.length - postDatsSteps
-  const shouldShowUploader = (activeStep) =>
-    activeStep <= steps.length - (postDatsSteps + 1)
+  const isLastStep = (step) => step === steps.length - (postDatsSteps + 1)
+  const shouldShowClearButton = (step) =>
+    step <= steps.length - (postDatsSteps + 1)
+  const shouldShowNextButton = (step) => step <= steps.length - postDatsSteps
+  const shouldShowUploader = (step) =>
+    step <= steps.length - (postDatsSteps + 1)
 
   const onDatsReceived = (json) => {
     const formData = new DatsToForm(json).getJson()
-    //console.log('formData', formData)
     setValuesState(formData)
-    if(formData.experimentsLanguages.length > 0){
+    if (formData.experimentsLanguages.length > 0) {
       setIsExperiment(true)
-    }
-    else{
+    } else {
       setIsExperiment(false)
     }
   }
@@ -199,51 +196,58 @@ export function DatsEditorForm(props) {
     setActiveStep(0)
   }
 
-  const toggleIsExperiment = () => {
-    setIsExperiment(!isExperiment)
-    setActiveStep(0)
-  }
-
   function cleanModifiedErrors(modifiedErrors) {
-    if(!isExperiment){
+    if (!isExperiment) {
       const fieldsToRemove = {
         1: ['size', 'access', 'files', 'conpStatus'],
         2: ['reb_info', 'contact', 'primaryPublications', 'subjects']
-      };
-      
+      }
+
       Object.entries(fieldsToRemove).forEach(([step, fields]) => {
-        if (activeStep !== parseInt(step)) {
-          fields.forEach(field => {
+        if (activeStep !== parseInt(step, 10)) {
+          fields.forEach((field) => {
             if (modifiedErrors[field]) {
-              delete modifiedErrors[field];
+              delete modifiedErrors[field]
             }
-          });
+          })
         }
-      });
+      })
     } else if (isExperiment) {
       const fieldsToRemove = {
         1: ['size', 'access', 'files', 'conpStatus'],
-        2: ['contact', 'registrationPageURL', 'reb_info', 'primaryPublications', 'subjects'],
-        3: ['types', 'experimentsRequiredSoftware', 'experimentsFunctionAssessed', 'experimentsLanguages', 'experimentsModalities']
-      };
-      
+        2: [
+          'contact',
+          'registrationPageURL',
+          'reb_info',
+          'primaryPublications',
+          'subjects'
+        ],
+        3: [
+          'types',
+          'experimentsRequiredSoftware',
+          'experimentsFunctionAssessed',
+          'experimentsLanguages',
+          'experimentsModalities'
+        ]
+      }
+
       Object.entries(fieldsToRemove).forEach(([step, fields]) => {
-        if (activeStep !== parseInt(step)) {
-          fields.forEach(field => {
+        if (activeStep !== parseInt(step, 10)) {
+          fields.forEach((field) => {
             if (modifiedErrors[field]) {
-              delete modifiedErrors[field];
+              delete modifiedErrors[field]
             }
-          });
+          })
         }
-      });
+      })
     }
 
-    return modifiedErrors;
+    return modifiedErrors
   }
 
+  // eslint-disable-next-line complexity
   const handleNext = (errors, values, setFieldTouched) => {
-    let modifiedErrors = { ...errors };
-    //console.log('value top', values)
+    let modifiedErrors = { ...errors }
     setNextClicked(true)
     modifiedErrors = cleanModifiedErrors(modifiedErrors)
 
@@ -252,182 +256,212 @@ export function DatsEditorForm(props) {
         setActiveStep(activeStep + 1)
         window.scrollTo(0, 0)
       }, 200)
-    }
-    else {
+    } else {
       // Scroll to the first field with an error
-      var firstErrorKey = Object.keys(modifiedErrors)[0];
-      var errorFieldSelector = `[name="${firstErrorKey}"]`;
-      var errorFieldElement = document.querySelector(errorFieldSelector);
+      // eslint-disable-next-line prefer-destructuring
+      let firstErrorKey = Object.keys(modifiedErrors)[0]
+      let errorFieldSelector = `[name="${firstErrorKey}"]`
+      let errorFieldElement = document.querySelector(errorFieldSelector)
       if (firstErrorKey === 'access') {
-        firstErrorKey = firstErrorKey + '.landingPage';
+        firstErrorKey += '.landingPage'
       } else if (firstErrorKey === 'creators') {
-        firstErrorKey = firstErrorKey + '.0.name';
+        firstErrorKey += '.0.name'
       } else if (firstErrorKey === 'size') {
-        firstErrorKey = firstErrorKey + '.value';
+        firstErrorKey += '.value'
       } else if (firstErrorKey === 'contact') {
-        firstErrorKey = firstErrorKey + '.name';
-      }
-      else if (firstErrorKey === 'primaryPublications') {
+        firstErrorKey += '.name'
+      } else if (firstErrorKey === 'primaryPublications') {
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < 20; i++) {
-          if (errors.primaryPublications[i] && errors.primaryPublications[i].title) {
-            firstErrorKey = `primaryPublications.${i}.title`;
-            break;
-          } else if (errors.primaryPublications[i] && errors.primaryPublications[i].authors) {
-            firstErrorKey = `primaryPublications.${i}.authors.0.fullName`;
-            break;
+          if (
+            errors.primaryPublications[i] &&
+            errors.primaryPublications[i].title
+          ) {
+            firstErrorKey = `primaryPublications.${i}.title`
+            break
+          } else if (
+            errors.primaryPublications[i] &&
+            errors.primaryPublications[i].authors
+          ) {
+            firstErrorKey = `primaryPublications.${i}.authors.0.fullName`
+            break
           } else if (errors.primaryPublications?.[i]?.dates?.[0]?.date) {
-            firstErrorKey = `primaryPublications.${i}.dates.0.date`;
-            break;
+            firstErrorKey = `primaryPublications.${i}.dates.0.date`
+            break
           } else if (errors.primaryPublications?.[i]?.identifier?.identifier) {
-            firstErrorKey = `primaryPublications.${i}.identifier.identifier`;
-            break;
-          } else if (errors.primaryPublications?.[i]?.identifier?.identifierSource) {
-            firstErrorKey = `primaryPublications.${i}.identifier.identifierSource`;
-            break;
+            firstErrorKey = `primaryPublications.${i}.identifier.identifier`
+            break
+          } else if (
+            errors.primaryPublications?.[i]?.identifier?.identifierSource
+          ) {
+            firstErrorKey = `primaryPublications.${i}.identifier.identifierSource`
+            break
           }
         }
       }
-      if(firstErrorKey === 'primaryPublications.0.dates.0.date'){
-        errorFieldSelector = `[id='mui-component-select-${firstErrorKey}']`;
+      if (firstErrorKey === 'primaryPublications.0.dates.0.date') {
+        errorFieldSelector = `[id='mui-component-select-${firstErrorKey}']`
+      } else {
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`
       }
-      else{
-        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
-      }
-      errorFieldElement = document.querySelector(errorFieldSelector);
+      errorFieldElement = document.querySelector(errorFieldSelector)
 
       if (errorFieldElement === null) {
-        if(firstErrorKey == 'creators.0.name'){
+        if (firstErrorKey === 'creators.0.name') {
           firstErrorKey = 'creators.0.fullName'
-          errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
-          errorFieldElement = document.querySelector(errorFieldSelector);
-        }
-        else{
-          firstErrorKey += '.0';
-          errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
-          errorFieldElement = document.querySelector(errorFieldSelector);
+          errorFieldSelector = `[data-testid="${firstErrorKey}"]`
+          errorFieldElement = document.querySelector(errorFieldSelector)
+        } else {
+          firstErrorKey += '.0'
+          errorFieldSelector = `[data-testid="${firstErrorKey}"]`
+          errorFieldElement = document.querySelector(errorFieldSelector)
         }
       }
       if (firstErrorKey === 'conpStatus' && errorFieldElement) {
-        let parentDivElement = errorFieldElement.parentNode;
-        let childDivElement = parentDivElement.querySelector('div');
-    
-        childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const parentDivElement = errorFieldElement.parentNode
+        const childDivElement = parentDivElement.querySelector('div')
+
+        childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
         if (childDivElement.focus) {
-          childDivElement.focus();
-          childDivElement.blur();
-          childDivElement.focus();
+          childDivElement.focus()
+          childDivElement.blur()
+          childDivElement.focus()
         }
       } else if (firstErrorKey === 'privacy' && errorFieldElement) {
-          let parentDivElement = errorFieldElement.parentNode;
-          let childDivElement = parentDivElement.querySelector('div');
-   
-          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          if (childDivElement.focus) {
-            childDivElement.focus();
-            childDivElement.blur();
-            childDivElement.focus();
-          }
-      } else if (firstErrorKey === 'licenses.0' && errorFieldElement) {
-        setFieldTouched('licenses', true, false);
-        let childDivElement = errorFieldElement.querySelector('div');
-        if (childDivElement) {
-          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          if (childDivElement.focus) {
-            childDivElement.focus();
-            childDivElement.blur();
-            childDivElement.focus();
-          }
-        }
-      } else if (firstErrorKey === 'reb_info'){
-        let childDivElement = document.querySelector('#mui-component-select-reb_info');
-        if (childDivElement) {
-          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          if (childDivElement.focus) {
-            childDivElement.focus();
-            childDivElement.blur();
-            childDivElement.focus();
-          }
-        }
+        const parentDivElement = errorFieldElement.parentNode
+        const childDivElement = parentDivElement.querySelector('div')
 
-      } else if (errorFieldElement) {
-        errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        if (errorFieldElement.focus) {
-          errorFieldElement.focus();
-          errorFieldElement.blur();
-          errorFieldElement.focus();
+        childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        if (childDivElement.focus) {
+          childDivElement.focus()
+          childDivElement.blur()
+          childDivElement.focus()
         }
-      } 
+      } else if (firstErrorKey === 'licenses.0' && errorFieldElement) {
+        setFieldTouched('licenses', true, false)
+        const childDivElement = errorFieldElement.querySelector('div')
+        if (childDivElement) {
+          childDivElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          })
+          if (childDivElement.focus) {
+            childDivElement.focus()
+            childDivElement.blur()
+            childDivElement.focus()
+          }
+        }
+      } else if (firstErrorKey === 'reb_info') {
+        const childDivElement = document.querySelector(
+          '#mui-component-select-reb_info'
+        )
+        if (childDivElement) {
+          childDivElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          })
+          if (childDivElement.focus) {
+            childDivElement.focus()
+            childDivElement.blur()
+            childDivElement.focus()
+          }
+        }
+      } else if (errorFieldElement) {
+        errorFieldElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        })
+        if (errorFieldElement.focus) {
+          errorFieldElement.focus()
+          errorFieldElement.blur()
+          errorFieldElement.focus()
+        }
+      }
     }
   }
 
+  // eslint-disable-next-line complexity
   const handleConfirm = (errors, values) => {
-    //console.log('valuesConfirm', values)
-    setNextClicked(true); // Set when 'Confirm' is clicked
-    setValidateOnChange(true);
+    setNextClicked(true)
+    setValidateOnChange(true)
 
-    if (Object.keys(errors).length === 0) {
-      //console.log('no error')
-    }
-    else {
-      var firstErrorKey = Object.keys(errors)[0];
-      var errorFieldSelector = `[name="${firstErrorKey}"]`;
-      var errorFieldElement = document.querySelector(errorFieldSelector);
+    if (Object.keys(errors).length > 0) {
+      // eslint-disable-next-line prefer-destructuring
+      let firstErrorKey = Object.keys(errors)[0]
+      let errorFieldSelector = `[name="${firstErrorKey}"]`
+      let errorFieldElement = document.querySelector(errorFieldSelector)
       if (firstErrorKey === 'experimentsRequiredSoftware') {
-        firstErrorKey = firstErrorKey + '.0.software';
+        firstErrorKey += '.0.software'
       } else if (firstErrorKey === 'creators') {
-        firstErrorKey = firstErrorKey + '.0.name';
+        firstErrorKey += '.0.name'
       } else if (firstErrorKey === 'size') {
-        firstErrorKey = firstErrorKey + '.value';
+        firstErrorKey += '.value'
       } else if (firstErrorKey === 'primaryPublications') {
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < 20; i++) {
-          if (errors.primaryPublications[i] && errors.primaryPublications[i].title) {
-            firstErrorKey = `primaryPublications.${i}.title`;
-            break;
-          } else if (errors.primaryPublications[i] && errors.primaryPublications[i].authors) {
-            firstErrorKey = `primaryPublications.${i}.authors.0.fullName`;
-            break;
+          if (
+            errors.primaryPublications[i] &&
+            errors.primaryPublications[i].title
+          ) {
+            firstErrorKey = `primaryPublications.${i}.title`
+            break
+          } else if (
+            errors.primaryPublications[i] &&
+            errors.primaryPublications[i].authors
+          ) {
+            firstErrorKey = `primaryPublications.${i}.authors.0.fullName`
+            break
           } else if (errors.primaryPublications?.[i]?.dates?.[0]?.date) {
-            firstErrorKey = `primaryPublications.${i}.dates.0.date`;
-            break;
+            firstErrorKey = `primaryPublications.${i}.dates.0.date`
+            break
           } else if (errors.primaryPublications?.[i]?.identifier?.identifier) {
-            firstErrorKey = `primaryPublications.${i}.identifier.identifier`;
-            break;
-          } else if (errors.primaryPublications?.[i]?.identifier?.identifierSource) {
-            firstErrorKey = `primaryPublications.${i}.identifier.identifierSource`;
-            break;
+            firstErrorKey = `primaryPublications.${i}.identifier.identifier`
+            break
+          } else if (
+            errors.primaryPublications?.[i]?.identifier?.identifierSource
+          ) {
+            firstErrorKey = `primaryPublications.${i}.identifier.identifierSource`
+            break
           }
         }
       }
-      if(firstErrorKey === 'primaryPublications.0.dates.0.date'){
-        errorFieldSelector = `[id='mui-component-select-${firstErrorKey}']`;
+      if (firstErrorKey === 'primaryPublications.0.dates.0.date') {
+        errorFieldSelector = `[id='mui-component-select-${firstErrorKey}']`
+      } else {
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`
       }
-      else{
-        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
-      }
-      errorFieldElement = document.querySelector(errorFieldSelector);
+      errorFieldElement = document.querySelector(errorFieldSelector)
       if (errorFieldElement === null) {
-        firstErrorKey += '.0';
-        errorFieldSelector = `[data-testid="${firstErrorKey}"]`;
-        errorFieldElement = document.querySelector(errorFieldSelector);
+        firstErrorKey += '.0'
+        errorFieldSelector = `[data-testid="${firstErrorKey}"]`
+        errorFieldElement = document.querySelector(errorFieldSelector)
       }
-      if ((firstErrorKey === 'experimentsRequiredSoftware.0.software' || firstErrorKey === 'experimentsFunctionAssessed.0' || firstErrorKey === 'experimentsModalities.0') && errorFieldElement) {
-          let childDivElement = errorFieldElement.querySelector('div');
-          childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          if (childDivElement.focus) {
-            childDivElement.focus();
-            childDivElement.blur();
-            childDivElement.focus();
-          }
+      if (
+        (firstErrorKey === 'experimentsRequiredSoftware.0.software' ||
+          firstErrorKey === 'experimentsFunctionAssessed.0' ||
+          firstErrorKey === 'experimentsModalities.0') &&
+        errorFieldElement
+      ) {
+        const childDivElement = errorFieldElement.querySelector('div')
+        childDivElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        if (childDivElement.focus) {
+          childDivElement.focus()
+          childDivElement.blur()
+          childDivElement.focus()
+        }
       } else if (errorFieldElement) {
-        errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        errorFieldElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        })
         if (errorFieldElement.focus) {
-          errorFieldElement.focus();
-          errorFieldElement.blur();
-          errorFieldElement.focus();
+          errorFieldElement.focus()
+          errorFieldElement.blur()
+          errorFieldElement.focus()
         }
       }
     }
-  };
+  }
 
   const handleBack = () => {
     setActiveStep(activeStep - 1)
@@ -441,11 +475,10 @@ export function DatsEditorForm(props) {
 
   const downloadDats = (formData) => {
     if (!valuesState || Object.keys(valuesState).length === 0) {
-      alert('No data available to download.');
-      return;
+      alert('No data available to download.')
+      return
     }
-    //console.log(formData)
-    const datsJson = new FormToDats(formData).getJson();
+    const datsJson = new FormToDats(formData).getJson()
     const element = document.createElement('a')
     const file = new Blob([JSON.stringify(datsJson, null, 2)], {
       type: 'text/plain'
@@ -480,23 +513,27 @@ export function DatsEditorForm(props) {
             ))}
           </Stepper>
           <Formik
+            context={{ isExperiment }}
             enableReinitialize
-            initialValues={{ ...valuesState, isExperiment: isExperiment }}
+            initialValues={{ ...valuesState, isExperiment }}
             onSubmit={(data, { setSubmitting }) => {
               setSubmitting(true)
               const datsJson = new FormToDats(data)
-              // console.log('datsJson', datsJson)
               setDats(datsJson.getJson())
               setActiveStep(activeStep + 1)
               setSubmitting(false)
             }}
-            // validateOnChange={validateOnChange}
-            validateOnChange={true}
+            validateOnChange
             validationSchema={validationSchema || defaultDatsValidationSchema}
-            context={{ isExperiment: isExperiment }} 
           >
-            {({ values, errors, touched, isSubmitting, handleReset, setFieldTouched }) => (
-              
+            {({
+              values,
+              errors,
+              touched,
+              isSubmitting,
+              handleReset,
+              setFieldTouched
+            }) => (
               <Form>
                 {shouldShowUploader(activeStep) ? (
                   <React.Fragment>
@@ -521,22 +558,37 @@ export function DatsEditorForm(props) {
                       </Grid>
                       <Grid item>Experiment</Grid>
                     </Grid> */}
-                    <Grid container direction="column" alignItems="center" justifyContent="center">
-                    <FormControl component="fieldset" className={classes.formControl}>
-                      <RadioGroup
-                        
-                        aria-label="isExperiment"
-                        name="isExperiment"
-                        value={isExperiment ? 'experiment' : 'dataset'}
-                        onChange={handleRadioChange}
+                    <Grid
+                      alignItems='center'
+                      container
+                      direction='column'
+                      justifyContent='center'
+                    >
+                      <FormControl
+                        className={classes.formControl}
+                        component='fieldset'
                       >
-                        <FormControlLabel value="dataset" control={<Radio />} label="Dataset" style={{ fontSize: '1rem' }}/>
-                        <FormControlLabel value="experiment" control={<Radio />} label="Experiment" style={{ fontSize: '1rem' }}/>
-                      </RadioGroup>
-                    </FormControl>
+                        <RadioGroup
+                          aria-label='isExperiment'
+                          name='isExperiment'
+                          onChange={handleRadioChange}
+                          value={isExperiment ? 'experiment' : 'dataset'}
+                        >
+                          <FormControlLabel
+                            control={<Radio />}
+                            label='Dataset'
+                            style={{ fontSize: '1rem' }}
+                            value='dataset'
+                          />
+                          <FormControlLabel
+                            control={<Radio />}
+                            label='Experiment'
+                            style={{ fontSize: '1rem' }}
+                            value='experiment'
+                          />
+                        </RadioGroup>
+                      </FormControl>
                     </Grid>
-
-
                   </React.Fragment>
                 ) : null}
 
@@ -550,16 +602,20 @@ export function DatsEditorForm(props) {
                 )}
 
                 <div className={classes.buttons}>
-                {(activeStep < 3 || (isExperiment && activeStep < 4))  && (
-                  <Button
-                    className={classes.button}
-                    style={{ backgroundColor: '#3f51b5', color: 'white', marginRight: 'auto' }} 
-                    onClick={() => downloadDats(values)}
-                    variant="contained"
-                  >
-                    Save partial DATS
-                  </Button>
-                )}
+                  {activeStep < 3 || (isExperiment && activeStep < 4) ? (
+                    <Button
+                      className={classes.button}
+                      onClick={() => downloadDats(values)}
+                      style={{
+                        backgroundColor: '#3f51b5',
+                        color: 'white',
+                        marginRight: 'auto'
+                      }}
+                      variant='contained'
+                    >
+                      Save partial DATS
+                    </Button>
+                  ) : null}
 
                   {shouldShowClearButton(activeStep) ? (
                     <Button
@@ -590,10 +646,9 @@ export function DatsEditorForm(props) {
                         className={classes.button}
                         color='primary'
                         disabled={isSubmitting}
+                        onClick={() => handleConfirm(errors, values)}
                         type='submit'
                         variant='contained'
-                        //onClick={handleConfirm}
-                        onClick={() => handleConfirm(errors ,values)} 
                       >
                         Confirm
                       </Button>
@@ -601,7 +656,9 @@ export function DatsEditorForm(props) {
                       <Button
                         className={classes.button}
                         color='primary'
-                        onClick={() => handleNext(errors, values, setFieldTouched)}  
+                        onClick={() =>
+                          handleNext(errors, values, setFieldTouched)
+                        }
                         variant='contained'
                       >
                         Next
@@ -632,8 +689,8 @@ export function DatsEditorForm(props) {
                 <DatsErrors
                   className={classes.section}
                   errors={errors}
-                  touched={touched}
                   formEmpty={formEmpty}
+                  touched={touched}
                 />
               </Form>
             )}

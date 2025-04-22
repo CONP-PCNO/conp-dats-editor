@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFormikContext, getIn } from 'formik';
+import { useFormikContext, getIn } from 'formik'
 
 import Section from '../layout/Section'
 import SectionTitle from '../layout/SectionTitle'
@@ -29,8 +29,10 @@ export default function SingleFieldSection(props) {
         isRequired={isRequired}
         nameAttr={nameAttr}
         setupProps={setupProps}
-        // error={isError} // Passer l'état d'erreur au composant JsonField
-        // helperText={errorText} // Passer le texte d'erreur pour affichage
+        /*
+         * Error={isError} // Passer l'état d'erreur au composant JsonField
+         * helperText={errorText} // Passer le texte d'erreur pour affichage
+         */
         {...fieldProps}
       />
     </Section>

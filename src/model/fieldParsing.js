@@ -3,7 +3,9 @@ function parseValue(value, selfString) {
 }
 
 function parseObject(object, selfString) {
-  return (typeof Object.values(object)[0] === 'string') ? object : object[selfString]
+  return typeof Object.values(object)[0] === 'string'
+    ? object
+    : object[selfString]
 }
 
 function parseValues(values, selfString) {

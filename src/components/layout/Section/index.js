@@ -1,19 +1,19 @@
 import React from 'react'
 import { Box } from '@material-ui/core'
 
-const Section = (props) => {
+function Section(props) {
   return (
     <Box
-      display='flex flex-column'
-      width='100%'
-      p={1}
-      my={2}
       boxShadow={props.subsection ? 2 : 0}
+      display='flex flex-column'
+      my={2}
+      p={1}
+      width='100%'
     >
       {Array.isArray(props.children) ? (
         props.children.map((child, index) => {
           return (
-            <Box key={'child_' + index} m={1}>
+            <Box key={`child_${index}`} m={1}>
               {child}
             </Box>
           )

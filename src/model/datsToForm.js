@@ -12,10 +12,12 @@ class DatsToForm {
   }
 
   getJson() {
-    const subjectsProperty = this.data.extraProperties?.find((p) => p.category === 'subjects') || {
-      values: [{ value: "N/A" }]
-    };
-    
+    const subjectsProperty = this.data.extraProperties?.find(
+      (p) => p.category === 'subjects'
+    ) || {
+      values: [{ value: 'N/A' }]
+    }
+
     const json = {
       title: this.data.title || '',
       creators:
@@ -67,10 +69,11 @@ class DatsToForm {
           ?.values.map((a) => a.value)[0] || '',
       subjects: {
         applicable: subjectsProperty.values.length > 0,
-        value: subjectsProperty.values.map((a) => {
-          const parsedValue = parseInt(a.value, 10);
-          return isNaN(parsedValue) || parsedValue <= 0 ? null : parsedValue;
-        })[0] || null
+        value:
+          subjectsProperty.values.map((a) => {
+            const parsedValue = parseInt(a.value, 10)
+            return isNaN(parsedValue) || parsedValue <= 0 ? null : parsedValue
+          })[0] || null
       },
       conpStatus:
         this.data.extraProperties
@@ -122,7 +125,7 @@ class DatsToForm {
         this.data.extraProperties
           ?.filter((p) => p.category === 'logo')[0]
           ?.values.map((a) => a.value)[0] || '',
-      registrationPageURL: 
+      registrationPageURL:
         this.data.extraProperties
           .filter((prop) => prop.category === 'registrationPage')
           .flatMap((prop) => prop.values)
@@ -204,9 +207,11 @@ class DatsToForm {
     json.primaryPublications = json.primaryPublications.map((pp) => {
       return Object.assign(pp, {
         dates: (pp?.dates || []).map((date) => {
-          // return Object.assign(date, { date: new Date(date.date) })
-          // return Object.assign(date, { date: date.date }); 
-          return Object.assign(date, { date: date.date.split('-')[0] });
+          /*
+           * Return Object.assign(date, { date: new Date(date.date) })
+           * return Object.assign(date, { date: date.date });
+           */
+          return Object.assign(date, { date: date.date.split('-')[0] })
         })
       })
     })

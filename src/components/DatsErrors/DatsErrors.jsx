@@ -3,25 +3,29 @@ import Typography from '@material-ui/core/Typography'
 
 function genErrorString(errors) {
   if (!errors) {
-    return ''; // Retourne une chaîne vide ou un message d'erreur par défaut
+    return '' // Retourne une chaîne vide ou un message d'erreur par défaut
   }
   if (typeof errors === 'string') {
-    return errors; // Retourne directement la chaîne si c'est une chaîne d'erreur
+    return errors // Retourne directement la chaîne si c'est une chaîne d'erreur
   }
   if (Array.isArray(errors)) {
-    return errors.map((err, index) => {
-      if (typeof err === 'object' && err !== null) {
-        return `Item ${index}: ${genErrorString(err)}`;
-      }
-      return typeof err === 'string' ? err : JSON.stringify(err);
-    }).join('; ');
+    return errors
+      .map((err, index) => {
+        if (typeof err === 'object' && err !== null) {
+          return `Item ${index}: ${genErrorString(err)}`
+        }
+        return typeof err === 'string' ? err : JSON.stringify(err)
+      })
+      .join('; ')
   }
   if (typeof errors === 'object' && errors !== null) {
-    return Object.keys(errors).map((key) => {
-      return `${key}: ${genErrorString(errors[key])}`;
-    }).join('; ');
+    return Object.keys(errors)
+      .map((key) => {
+        return `${key}: ${genErrorString(errors[key])}`
+      })
+      .join('; ')
   }
-  return JSON.stringify(errors);
+  return JSON.stringify(errors)
 }
 
 function warningFromKey(key, errors, touched) {
@@ -37,14 +41,16 @@ function warningFromKey(key, errors, touched) {
 }
 
 export default function DatsErrors(props) {
-  const { errors, touched, className, formEmpty} = props
+  const { errors, touched, className, formEmpty } = props
   if (Object.keys(errors).length === 0) {
     return null
   }
- 
-  const warnings = Object.keys(errors).map(key => warningFromKey(key, errors, touched)).filter(x => x !== null);
+
+  const warnings = Object.keys(errors)
+    .map((key) => warningFromKey(key, errors, touched))
+    .filter((x) => x !== null)
   if (warnings.length === 0) {
-    return null;
+    return null
   }
   return (
     <div className={className}>
@@ -55,7 +61,11 @@ export default function DatsErrors(props) {
 
       {warnings}
 
-      {formEmpty && <Typography gutterBottom variant='subtitle1'>All fields are empty</Typography>}
+      {formEmpty ? (
+        <Typography gutterBottom variant='subtitle1'>
+          All fields are empty
+        </Typography>
+      ) : null}
     </div>
   )
 }
