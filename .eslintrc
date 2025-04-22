@@ -34,6 +34,12 @@
     "func-style": 0,
     "react/jsx-fragments": 0,
     "react/jsx-no-literals": 0,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "react/jsx-filename-extension": 0,
+    "id-length": 0,
+    "no-alert": 0,
+    "no-ternary": 0,
+    "line-comment-position": 0,
+    "no-inline-comments": 0
   }
 }
