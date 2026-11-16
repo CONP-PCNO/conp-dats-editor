@@ -1,9 +1,57 @@
+import { parseISO } from 'date-fns'
+
 function readExtraProperties(data, category) {
   return (
     data.extraProperties
       ?.filter((property) => property.category === category)[0]
       ?.values.map((val) => val.value) || []
   )
+}
+
+// Fields and extra properties the form edits. Anything else in a loaded
+// record (e.g. availability, storedIn, a "Timepoint description" property) is
+// kept aside in _preserved and written back unchanged on save (formToDats), so
+// editing a record in the editor never silently drops its other metadata.
+export const HANDLED_FIELDS = [
+  'title', 'description', 'identifier', 'dates', 'creators', 'types', 'version', 'privacy', 'licenses',
+  'keywords', 'distributions', 'primaryPublications', 'isAbout', 'spatialCoverage', 'aggregation',
+  'dimensions', 'acknowledges', 'extraProperties'
+]
+export const HANDLED_PROPERTIES = [
+  'CONP_status', 'ORCID', 'REB_number', 'REB_statement', 'contact', 'derivedFrom', 'files', 'logo',
+  'origin_city', 'origin_consortium', 'origin_country', 'origin_institution', 'origin_province',
+  'parent_dataset_id', 'registrationPage', 'subjects', 'experimentAccessibility',
+  'experimentAdditionalRequirements', 'experimentFunctionAssessed', 'experimentLanguages',
+  'experimentModalities', 'experimentRequiredDevices', 'experimentRequiredSoftware', 'experimentStimuli',
+  'experimentValidationMeasures', 'experimentValidationPopulations'
+]
+
+export function preservedParts(data) {
+  const fields = {}
+  Object.keys(data || {}).forEach((key) => {
+    if (!HANDLED_FIELDS.includes(key)) fields[key] = data[key]
+  })
+  const extraProperties = ((data && data.extraProperties) || []).filter(
+    (p) => p && !HANDLED_PROPERTIES.includes(p.category)
+  )
+  // Detail inside fields the form shows in a simpler form, restored on save
+  // when the visible value is unchanged: InterLex IRIs on types, licence
+  // identifiers, extra distribution keys (storedIn), the full contact line,
+  // full publication dates (the form keeps the year).
+  const detail = { types: {}, licenses: {}, distribution: null, contact: null, publicationDates: [] }
+  ;((data && data.types) || []).forEach((t) => {
+    const v = t && t.information && t.information.value
+    if (v) detail.types[v] = t
+  })
+  ;((data && data.licenses) || []).forEach((l) => {
+    if (l && l.name) detail.licenses[l.name] = l
+  })
+  const dist = data && data.distributions && data.distributions[0]
+  if (dist) detail.distribution = dist
+  const contact = ((data && data.extraProperties) || []).find((p) => p && p.category === 'contact')
+  if (contact) detail.contact = contact
+  detail.publicationDates = ((data && data.primaryPublications) || []).map((p) => (p && p.dates) || [])
+  return { fields, extraProperties, detail }
 }
 
 class DatsToForm {
@@ -198,7 +246,12 @@ class DatsToForm {
     }
 
     json.dates = json.dates.map((date) => {
-      return Object.assign(date, { date: new Date(date.date) })
+      // "2019-04-30" is a calendar date: read it in local time. new Date()
+      // reads it as midnight UTC, i.e. 29 April anywhere west of Greenwich,
+      // and every date shifted back a day each time a record was saved.
+      const s = String(date.date || '')
+      const local = /^\d{4}-\d{2}-\d{2}/.test(s) ? parseISO(s.slice(0, 10)) : new Date(s)
+      return Object.assign(date, { date: local })
     })
 
     json.primaryPublications = json.primaryPublications.map((pp) => {
@@ -210,6 +263,7 @@ class DatsToForm {
         })
       })
     })
+    json._preserved = preservedParts(this.data)
     return json
   }
 }

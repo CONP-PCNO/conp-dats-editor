@@ -1,61 +1,91 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
+import fieldDescriptions from '../../model/fieldDescriptions.json'
 
-function genErrorString(errors) {
-  if (!errors) {
-    return ''; // Retourne une chaîne vide ou un message d'erreur par défaut
-  }
-  if (typeof errors === 'string') {
-    return errors; // Retourne directement la chaîne si c'est une chaîne d'erreur
-  }
-  if (Array.isArray(errors)) {
-    return errors.map((err, index) => {
-      if (typeof err === 'object' && err !== null) {
-        return `Item ${index}: ${genErrorString(err)}`;
-      }
-      return typeof err === 'string' ? err : JSON.stringify(err);
-    }).join('; ');
-  }
-  if (typeof errors === 'object' && errors !== null) {
-    return Object.keys(errors).map((key) => {
-      return `${key}: ${genErrorString(errors[key])}`;
-    }).join('; ');
-  }
-  return JSON.stringify(errors);
+// Field names as the form shows them, for keys that fieldDescriptions.json
+// doesn't name (or names differently).
+const LABELS = {
+  registrationPageURL: 'Registration page',
+  reb_info: 'Ethics statement',
+  reb_number: 'Ethics committee approval number',
+  files: 'Number of files',
+  subjects: 'Number of subjects',
+  primaryPublications: 'Primary publications',
+  isAbout: 'Is about (species)',
+  experimentsRequiredSoftware: 'Software'
 }
 
-function warningFromKey(key, errors, touched) {
+export function fieldLabel(key, isExperiment) {
+  if (LABELS[key]) return LABELS[key]
+  const d = fieldDescriptions[key]
+  const name = d && d.name
+  if (typeof name === 'string') return name
+  if (name && typeof name === 'object') return name[isExperiment ? 'experiment' : 'dataset'] || name.dataset
+  return key
+}
+
+// yup's default messages name the internal path ("size.value is a required
+// field"); say what to do instead.
+export function plainMessage(message) {
+  const m = String(message || '')
+  if (/^[\w.[\]]+ is a required field$/.test(m)) return 'This is required.'
+  if (/must be a `number` type/.test(m)) return 'Enter a number.'
+  if (/must be a valid URL$/.test(m)) return 'Enter a web address starting with https://'
+  if (/^[\w.[\]]+ field must have at least \d+ items?$/.test(m)) return 'Add at least one.'
+  return m
+}
+
+// Every message in an error value (string, array of item errors, or object of
+// sub-field errors), once each, with item numbers starting at 1.
+export function errorMessages(errors, prefix = '') {
+  if (!errors) return []
+  if (typeof errors === 'string') return [prefix + plainMessage(errors)]
+  if (Array.isArray(errors)) {
+    return errors.flatMap((err, index) =>
+      err ? errorMessages(err, typeof err === 'string' ? prefix : `${prefix}item ${index + 1} › `) : []
+    )
+  }
+  if (typeof errors === 'object') {
+    return Object.keys(errors).flatMap((key) => errorMessages(errors[key], prefix))
+  }
+  return [prefix + String(errors)]
+}
+
+function warningFromKey(key, errors, touched, isExperiment) {
   if (!Object.keys(touched).includes(key)) {
     return null
   }
-
+  const messages = Array.from(new Set(errorMessages(errors[key])))
   return (
-    <Typography gutterBottom key={`${Math.random()}`} variant='subtitle1'>
-      {`${key}: ${genErrorString(errors[key])}`}
-    </Typography>
+    <li key={key}>
+      <Typography component='span' variant='subtitle1'>
+        <strong>{fieldLabel(key, isExperiment)}</strong>: {messages.join(' ')}
+      </Typography>
+    </li>
   )
 }
 
 export default function DatsErrors(props) {
-  const { errors, touched, className, formEmpty} = props
+  const { errors, touched, className, formEmpty, isExperiment } = props
   if (Object.keys(errors).length === 0) {
     return null
   }
- 
-  const warnings = Object.keys(errors).map(key => warningFromKey(key, errors, touched)).filter(x => x !== null);
+
+  const warnings = Object.keys(errors)
+    .map((key) => warningFromKey(key, errors, touched, isExperiment))
+    .filter((x) => x !== null)
   if (warnings.length === 0) {
-    return null;
+    return null
   }
   return (
-    <div className={className}>
+    <div className={className} role='alert'>
       <Typography gutterBottom variant='h6'>
-        To successfully create the DATS.json file, you must first resolve issues
-        with the following fields:
+        Before the file can be created, please complete or correct:
       </Typography>
 
-      {warnings}
+      <ul>{warnings}</ul>
 
-      {formEmpty && <Typography gutterBottom variant='subtitle1'>All fields are empty</Typography>}
+      {formEmpty && <Typography gutterBottom variant='subtitle1'>All fields are empty.</Typography>}
     </div>
   )
 }

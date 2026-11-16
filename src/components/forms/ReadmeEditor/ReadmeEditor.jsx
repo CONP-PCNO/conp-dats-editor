@@ -3,7 +3,66 @@ import React, { useEffect } from 'react'
 import MDEditor from '@uiw/react-md-editor'
 import rehypeSanitize from 'rehype-sanitize'
 
+// A dataset's README: what someone needs before downloading it. (Experiments
+// keep their own template, genExperimentReadme.)
+export function genDatasetReadme(values) {
+  const list = (a) => (a || []).filter(Boolean)
+  const publications = list(values.primaryPublications)
+    .filter((p) => p.title)
+    .map((p) => `* ${p.title}${p.identifier && p.identifier.identifier ? ` (${p.identifier.identifier})` : ''}`)
+    .join('\n')
+  const species = list(values.isAbout).map((i) => i.name || i).filter(Boolean).join(', ')
+  const formats = list(values.formats).join(', ')
+  const size = values.size && values.size.value ? `${values.size.value} ${values.size.units || ''}`.trim() : ''
+  const licenses = list(values.licenses).map((l) => l.value || l).join(', ')
+  const contact = values.contact && (values.contact.name || values.contact.email)
+    ? `${values.contact.name || ''}${values.contact.email ? ` (${values.contact.email})` : ''}`
+    : ''
+  return `# ${values.title}
+
+${values.description}
+
+## How the data were collected
+
+<!-- Study design, participants or samples, equipment, acquisition protocol. -->
+
+## What the dataset contains
+
+${[
+    values.subjects && values.subjects.value ? `* Subjects: ${values.subjects.value}` : '',
+    species ? `* Species: ${species}` : '',
+    values.files ? `* Files: ${values.files}` : '',
+    size ? `* Size: ${size}` : '',
+    formats ? `* Formats: ${formats}` : ''
+  ].filter(Boolean).join('\n')}
+
+<!-- How the files are organized (e.g. BIDS), and what each folder holds. -->
+
+## Getting access
+
+${values.privacy && values.privacy !== 'open'
+    ? `Access is ${values.privacy}${values.registrationPageURL ? `: ${values.registrationPageURL}` : '.'}`
+    : 'The data are open.'}
+
+## How to cite
+
+${publications || '<!-- The publication that describes these data, if any. -->'}
+
+## License
+
+${licenses}
+
+## Contact
+
+${contact}
+`
+}
+
 export function genDefaultReadme(values) {
+  return values.isExperiment ? genExperimentReadme(values) : genDatasetReadme(values)
+}
+
+export function genExperimentReadme(values) {
   const publications = values.primaryPublications
     .map((publication) => publication.title)
     .join(', ')
@@ -147,8 +206,7 @@ export function ReadmeEditor(props) {
 
       <Box paddingBottom={1}> 
         <Typography gutterBottom variant='body1'>
-          To start the creation of a new DATS.json file, click on 'CREATE A NEW
-          DATS'.
+          To start a new record, click on 'START A NEW RECORD'.
         </Typography>
       </Box>
 
