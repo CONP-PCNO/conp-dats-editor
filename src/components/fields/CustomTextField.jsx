@@ -6,6 +6,7 @@ function CustomTextField({ disabled, ...props }) {
   return (
     <FastField
       component={TextField}
+      id={props.id || props.name}
       {...props}
       variant='outlined'
       fullWidth

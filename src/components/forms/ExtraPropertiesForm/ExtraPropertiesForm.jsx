@@ -888,87 +888,90 @@ export default function ExtraPropertiesForm(props) {
         </FieldArray>
       </Section>
 
-      <Divider variant='middle' />
+      {/* Ethics statement: datasets only (experiments are tasks, not participants' data) */}
+      {!isExperiment && (
+        <React.Fragment>
+        <Divider variant='middle' />
 
-      <Section>
-        <JsonSectionTitle
-          isExperiment={isExperiment}
-          isRequired={!isPrivacyOpen} // isRequired basé sur la condition
-          setupProps={fieldDescriptions.reb_info}
-          isDisabled={isPrivacyOpen} // isRequired basé sur la condition 
-        />
+        <Section>
+          <JsonSectionTitle
+            isExperiment={isExperiment}
+            isRequired={!isPrivacyOpen} // isRequired basé sur la condition
+            setupProps={fieldDescriptions.reb_info}
+            isDisabled={isPrivacyOpen} // isRequired basé sur la condition 
+          />
 
-        <CustomSelectField
-          label='Select a statement *'
-          name='reb_info'
-          disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
-          style={{
-            minWidth: 200,
-            maxWidth: 700
-          }}
-        >
-          <MenuItem
+          <CustomSelectField
+            label='Select a statement *'
+            name='reb_info'
+            disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
             style={{
-              wordBreak: 'break-word',
-              whiteSpace: 'unset',
+              minWidth: 200,
               maxWidth: 700
             }}
-            value='option_1'
-            disabled={isPrivacyOpen}
           >
-            Participants have provided a valid informed consent to the
-            de-identification and deposit of their data in an open-access
-            portal.
-          </MenuItem>
+            <MenuItem
+              style={{
+                wordBreak: 'break-word',
+                whiteSpace: 'unset',
+                maxWidth: 700
+              }}
+              value='option_1'
+              disabled={isPrivacyOpen}
+            >
+              Participants have provided a valid informed consent to the
+              de-identification and deposit of their data in an open-access
+              portal.
+            </MenuItem>
 
-          <MenuItem
-            style={{
-              wordBreak: 'break-word',
-              whiteSpace: 'unset',
-              maxWidth: 700
-            }}
-            value='option_2'
-            disabled={isPrivacyOpen}
-          >
-            A waiver or other authorization to deposit these de-identified data
-            in an open-access portal was obtained from a research ethics body
-            (REB, IRB, REC, etc.).
-          </MenuItem>
+            <MenuItem
+              style={{
+                wordBreak: 'break-word',
+                whiteSpace: 'unset',
+                maxWidth: 700
+              }}
+              value='option_2'
+              disabled={isPrivacyOpen}
+            >
+              A waiver or other authorization to deposit these de-identified data
+              in an open-access portal was obtained from a research ethics body
+              (REB, IRB, REC, etc.).
+            </MenuItem>
 
-          <MenuItem
-            style={{
-              wordBreak: 'break-word',
-              whiteSpace: 'unset',
-              maxWidth: 700
-            }}
-            value='option_3'
-            disabled={isPrivacyOpen}
-          >
-            Local law or a relevant institutional authorization otherwise
-            enables the deposit of these data in an open-access portal.
-          </MenuItem>
+            <MenuItem
+              style={{
+                wordBreak: 'break-word',
+                whiteSpace: 'unset',
+                maxWidth: 700
+              }}
+              value='option_3'
+              disabled={isPrivacyOpen}
+            >
+              Local law or a relevant institutional authorization otherwise
+              enables the deposit of these data in an open-access portal.
+            </MenuItem>
 
-          <MenuItem
-            style={{
-              wordBreak: 'break-word',
-              whiteSpace: 'unset',
-              maxWidth: 700
-            }}
-            value='option_4'
-            disabled={isPrivacyOpen}
-          >
-            These data are not derived from human participants.
-          </MenuItem>
-        </CustomSelectField>
+            <MenuItem
+              style={{
+                wordBreak: 'break-word',
+                whiteSpace: 'unset',
+                maxWidth: 700
+              }}
+              value='option_4'
+              disabled={isPrivacyOpen}
+            >
+              These data are not derived from human participants.
+            </MenuItem>
+          </CustomSelectField>
 
-        {isExperiment ? null : (
           <CustomTextField
             label='Ethics committee approval number'
             name='reb_number'
             disabled={isPrivacyOpen} // Griser le champ si privacy est 'open'
           />
-        )}
-      </Section>
+        </Section>
+        </React.Fragment>
+      )}
     </React.Fragment>
   )
 }

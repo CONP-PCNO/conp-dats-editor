@@ -66,5 +66,11 @@
     "react-dropzone": "^11.0.3",
     "rehype-sanitize": "^5.0.1",
     "yup": "^0.29.3"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@uiw/react-md-editor$": "<rootDir>/src/tests/__mocks__/mdEditor.js",
+      "^rehype-sanitize$": "<rootDir>/src/tests/__mocks__/mdEditor.js"
+    }
   }
 }

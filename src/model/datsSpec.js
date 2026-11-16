@@ -1,7 +1,13 @@
 import * as yup from 'yup'
 
-const doiRegex = /^https:\/\/.+\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
-const arkRegex = /^https:\/\/[a-zA-Z0-9.-]+\/ark:\/\d{5}\/[\w.-]+$/i;
+// A publication identifier may be a DOI in any common form (https://doi.org/10…,
+// http://dx.doi.org/10…, doi:10…, or just 10…), an ARK, or a web address. Before,
+// only https:// DOI and ARK URLs passed, so 29 of the 52 CONP records that cite a
+// publication could not be loaded and saved again (Oct 2026). DOIs are written
+// out as https://doi.org/… (formToDats).
+export const doiRegex = /^(?:https?:\/\/(?:dx\.)?doi\.org\/|doi:\s*)?(10\.\d{4,9}\/\S+)$/i;
+const arkRegex = /^(?:https?:\/\/[a-zA-Z0-9.-]+\/)?ark:\/?\d{5}\/\S+$/i;
+const urlRegex = /^https?:\/\/\S+$/i;
 
 const publicationSchema = yup.object().shape({
   title: yup.string().nullable(), // Le titre est facultatif
@@ -13,9 +19,11 @@ const publicationSchema = yup.object().shape({
       then: yup.array()
         .of(
           yup.object().shape({
+            // Only the full name is required: 12 of the 44 CONP records that
+            // cite a publication list authors by full name alone (Oct 2026).
             fullName: yup.string().required('Full name is required'),
-            firstName: yup.string().required('First name is required'),
-            lastName: yup.string().required('Last name is required'),
+            firstName: yup.string().nullable(),
+            lastName: yup.string().nullable(),
             middleInitial: yup.string().nullable(),
             affiliations: yup.array().of(yup.string().nullable()).nullable(),
           })
@@ -39,11 +47,11 @@ const publicationSchema = yup.object().shape({
         .shape({
           identifier: yup
             .string()
-            .required('Identifier must be a valid DOI or ARK URL')
+            .nullable()
             .test(
-              'is-doi-or-ark',
-              'Identifier must be a valid DOI or ARK URL',
-              (value) => !!value && (doiRegex.test(value) || arkRegex.test(value)) // Valide uniquement si DOI ou ARK
+              'is-doi-ark-or-url',
+              'Give a DOI (e.g. 10.1016/j.dib.2020.105224), an ARK, or a web address, or leave it empty',
+              (value) => !value || doiRegex.test(value.trim()) || arkRegex.test(value.trim()) || urlRegex.test(value.trim())
             ),
           identifierSource: yup.string().nullable(),
         }),
@@ -174,12 +182,14 @@ const defaultDatsValidationSchema = yup.object({
   refinement: yup.string(),
   aggregation: yup.string(),
   spatialCoverage: yup.array().of(yup.string()),
+  // The ethics statement is about participants' data: required for open
+  // datasets, never for experiments (tasks, not data from participants).
   reb_info: yup.string()
-    .when('privacy', {
-      is: (privacy) => ['registered', 'controlled', 'private'].includes(privacy),
+    .when(['privacy', 'isExperiment'], {
+      is: (privacy, isExperiment) => isExperiment || ['registered', 'controlled', 'private'].includes(privacy),
       then: yup.string(),
       otherwise: yup.string().oneOf(['option_1', 'option_2', 'option_3', 'option_4'])
-        .required('reb_info is required unless privacy is registered, controlled, or private.')
+        .required('Choose the statement that applies to how these data may be shared openly.')
   }),
   reb_number: yup.string(),
   experimentsFunctionAssessed: yup.array().when('isExperiment', {

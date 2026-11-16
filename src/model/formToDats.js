@@ -1,4 +1,12 @@
 import { format, parseISO, isValid } from 'date-fns'
+import { doiRegex } from './datsSpec'
+
+// "10.x/y", "doi:10.x/y" and "http://dx.doi.org/10.x/y" are all written https://doi.org/10.x/y
+export function normalizeIdentifier(value) {
+  const v = String(value || '').trim()
+  const m = v.match(doiRegex)
+  return m ? `https://doi.org/${m[1]}` : v
+}
 
 class FormToDats {
   constructor(data) {
@@ -99,8 +107,15 @@ class FormToDats {
         }
       ],
       primaryPublications: this.data.primaryPublications.map((pp) => {
+        if (pp.identifier && pp.identifier.identifier) {
+          pp.identifier.identifier = normalizeIdentifier(pp.identifier.identifier)
+        }
         return Object.assign(pp, {
-          dates: pp.dates.map((date) => {
+          // DATS dates are {date, type}: empty rows (the form starts with one)
+          // are dropped, and the form's own "description" key is not written,
+          // or the record fails conp-dataset's validator.
+          dates: (pp.dates || []).filter((date) => date && date.date).map((date) => {
+            delete date.description
             // let parsedDate;
             // if (Date.parse(date.date)) { // Vérifier si date.date est déjà une date valide
             //   parsedDate = new Date(date.date);
@@ -345,7 +360,9 @@ class FormToDats {
 
     const ethicsStatement =
       'In submitting this dataset for inclusion, I declare that '
-    if (this.data.reb_info === 'option_1') {
+    if (this.data.isExperiment) {
+      // no ethics statement for an experiment (see datsSpec reb_info)
+    } else if (this.data.reb_info === 'option_1') {
       extraProperties.push(
         {
           category: 'REB_statement',
@@ -465,6 +482,54 @@ class FormToDats {
     if (json.primaryPublications.length === 0) {
       delete json.primaryPublications
     }
+
+    // Put back what the form doesn't edit (see datsToForm HANDLED_FIELDS),
+    // then drop extra properties left without a real value.
+    const kept = this.data._preserved
+    const detail = kept && kept.detail
+    if (detail) {
+      json.types = json.types.map((t) => detail.types[t.information.value] || t)
+      json.licenses = json.licenses.map((l) => detail.licenses[l.name] || l)
+      if (detail.distribution && json.distributions[0]) {
+        const d = json.distributions[0]
+        Object.keys(detail.distribution).forEach((key) => {
+          if (!(key in d)) d[key] = detail.distribution[key]
+        })
+        const access = detail.distribution.access || {}
+        Object.keys(access).forEach((key) => {
+          if (!(key in d.access)) d.access[key] = access[key]
+        })
+      }
+      if (detail.contact) {
+        const was = String((detail.contact.values && detail.contact.values[0] && detail.contact.values[0].value) || '')
+        const now = json.extraProperties.find((p) => p.category === 'contact')
+        const name = this.data.contact && this.data.contact.name
+        const email = this.data.contact && this.data.contact.email
+        if (now && name && was.startsWith(name) && (!email || was.includes(email))) {
+          now.values = detail.contact.values
+        }
+      }
+      ;(json.primaryPublications || []).forEach((pub, i) => {
+        const original = detail.publicationDates[i] || []
+        pub.dates = (pub.dates || []).map((d, j) => {
+          const o = original[j]
+          return o && o.date && String(o.date).startsWith(String(d.date)) ? o : d
+        })
+      })
+    }
+    if (kept) {
+      Object.keys(kept.fields || {}).forEach((key) => {
+        if (!(key in json)) json[key] = kept.fields[key]
+      })
+      ;(kept.extraProperties || []).forEach((prop) => {
+        if (!json.extraProperties.some((e) => e.category === prop.category)) json.extraProperties.push(prop)
+      })
+    }
+    const isEmpty = (v) => v === '' || v === null || v === undefined || (Array.isArray(v) && v.length === 0)
+    json.extraProperties = (json.extraProperties || []).filter(
+      (p) => p && Array.isArray(p.values) && p.values.some((v) => v && !isEmpty(v.value))
+    )
+    delete json._preserved
 
     Object.keys(json).forEach((key) => json[key] == null && delete json[key])
 

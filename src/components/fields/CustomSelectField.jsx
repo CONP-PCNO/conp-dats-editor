@@ -25,9 +25,11 @@ const CustomSelectField = ({ form, field, disabled, ...props }) => {
         variant='outlined'
         error={isError}
         disabled={disabled}>
-      <InputLabel>{props.label}</InputLabel>
+      <InputLabel id={`${props.name}-label`}>{props.label}</InputLabel>
       <FastField
         component={Select}
+        labelId={`${props.name}-label`}
+        label={props.label}
         {...props}
         inputProps={{
           'data-testid': `${props.name}`

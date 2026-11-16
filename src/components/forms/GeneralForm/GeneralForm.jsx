@@ -161,7 +161,7 @@ export default function GeneralForm(props) {
           />
 
           <CustomTextField
-           label='registrationPage' 
+           label='Registration page (web address or email)' 
            name='registrationPageURL' 
            required={isRegistrationPageRequired}  />
         </Section>

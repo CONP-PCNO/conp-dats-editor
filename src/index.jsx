@@ -469,7 +469,7 @@ export function DatsEditorForm(props) {
       <div className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography align='center' component='h1' variant='h4'>
-            DATS Editor
+            Metadata Editor
           </Typography>
 
           <Stepper activeStep={activeStep} className={classes.stepper}>
@@ -553,11 +553,11 @@ export function DatsEditorForm(props) {
                 {(activeStep < 3 || (isExperiment && activeStep < 4))  && (
                   <Button
                     className={classes.button}
-                    style={{ backgroundColor: '#3f51b5', color: 'white', marginRight: 'auto' }} 
+                    style={{ marginRight: 'auto' }}
                     onClick={() => downloadDats(values)}
-                    variant="contained"
+                    variant="outlined"
                   >
-                    Save partial DATS
+                    Save a draft
                   </Button>
                 )}
 
@@ -616,7 +616,7 @@ export function DatsEditorForm(props) {
                         }}
                         variant='contained'
                       >
-                        Create a new DATS
+                        Start a new record
                       </Button>
                     )}
 
@@ -631,6 +631,7 @@ export function DatsEditorForm(props) {
 
                 <DatsErrors
                   className={classes.section}
+                  isExperiment={isExperiment}
                   errors={errors}
                   touched={touched}
                   formEmpty={formEmpty}
