@@ -19,9 +19,19 @@ const publicationSchema = yup.object().shape({
       then: yup.array()
         .of(
           yup.object().shape({
-            // Only the full name is required: 12 of the 44 CONP records that
-            // cite a publication list authors by full name alone (Oct 2026).
-            fullName: yup.string().required('Full name is required'),
+            // A full name, or a first and a last name: 12 of the 44 CONP records
+            // that cite a publication list authors by full name alone (Oct 2026),
+            // and the Portal can build the name from its parts. When only the
+            // parts are given, formToDats writes the full name too.
+            fullName: yup.string().nullable().test(
+              'full-or-parts',
+              'Give the full name, or both the first and last names',
+              function (value) {
+                const { firstName, lastName } = this.parent
+                const has = (x) => typeof x === 'string' && x.trim() !== ''
+                return has(value) || (has(firstName) && has(lastName))
+              }
+            ),
             firstName: yup.string().nullable(),
             lastName: yup.string().nullable(),
             middleInitial: yup.string().nullable(),

@@ -1,5 +1,5 @@
 import { defaultDatsValidationSchema as datsValidationSchema, defaultDatsValues, doiRegex } from '../../model/datsSpec'
-import { normalizeIdentifier } from '../../model/formToDats'
+import { completeAuthorName, normalizeIdentifier } from '../../model/formToDats'
 import { genDefaultReadme } from '../../components/forms/ReadmeEditor/ReadmeEditor'
 import { errorMessages, fieldLabel, plainMessage } from '../../components/DatsErrors/DatsErrors'
 
@@ -27,6 +27,29 @@ describe('publication identifiers', () => {
     const schema = datsValidationSchema.fields.primaryPublications.innerType
     const pub = { ...validPublication(''), authors: [{ fullName: 'Judes Poirier', lastName: 'Poirier' }] }
     await expect(schema.validate(pub)).resolves.toBeTruthy()
+  })
+
+  test('first and last names without a full name are enough', async () => {
+    const schema = datsValidationSchema.fields.primaryPublications.innerType
+    const pub = { ...validPublication(''), authors: [{ fullName: '', firstName: 'Judes', lastName: 'Poirier' }] }
+    await expect(schema.validate(pub)).resolves.toBeTruthy()
+  })
+
+  test.each([
+    [{ fullName: '', firstName: '', lastName: '' }],
+    [{ fullName: '  ', firstName: 'Judes', lastName: '' }],
+    [{ lastName: 'Poirier' }]
+  ])('rejects an author with neither a full name nor both parts: %j', async (author) => {
+    const schema = datsValidationSchema.fields.primaryPublications.innerType
+    await expect(schema.validate({ ...validPublication(''), authors: [author] })).rejects.toBeTruthy()
+  })
+
+  test('saving fills the full name from its parts, and keeps a given one', () => {
+    expect(completeAuthorName({ fullName: '', firstName: 'Judes', middleInitial: 'A', lastName: 'Poirier' }).fullName)
+      .toBe('Judes A Poirier')
+    expect(completeAuthorName({ firstName: ' Judes ', lastName: 'Poirier' }).fullName).toBe('Judes Poirier')
+    expect(completeAuthorName({ fullName: 'J. Poirier', firstName: 'Judes', lastName: 'Poirier' }).fullName)
+      .toBe('J. Poirier')
   })
 
   test('rejects text that is no identifier', async () => {

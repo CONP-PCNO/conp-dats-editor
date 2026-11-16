@@ -8,6 +8,17 @@ export function normalizeIdentifier(value) {
   return m ? `https://doi.org/${m[1]}` : v
 }
 
+// An author given only as first and last names gets a full name too
+// ("First M Last"): the Portal and citations read fullName first.
+export function completeAuthorName(author) {
+  const has = (x) => typeof x === 'string' && x.trim() !== ''
+  if (author && !has(author.fullName) && has(author.firstName) && has(author.lastName)) {
+    author.fullName = [author.firstName, author.middleInitial, author.lastName]
+      .filter(has).map((x) => x.trim()).join(' ')
+  }
+  return author
+}
+
 class FormToDats {
   constructor(data) {
     this.data = data
@@ -110,6 +121,7 @@ class FormToDats {
         if (pp.identifier && pp.identifier.identifier) {
           pp.identifier.identifier = normalizeIdentifier(pp.identifier.identifier)
         }
+        pp.authors = (pp.authors || []).map(completeAuthorName)
         return Object.assign(pp, {
           // DATS dates are {date, type}: empty rows (the form starts with one)
           // are dropped, and the form's own "description" key is not written,
